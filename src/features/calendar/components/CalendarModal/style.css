@@ -1,0 +1,113 @@
+/* DARK OVERLAY BACKGROUND */
+.calendar-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 3000;
+    top: 10vh;
+}
+
+/* WHITE OUTER PANEL (rounded, huge) */
+.calendar-container {
+    width: 100%;
+    background: #ffffff;
+    padding: 60px 70px 70px 70px;
+    box-shadow: 0px 20px 20px 0px rgb(0 0 0 / 3%);
+    height: 90vh;
+}
+
+/* ---------------------------------------------------
+   HEADER (Month Name + Left/Right Arrows)
+---------------------------------------------------- */
+.calendar-header {
+    display: flex
+;
+    justify-content: space-between;
+    /* align-items: center; */
+    /* gap: 23%; */
+    font-size: 26px;
+    font-weight: 600;
+    color: #3a3a3a;
+    width: 70%;
+    margin: 0 auto 28px;
+
+}
+
+.calendar-header button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: #444;
+    opacity: 0.55;
+    transition: 0.15s;
+}
+
+.calendar-header button:hover {
+    opacity: 1;
+}
+
+/* ---------------------------------------------------
+   WEEKDAY ROW
+---------------------------------------------------- */
+.week-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 15px;
+    color: #6f6f6f;
+    opacity: 0.7;
+    width: 70%;
+    margin: 0 auto 8px;
+}
+
+.week-header > div {
+    text-align: right;
+    padding-right: 1em;
+}
+
+/* ---------------------------------------------------
+   MAIN GRID (6 rows x 7 cols)
+---------------------------------------------------- */
+.calendar-grid {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* Each week row */
+.calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+/* Each day cell */
+.calendar-cell {
+    border: 1px solid #eeeeee;
+    text-align: right;
+    font-size: 18px;
+    color: #2b2b2b;
+    background: #ffffff;
+    height: 10vh;
+    padding: 1em;
+    font-weight: bold;
+}
+
+/* Previous/next month days (dimmed) */
+.calendar-cell.dim {
+    color: #bfbfbf !important;
+    background: #fafafa;
+}
+
+/* Saturday background (from screenshot subtle grey) */
+.calendar-cell.saturday {
+    background: #f7f7f7;
+}
+
+/* Optional: Hover effect (smooth, modern) */
+.calendar-cell:hover {
+    background: #f2f2f2;
+}

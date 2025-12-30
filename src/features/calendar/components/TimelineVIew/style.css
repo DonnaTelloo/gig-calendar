@@ -1,0 +1,5 @@
+.timeline-view {
+    /*padding: 5% 10% 10%;*/
+    display: flex;
+    flex-direction: column;
+}

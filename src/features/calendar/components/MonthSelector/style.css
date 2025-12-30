@@ -1,0 +1,78 @@
+.month-selector-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    position: relative;
+    padding: 2em 0;
+}
+
+/* ------- RULER SECTION ------- */
+
+.vertical-ruler {
+    width: 40px;
+    position: relative;
+}
+
+.ruler-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: #e6e6e6;     /* same faint gray as screenshot */
+}
+
+/* Ticks container */
+.ticks-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* small ticks */
+.tick-short {
+    width: 6px;
+    height: 1px;
+    background: #dcdcdc;
+    margin-left: 8px; /* pushes slightly right */
+}
+
+/* larger ticks (every 5th line) */
+.tick-long {
+    width: 14px;
+    height: 1px;
+    background: #d0d0d0;
+    margin-left: 8px;
+}
+
+/* ------- MONTHS ------- */
+
+.month-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.month-item {
+    font-size: 17px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.2s ease;
+    color: #888;
+}
+
+.month-item:hover {
+    opacity: 1;
+}
+
+.month-item.active {
+    opacity: 1;
+    color: #c84438;
+    font-weight: 700;
+    font-size: 20px;
+}
