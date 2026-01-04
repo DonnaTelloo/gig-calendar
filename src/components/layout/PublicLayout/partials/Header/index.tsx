@@ -70,8 +70,6 @@ export default function Header({
 
     return (
         <header className="header">
-            <div className="header-inner">
-
                 {/* LEFT SIDE – LOGO */}
                 <div className="logo">
                     <Link to={'/'} reloadDocument={true}>
@@ -91,15 +89,14 @@ export default function Header({
                     {/* Language Switch */}
                     <div className="lang-switch">
                         <button className="lang-item active">
-                            🇺🇸 Eng
+                            🇬🇪
                         </button>
                         <button className="lang-item">
-                            🇬🇪 ქარ
+                            🇺🇸
                         </button>
                     </div>
 
                 </div>
-            </div>
         </header>
     );
 }

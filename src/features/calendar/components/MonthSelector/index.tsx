@@ -1,32 +1,28 @@
-import "./style.css";
+import "./index.css";
 import { MONTHS } from "../../utils/monthList";
+import {useCalendar} from "../../hooks/useCalendar.ts";
 
-export default function MonthSelector({ month, onChange }) {
+export default function MonthSelector() {
+    const {
+        month,
+        setMonth
+    } = useCalendar();
+
     return (
-        <div className="month-selector-wrapper">
-
-            {/* Ruler */}
-            <div className="vertical-ruler">
-                <div className="ruler-line"></div>
-
-                <div className="ticks-container">
-                    {Array.from({ length: 30 }).map((_, i) => (
-                        <div
-                            key={i}
-                            className={`tick ${i % 5 === 0 ? "tick-long" : "tick-short"}`}
-                        ></div>
-                    ))}
-                </div>
+        <div className="month-selector">
+            <div className="ruler">
+                <span className="line" />
+                {MONTHS.map((_, i) => (
+                    <span key={i} className={`tick ${i === month ? "active" : ""}`} />
+                ))}
             </div>
 
-            {/* Month list */}
-            <div className="month-list">
+            <div className="months">
                 {MONTHS.map((m, i) => (
-                    <div
-                        key={i}
-                        className={`month-item ${i === month ? "active" : ""}`}
-                        onClick={() => onChange(i)}
-                    >
+                    <div                         onClick={() => setMonth(i)}
+                                                 key={i}
+                                                 className={`month`}
+                        >
                         {m}
                     </div>
                 ))}

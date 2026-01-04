@@ -1,0 +1,128 @@
+.book-slider {
+    height: 90vh;
+    /*background: red;*/
+    /*padding: 40px 60px;*/
+    padding: 5vh 30vh;
+    width: 100%;
+    background-size: 18px 18px;
+    display: flex;
+    flex-direction: column;
+    background-clip: border-box;
+    background: url("/src/assets/background.png");
+    background-size: cover;
+}
+
+/* HEADER */
+.book-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #F0F0F0;
+    padding-bottom: 1em;
+}
+
+.date {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.day {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #B897611A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #B89761;
+    font-size: 1.5em;
+}
+
+.month {
+    font-weight: 600;
+}
+
+.weekday {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.share-btn {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #eee;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5em;
+}
+
+/* STAGE */
+.book-stage {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* PAGE */
+.page {
+    width: 100%;
+    padding: 40px;
+    border-radius: 4px;
+    animation: page-next 0.7s ease;
+    transform-origin: left center;
+}
+
+.page.prev {
+    transform-origin: right center;
+    animation: page-prev 0.7s ease;
+}
+
+.page img {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 24px;
+    filter: grayscale(50%);
+}
+
+.page h2 {
+    margin-bottom: 16px;
+}
+
+.page p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    white-space: pre-line;
+}
+
+/* NAV */
+.nav {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.nav.left { left: 40px; }
+.nav.right { right: 40px; }
+
+/* ANIMATIONS */
+@keyframes page-next {
+    from { opacity: 0; transform: rotateY(-10deg); }
+    to { opacity: 1; transform: rotateY(0); }
+}
+
+@keyframes page-prev {
+    from { opacity: 0; transform: rotateY(10deg); }
+    to { opacity: 1; transform: rotateY(0); }
+}
