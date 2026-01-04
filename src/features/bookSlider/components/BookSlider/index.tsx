@@ -5,49 +5,68 @@ import ShareIcon from '../../../../assets/share.svg';
 
 export const BookSlider = () => {
     const [index, setIndex] = useState(0);
+    const [isFlipping, setIsFlipping] = useState(false);
     const [direction, setDirection] = useState<'next' | 'prev'>('next');
 
-    const slide = slides[index];
+    const current = slides[index];
+    const nextSlide = slides[(index + 1) % slides.length];
+    const prevSlide = slides[(index - 1 + slides.length) % slides.length];
 
-    const next = () => {
-        setDirection('next');
-        setIndex((i) => (i + 1) % slides.length);
-    };
+    const flip = (dir: 'next' | 'prev') => {
+        if (isFlipping) return;
 
-    const prev = () => {
-        setDirection('prev');
-        setIndex((i) => (i - 1 + slides.length) % slides.length);
+        setDirection(dir);
+        setIsFlipping(true);
+
+        setTimeout(() => {
+            setIndex((i) =>
+                dir === 'next'
+                    ? (i + 1) % slides.length
+                    : (i - 1 + slides.length) % slides.length
+            );
+            setIsFlipping(false);
+        }, 1000);
     };
 
     return (
         <section className="book-slider">
-            {/* Header */}
+            {/* HEADER */}
             <header className="book-header">
                 <div className="date">
-                    <div className="day">{slide.date.day}</div>
+                    <div className="day">{current.date.day}</div>
                     <div>
-                        <div className="month">{slide.date.month}</div>
-                        <div className="weekday">{slide.date.weekday}</div>
+                        <div className="month">{current.date.month}</div>
+                        <div className="weekday">{current.date.weekday}</div>
                     </div>
                 </div>
 
                 <button className="share-btn">
-                    <img src={ShareIcon} alt=""/>
+                    <img src={ShareIcon} alt="" />
                     Share
                 </button>
             </header>
 
-            {/* Slider */}
-            <div className="book-stage">
-                {/*<button className="nav left" onClick={prev}>‹</button>*/}
 
-                <article className={`page ${direction}`}>
-                    <img src={slide.image} alt="" />
-                    <h2>{slide.title}</h2>
-                    <p>{slide.text}</p>
+            {/* BOOK */}
+            <div className="book-stage">
+                <button className="nav left" onClick={() => flip('prev')}>‹</button>
+
+                {/* LEFT PAGE */}
+                <article className="page static">
+                    <img src={direction === 'next' ? current.image : prevSlide.image} />
+                    <h2>{direction === 'next' ? current.title : prevSlide.title}</h2>
+                    <p>{direction === 'next' ? current.text : prevSlide.text}</p>
                 </article>
 
-                {/*<button className="nav right" onClick={next}>›</button>*/}
+                {/* FLIPPING PAGE */}
+                <article
+                    className={`page flip ${direction} ${isFlipping ? 'animate' : ''}`}
+                >
+                    <img src={direction === 'next' ? nextSlide.image : current.image} />
+                    <h2>{direction === 'next' ? nextSlide.title : current.title}</h2>
+                    <p>{direction === 'next' ? nextSlide.text : current.text}</p>
+                </article>
+                <button className="nav right" onClick={() => flip('next')}>›</button>
             </div>
         </section>
     );

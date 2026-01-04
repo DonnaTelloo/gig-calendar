@@ -1,5 +1,8 @@
 import "./style.css";
 import {Link} from "react-router";
+import CalendarIcon from '../../../../../assets/calendar.svg';
+import GeorgiaFlag from '../../../../../assets/georgia-flag.svg';
+import USFlag from '../../../../../assets/us-flag.svg';
 
 const Logo = () => {
     return (
@@ -82,17 +85,19 @@ export default function Header({
 
                     {/* Explore Calendar Button */}
                     <button className="explore-btn" onClick={onOpenCalendar}>
-                        <span className="icon">📅</span>
+                        <span className="icon">
+                            <img src={CalendarIcon} alt=""/>
+                        </span>
                         Explore Calendar
                     </button>
 
                     {/* Language Switch */}
                     <div className="lang-switch">
                         <button className="lang-item active">
-                            🇬🇪
+                            <img src={GeorgiaFlag} alt=""/>
                         </button>
                         <button className="lang-item">
-                            🇺🇸
+                            <img src={USFlag} alt=""/>
                         </button>
                     </div>
 

@@ -1,4 +1,5 @@
 import MonthSelector from "../MonthSelector";
+import ArrowIcon from '../../../../assets/arrow.svg'
 import './style.css'
 
 type Props = {
@@ -22,7 +23,9 @@ export default function CalendarItem({
             >
                 <span>{year}</span>
 
-                {!disabled && <span className={`arrow ${active ? "open" : ""}`}>⌃</span> }
+                {!disabled && <span className={`arrow ${active ? "open" : ""}`}>
+                    <img src={ArrowIcon} alt=""/>
+                </span> }
 
                 {disabled && <span className="badge">მიუწვდომელია</span>}
             </div>

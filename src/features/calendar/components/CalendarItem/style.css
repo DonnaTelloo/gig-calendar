@@ -19,6 +19,10 @@
     height: 62px
 }
 
+.year-header span:first-child {
+    font-weight: 700;
+}
+
 .year.disabled {
     color: #cfcfcf;
 }
