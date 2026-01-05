@@ -1,7 +1,7 @@
 .book-slider {
-    height: 90vh;
-    padding: 5% 0%;
-    width: 50%;
+    height: 100%;
+    /*padding: 5% 0%;*/
+    width: 80%;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
@@ -65,7 +65,7 @@
     perspective-origin: center;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     margin-top: 1em;
 }
 
@@ -73,10 +73,12 @@
 .page {
     position: absolute;
     width: 100%;
-    background: white;
+    background: rgb(255, 255, 255);
     padding: 48px;
     border-radius: 4px;
     transform-style: preserve-3d;
+    overflow: hidden;
+    height: 100%;
 }
 
 /* subtle paper thickness */
@@ -165,7 +167,7 @@
     }
 
     35% {
-        transform: rotateY(-55deg) translateZ(10px);
+        transform: rotateY(-55deg) translateZ(2px);
     }
 
     65% {

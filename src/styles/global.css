@@ -110,6 +110,13 @@ img {
     background-clip: border-box;
     background: url("/src/assets/background.png");
     background-size: cover;
+    padding: 5% 10%;
+    height: calc(100% - 10vh);
+}
+
+.timeline-center {
+    height: 100%;
+    /*overflow: hidden;*/
 }
 
 .sidebar {
