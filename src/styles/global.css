@@ -121,4 +121,5 @@ img {
 
 .sidebar {
     z-index: 99;
+    overflow: hidden;
 }

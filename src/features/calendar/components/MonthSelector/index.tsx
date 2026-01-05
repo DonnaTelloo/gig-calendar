@@ -21,7 +21,7 @@ export default function MonthSelector() {
                 {MONTHS.map((m, i) => (
                     <div                         onClick={() => setMonth(i)}
                                                  key={i}
-                                                 className={`month`}
+                                                 className={`month ${i === month ? "active" : ""}`}
                         >
                         {m}
                     </div>
