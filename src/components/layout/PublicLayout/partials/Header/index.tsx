@@ -1,8 +1,8 @@
 import "./style.css";
 import {Link} from "react-router";
-import CalendarIcon from '../../../../../assets/calendar.svg';
-import GeorgiaFlag from '../../../../../assets/georgia-flag.svg';
-import USFlag from '../../../../../assets/us-flag.svg';
+import CalendarIcon from '../../../../../../public/assets/calendar.svg';
+import GeorgiaFlag from '../../../../../../public/assets/georgia-flag.svg';
+import USFlag from '../../../../../../public/assets/us-flag.svg';
 
 const Logo = () => {
     return (

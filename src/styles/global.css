@@ -108,7 +108,7 @@ img {
 
 .timeline-panel {
     background-clip: border-box;
-    background: url("/src/assets/background.png");
+    background: url("/public/assets/background.png");
     background-size: cover;
     padding: 5% 10%;
     height: calc(100% - 10vh);

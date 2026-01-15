@@ -1,5 +1,5 @@
 import MonthSelector from "../MonthSelector";
-import ArrowIcon from '../../../../assets/arrow.svg'
+import ArrowIcon from '/assets/arrow.svg'
 import './style.css'
 
 type Props = {

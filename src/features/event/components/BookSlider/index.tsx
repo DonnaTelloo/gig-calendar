@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import './index.css';
-import ShareIcon from '../../../../assets/share.svg';
+import ShareIcon from '../../../../../public/assets/share.svg';
 import useEvent from "../../hooks/useEvent";
 import {ShareModal} from "../ShareModal";
 
