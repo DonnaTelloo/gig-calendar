@@ -73,8 +73,10 @@
 .page {
     position: absolute;
     width: 100%;
-    background: rgb(255, 255, 255);
+    /*background: rgb(255, 255, 255);*/
+    /*background: initial;*/
     padding: 48px;
+    padding-top: 0;
     border-radius: 4px;
     transform-style: preserve-3d;
     /*overflow: hidden;*/
@@ -86,7 +88,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(47, 44, 44, 0.24);
+    /*background: rgba(47, 44, 44, 0.24);*/
     transform: translateZ(-1px);
     pointer-events: none;
 }
@@ -99,9 +101,32 @@
 /* FLIPPING PAGE */
 .page.flip {
     z-index: 2;
-    backface-visibility: hidden;
     will-change: transform;
 }
+
+.page-content {
+    filter: blur(0);
+    will-change: filter;
+}
+
+.page.flip.animate .page-content {
+    animation: content-blur 0.8s linear forwards;
+}
+
+@keyframes content-blur {
+    0% {
+        filter: blur(0);
+    }
+
+    45% {
+        filter: blur(0.1em);
+    }
+
+    100% {
+        filter: blur(0.4em); /* 👈 აქ არის peak blur */
+    }
+}
+
 
 /* NEXT */
 .page.flip.next {
@@ -125,8 +150,8 @@
 
 /* IMAGE */
 .page img {
-    width: 50%;
-    max-width: 50%;
+    width: 70%;
+    max-width: 70%;
     margin: 0 auto 24px;
     display: block;
     filter: grayscale(60%);
@@ -165,14 +190,16 @@
 
 @keyframes flip-next {
     0% {
+        background: #f3f3f3;
         transform:
                 rotateY(0deg)
                 scaleX(1)
                 skewY(0deg);
-        box-shadow: inset -8px 0 10px rgba(0,0,0,0.08);
+        /*box-shadow: inset -8px 0 10px rgba(191, 191, 191, 0.06);*/
     }
 
     20% {
+        background: #f3f3f3;
         transform:
                 rotateY(-30deg)
                 scaleX(0.98)
@@ -180,6 +207,7 @@
     }
 
     45% {
+        background: #f3f3f3;
         transform:
                 rotateY(-70deg)
                 scaleX(0.94)
@@ -205,11 +233,13 @@
 
 @keyframes flip-prev {
     0% {
+        background: #f3f3f3;
         transform: rotateY(0deg) translateZ(0);
-        box-shadow: inset 10px 0 15px rgba(0,0,0,0.08);
+        /*box-shadow: inset 10px 0 15px rgba(0, 0, 0, 0.21);*/
     }
 
     35% {
+        background: #f3f3f3;
         transform: rotateY(55deg) translateZ(10px);
     }
 
@@ -222,20 +252,20 @@
     }
 }
 
-.page.flip::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-            to right,
-            rgba(0,0,0,0.15),
-            rgba(0,0,0,0.03),
-            transparent
-    );
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-}
+/*.page.flip::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    inset: 0;*/
+/*    background: linear-gradient(*/
+/*            to right,*/
+/*            rgba(0,0,0,0.15),*/
+/*            rgba(0,0,0,0.03),*/
+/*            transparent*/
+/*    );*/
+/*    opacity: 0;*/
+/*    pointer-events: none;*/
+/*    transition: opacity 0.1s;*/
+/*}*/
 
 .page.flip.animate::before {
     opacity: 1;

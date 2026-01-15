@@ -1,4 +1,4 @@
-import {BookSlider} from "../../features/bookSlider/components/BookSlider";
+import {BookSlider} from "../../features/event/components/BookSlider";
 
 const Home = () => {
     return(
