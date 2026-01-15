@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { fetchCalendarSlidesMock } from "../api/event.mock";
 
-type Direction = "prev" | "next";
+enum Direction {
+    LEFT = 'prev',
+    RIGHT = 'next',
+    CURRENT = 'current',
+}
 
 const useEvent = () => {
     const [isLoading, setIsLoading] = useState(false);

@@ -22,7 +22,7 @@ export default function PublicLayout() {
 
                 {/* LEFT SIDE PANEL */}
                 <aside className="sidebar">
-                    <Calendar month={month} onChange={setMonth}/>
+                    <Calendar />
                 </aside>
                 <main className="timeline-panel">
                     <div className="timeline-center">
