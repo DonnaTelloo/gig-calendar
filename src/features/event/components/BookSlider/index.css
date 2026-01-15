@@ -75,8 +75,7 @@
     width: 100%;
     /*background: rgb(255, 255, 255);*/
     /*background: initial;*/
-    padding: 48px;
-    padding-top: 0;
+    padding: 0 48px 48px;
     border-radius: 4px;
     transform-style: preserve-3d;
     /*overflow: hidden;*/
@@ -190,7 +189,7 @@
 
 @keyframes flip-next {
     0% {
-        background: #f3f3f3;
+        background: rgba(243, 243, 243, 0.28);
         transform:
                 rotateY(0deg)
                 scaleX(1)

@@ -3,6 +3,7 @@ import './index.css';
 import ShareIcon from '../../../../../public/assets/share.svg';
 import useEvent from "../../hooks/useEvent";
 import {ShareModal} from "../ShareModal";
+import {useTranslation} from "react-i18next";
 
 enum Direction {
     LEFT = 'prev',
@@ -17,6 +18,12 @@ export const BookSlider = () => {
     const [isFlipping, setIsFlipping] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(null);
     const [isShareOpen, setIsShareOpen] = useState(false);
+
+    const { i18n, t } = useTranslation();
+
+    const changeLanguage = (lng: "en" | "ka") => {
+        i18n.changeLanguage(lng);
+    };
 
     useEffect(() => {
         requestEventHandler();
@@ -56,22 +63,24 @@ export const BookSlider = () => {
 
     const handleFlip = async (dir: Direction) => {
         if (isFlipping) return;
-        setIsFlipping(true);
-
         const nextSlide = data[dir];
 
         await preloadImage(nextSlide.image);
+
+        setIsFlipping(true);
 
         setDirection(dir);
         setFlipSlide(data.current);
 
         setTimeout(async () => {
-            setFlipSlide(null);
             await requestEventHandler(dir);
             setIsFlipping(false);
             setDirection(Direction.CURRENT);
+            setFlipSlide(null);
         }, 1000);
     };
+
+    console.log('renders')
 
     if (!data) return null;
 
@@ -94,7 +103,7 @@ export const BookSlider = () => {
 
                     <button className="share-btn"   onClick={() => setIsShareOpen(true)}>
                         <img src={ShareIcon} alt=""/>
-                        Share
+                        {t('share')}
                     </button>
                 </header>
                 <div className="book-stage">

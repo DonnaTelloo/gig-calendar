@@ -1,6 +1,7 @@
 import MonthSelector from "../MonthSelector";
 import ArrowIcon from '/assets/arrow.svg'
 import './style.css'
+import {useTranslation} from "react-i18next";
 
 type Props = {
     year: number;
@@ -15,6 +16,9 @@ export default function CalendarItem({
                                          disabled,
                                          onToggle
                                      }: Props) {
+
+    const { i18n, t } = useTranslation();
+
     return (
         <div className={`year ${disabled ? "disabled" : ""}`}>
             <div
@@ -27,7 +31,7 @@ export default function CalendarItem({
                     <img src={ArrowIcon} alt=""/>
                 </span> }
 
-                {disabled && <span className="badge">მიუწვდომელია</span>}
+                {disabled && <span className="badge">{t("notAvailable")}</span>}
             </div>
 
             {active && <MonthSelector />}

@@ -35,6 +35,10 @@
     align-items: center;
 }
 
+.calendar-nav button {
+    width: 50px;
+}
+
 .calendar-year {
     font-weight: 400;
     opacity: 0.6;

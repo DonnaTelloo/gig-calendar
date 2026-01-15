@@ -1,0 +1,25 @@
+{
+  "share": "Share",
+  "next": "Next",
+  "previous": "Previous",
+  "calendar": {
+    "title": "Calendar",
+    "today": "Today",
+    "explore": "Explore Calendar"
+  },
+  "months": [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+"notAvailable": "Not available"
+}

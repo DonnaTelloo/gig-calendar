@@ -3,6 +3,7 @@ import {Link} from "react-router";
 import CalendarIcon from '../../../../../../public/assets/calendar.svg';
 import GeorgiaFlag from '../../../../../../public/assets/georgia-flag.svg';
 import USFlag from '../../../../../../public/assets/us-flag.svg';
+import {useTranslation} from "react-i18next";
 
 const Logo = () => {
     return (
@@ -67,9 +68,12 @@ export default function Header({
                                    onOpenCalendar
                                }) {
 
-    const ExploreCalendarAction = () => {
-        console.log("Explore Calendar Action");
-    }
+    const { i18n, t } = useTranslation();
+    const currentLang = i18n.language;
+
+    const changeLanguage = (lng: "en" | "ka") => {
+        i18n.changeLanguage(lng);
+    };
 
     return (
         <header className="header">
@@ -88,15 +92,15 @@ export default function Header({
                         <span className="icon">
                             <img src={CalendarIcon} alt=""/>
                         </span>
-                        Explore Calendar
+                        {t("calendar.explore")}
                     </button>
 
                     {/* Language Switch */}
                     <div className="lang-switch">
-                        <button className="lang-item active">
+                        <button className={`lang-item ${currentLang == 'ka' ? 'active' : ''}`} onClick={() => changeLanguage("ka")}>
                             <img src={GeorgiaFlag} alt=""/>
                         </button>
-                        <button className="lang-item">
+                        <button className={`lang-item ${currentLang == 'en' ? 'active' : ''}`} onClick={() => changeLanguage("en")}>
                             <img src={USFlag} alt=""/>
                         </button>
                     </div>

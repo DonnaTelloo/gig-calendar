@@ -100,10 +100,15 @@ img {
     margin: 0 auto;
 }
 
+.gig-container {
+    width: 100%;
+    height: 100vh;
+}
+
 .content {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: minmax(230px, 250px) 1fr;
 }
 
 .timeline-panel {
@@ -123,3 +128,30 @@ img {
     z-index: 99;
     overflow: hidden;
 }
+
+/* tablet */
+@media (max-width: 800px) {
+    .content {
+        grid-template-columns: 1fr;
+        height: 90vh;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .timeline-panel {
+        width: 100%;
+        height: 100%;
+    }
+
+    .lang-switch {
+        display: none;
+    }
+}
+
+/* small desktop */
+@media (max-width: 1024px) {}
+
+/* large desktop */
+@media (min-width: 1280px) {}
