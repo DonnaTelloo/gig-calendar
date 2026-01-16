@@ -10,7 +10,7 @@ export default function PublicLayout() {
 
     return (
         <div className="gig-container">
-            <Header onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
+            <Header calendarOpen={calendarOpen} onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
 
             <div className="content">
 

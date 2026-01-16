@@ -1,6 +1,7 @@
 import "./style.css";
 import {Link} from "react-router";
 import CalendarIcon from '../../../../../../public/assets/calendar.svg';
+import CloseIcon from '../../../../../../public/assets/close.svg';
 import GeorgiaFlag from '../../../../../../public/assets/georgia-flag.svg';
 import USFlag from '../../../../../../public/assets/us-flag.svg';
 import {useTranslation} from "react-i18next";
@@ -65,7 +66,8 @@ const Logo = () => {
 }
 
 export default function Header({
-                                   onOpenCalendar
+                                   onOpenCalendar,
+    calendarOpen
                                }) {
 
     const { i18n, t } = useTranslation();
@@ -89,10 +91,21 @@ export default function Header({
 
                     {/* Explore Calendar Button */}
                     <button className="explore-btn" onClick={onOpenCalendar}>
-                        <span className="icon">
-                            <img src={CalendarIcon} alt=""/>
-                        </span>
-                        {t("calendar.explore")}
+                        {calendarOpen ? (
+                            <>
+                                <span className="icon">
+                                    <img src={CloseIcon} alt=""/>
+                                </span>
+                                {t("calendar.close")}
+                            </>
+                        ) : (
+                            <>
+                                <span className="icon">
+                                    <img src={CalendarIcon} alt=""/>
+                                </span>
+                                {t("calendar.explore")}
+                            </>
+                        )}
                     </button>
 
                     {/* Language Switch */}

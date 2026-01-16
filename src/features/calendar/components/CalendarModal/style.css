@@ -242,3 +242,83 @@
     background: #fafafa;
     cursor: default;
 }
+
+
+@media (max-width: 1024px) {
+    .calendar-header,
+    .week-header,
+    .calendar-grid,
+    .year-grid {
+        width: 90%;
+    }
+
+    .calendar-container {
+        padding: 40px 32px;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .calendar-cell {
+        height: auto;
+        min-height: 72px;
+    }
+}
+
+@media (max-width: 800px) {
+    .calendar-overlay {
+        top: 10vh;
+    }
+
+    .calendar-row {
+        grid-template-columns: repeat(7, minmax(32px, 1fr));
+    }
+
+    .calendar-cell {
+        font-size: 14px;
+        text-align: center;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+@media (max-width: 640px) {
+
+    .calendar-overlay {
+        top: 10vh;
+        align-items: stretch;
+    }
+
+    .calendar-container {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 16px;
+    }
+
+    .calendar-header,
+    .week-header,
+    .calendar-grid,
+    .year-grid {
+        width: 100%;
+    }
+
+    .calendar-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .calendar-nav {
+        width: 100%;
+    }
+
+    .calendar-cell {
+        height: auto;
+        min-height: 56px;
+    }
+
+    .year-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

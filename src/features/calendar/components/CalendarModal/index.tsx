@@ -76,16 +76,16 @@ export default function CalendarModal({ onClose }) {
                     </div>
                 </div>
 
-                {/* WEEKDAY HEADER */}
-                <div className="week-header">
-                    {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-                        <div key={d}>{d}</div>
-                    ))}
-                </div>
 
                 {/* GRID */}
                 {view === "month" && (
-                    <div className="calendar-grid">
+                    <>
+                        <div className="week-header">
+                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+                                <div key={d}>{d}</div>
+                            ))}
+                        </div>
+                        <div className="calendar-grid">
                         {daysMatrix.map((row, rIdx) => (
                             <div className="calendar-row" key={rIdx}>
                                 {row.map((cell, cIdx) => {
@@ -125,6 +125,7 @@ export default function CalendarModal({ onClose }) {
                             </div>
                         ))}
                     </div>
+                    </>
                 )}
 
                 {view === "year" && (

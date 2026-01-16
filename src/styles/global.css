@@ -120,7 +120,7 @@ img {
 }
 
 .timeline-center {
-    height: 100%;
+    height: -webkit-fill-available;
     /*overflow: hidden;*/
 }
 
@@ -143,10 +143,21 @@ img {
     .timeline-panel {
         width: 100%;
         height: 100%;
+        padding: 5% 2%;
+        overflow-y: auto;
     }
 
     .lang-switch {
         display: none;
+    }
+
+    .nav {
+        width: 35px;
+        height: 35px;
+    }
+
+    .page {
+        padding: 0 10%;
     }
 }
 
