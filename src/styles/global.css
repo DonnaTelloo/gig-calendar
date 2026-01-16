@@ -120,7 +120,7 @@ img {
 }
 
 .timeline-center {
-    height: -webkit-fill-available;
+    height: 90%;
     /*overflow: hidden;*/
 }
 
