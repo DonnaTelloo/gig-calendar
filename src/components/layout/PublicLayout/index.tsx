@@ -3,32 +3,35 @@ import Header from "./partials/Header";
 import {useState} from "react";
 import CalendarModal from "../../../features/calendar/components/CalendarModal";
 import Calendar from "../../../features/calendar/components/Calendar";
+import {CalendarProvider} from "../../../context";
 
 export default function PublicLayout() {
 
     const [calendarOpen, setCalendarOpen] = useState(false);
 
     return (
-        <div className="gig-container">
-            <Header calendarOpen={calendarOpen} onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
+        <CalendarProvider>
+            <div className="gig-container">
+                <Header calendarOpen={calendarOpen} onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
 
-            <div className="content">
+                <div className="content">
 
-                {/* LEFT SIDE PANEL */}
-                <aside className="sidebar">
-                    <Calendar />
-                </aside>
-                <main className="timeline-panel">
-                    <div className="timeline-center">
-                        <Outlet/>
-                    </div>
-                </main>
+                    {/* LEFT SIDE PANEL */}
+                    <aside className="sidebar">
+                        <Calendar />
+                    </aside>
+                    <main className="timeline-panel">
+                        <div className="timeline-center">
+                            <Outlet/>
+                        </div>
+                    </main>
 
-                {calendarOpen && (
-                    <CalendarModal onClose={() => setCalendarOpen(!calendarOpen)}/>
-                    )}
+                    {calendarOpen && (
+                        <CalendarModal onClose={() => setCalendarOpen(!calendarOpen)}/>
+                        )}
 
+                </div>
             </div>
-        </div>
+        </CalendarProvider>
 );
 }

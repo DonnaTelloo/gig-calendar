@@ -4,6 +4,7 @@ import ShareIcon from '../../../../../public/assets/share.svg';
 import useEvent from "../../hooks/useEvent";
 import {ShareModal} from "../ShareModal";
 import {useTranslation} from "react-i18next";
+import {useCalendarContext} from "../../../../context";
 
 enum Direction {
     LEFT = 'prev',
@@ -12,32 +13,22 @@ enum Direction {
 }
 
 export const BookSlider = () => {
+    const { state } = useCalendarContext();
+
     const { requestEventHandler, data, isLoading } = useEvent();
     const [direction, setDirection] = useState<Direction>(Direction.CURRENT);
     const [flipSlide, setFlipSlide] = useState<any>(null);
     const [isFlipping, setIsFlipping] = useState(false);
-    const [currentSlide, setCurrentSlide] = useState(null);
     const [isShareOpen, setIsShareOpen] = useState(false);
 
-    const { i18n, t } = useTranslation();
-
-    const changeLanguage = (lng: "en" | "ka") => {
-        i18n.changeLanguage(lng);
-    };
+    const {t} = useTranslation();
 
     useEffect(() => {
         requestEventHandler();
-    }, []);
-
-    // useEffect(() => {
-    //     if(data && currentSlide == null){
-    //         setCurrentSlide(data[direction]);
-    //     }
-    // }, [data]);
+    }, [state.date]);
 
     useEffect(() => {
         if (!data) return;
-        console.log(data)
 
         const images = [
             data.prev?.image,

@@ -1,8 +1,11 @@
 import CalendarItem from "../CalendarItem";
 import './style.css'
 import {useState} from "react";
+import {useCalendarContext} from "../../../../context";
 
 export default function Calendar() {
+    const { state } = useCalendarContext();
+
     const [openYear, setOpenYear] = useState<number | null>(2024);
 
     const toggleYear = (year: number) => {

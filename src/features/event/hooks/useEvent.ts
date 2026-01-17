@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fetchCalendarSlidesMock } from "../api/event.mock";
+import {useCalendarContext} from "../../../context";
 
 enum Direction {
     LEFT = 'prev',
@@ -8,13 +9,10 @@ enum Direction {
 }
 
 const useEvent = () => {
+    const { state, setDate } = useCalendarContext();
+
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<any>(null);
-
-    // 🔑 current active date
-    const [currentDate, setCurrentDate] = useState(
-        new Date("2025-10-05")
-    );
 
     const addDays = (date: Date, days: number) => {
         const d = new Date(date);
@@ -27,19 +25,15 @@ const useEvent = () => {
 
         const nextDate = direction
             ? direction === "next"
-                ? addDays(currentDate, 1)
-                : addDays(currentDate, -1)
-            : currentDate; // 👈 initial load
-
-        console.log(nextDate.toISOString());
+                ? addDays(state.date, 1)
+                : addDays(state.date, -1)
+            : state.date;
 
         const result = await fetchCalendarSlidesMock(
             nextDate.toISOString()
         );
 
-        if (direction) {
-            setCurrentDate(nextDate);
-        }
+        setDate(nextDate)
 
         setData(result);
         setIsLoading(false);
@@ -49,7 +43,6 @@ const useEvent = () => {
     return {
         isLoading,
         data,
-        currentDate,
         requestEventHandler,
     };
 };
