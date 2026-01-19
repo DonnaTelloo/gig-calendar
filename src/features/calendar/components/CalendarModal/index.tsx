@@ -17,7 +17,7 @@ export default function CalendarModal({ onClose }) {
 
     // 🌍 i18n
     const months = t("months", { returnObjects: true });
-    const weekdays = t("calendar.weekdays", { returnObjects: true });
+    const weekdays = t("calendar.weekdays", { returnObjects: true }) as Array<string>;
 
     const monthName = months[month];
 
