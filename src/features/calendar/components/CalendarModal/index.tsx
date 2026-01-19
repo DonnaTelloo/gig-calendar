@@ -1,11 +1,13 @@
 import "./style.css";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const MIN_YEAR = 2025;
 
 export default function CalendarModal({ onClose }) {
-    const today = new Date();
+    const { t } = useTranslation();
 
+    const today = new Date();
     const initialYear = Math.max(today.getFullYear(), MIN_YEAR);
 
     const [month, setMonth] = useState(today.getMonth());
@@ -13,12 +15,18 @@ export default function CalendarModal({ onClose }) {
     const [selectedDate, setSelectedDate] = useState(null);
     const [view, setView] = useState("month"); // "month" | "year"
 
+    // 🌍 i18n
+    const months = t("months", { returnObjects: true });
+    const weekdays = t("calendar.weekdays", { returnObjects: true });
+
+    const monthName = months[month];
+
     const nextMonth = () => {
         if (month === 11) {
             setMonth(0);
-            setYear(year + 1);
+            setYear((y) => y + 1);
         } else {
-            setMonth(month + 1);
+            setMonth((m) => m + 1);
         }
     };
 
@@ -27,15 +35,11 @@ export default function CalendarModal({ onClose }) {
 
         if (month === 0) {
             setMonth(11);
-            setYear(year - 1);
+            setYear((y) => y - 1);
         } else {
-            setMonth(month - 1);
+            setMonth((m) => m - 1);
         }
     };
-
-    const monthName = new Date(year, month).toLocaleString("en-US", {
-        month: "long",
-    });
 
     const daysMatrix = getMonthMatrix(year, month);
 
@@ -47,7 +51,6 @@ export default function CalendarModal({ onClose }) {
             >
                 {/* HEADER */}
                 <div className="calendar-header">
-                    {/* LEFT */}
                     <div className="calendar-nav">
                         <button onClick={prevMonth}>‹</button>
 
@@ -59,91 +62,93 @@ export default function CalendarModal({ onClose }) {
                         <button onClick={nextMonth}>›</button>
                     </div>
 
-                    {/* RIGHT */}
                     <div className="calendar-view-toggle">
                         <button
                             className={view === "month" ? "active" : ""}
                             onClick={() => setView("month")}
                         >
-                            Month
+                            {t("calendar.month", "Month")}
                         </button>
                         <button
                             className={view === "year" ? "active" : ""}
                             onClick={() => setView("year")}
                         >
-                            Year
+                            {t("calendar.year", "Year")}
                         </button>
                     </div>
                 </div>
 
-
-                {/* GRID */}
+                {/* MONTH VIEW */}
                 {view === "month" && (
                     <>
                         <div className="week-header">
-                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+                            {weekdays.map((d) => (
                                 <div key={d}>{d}</div>
                             ))}
                         </div>
-                        <div className="calendar-grid">
-                        {daysMatrix.map((row, rIdx) => (
-                            <div className="calendar-row" key={rIdx}>
-                                {row.map((cell, cIdx) => {
-                                    const isSelected =
-                                        selectedDate &&
-                                        cell.current &&
-                                        selectedDate.getDate() === cell.day &&
-                                        selectedDate.getMonth() === cell.month &&
-                                        selectedDate.getFullYear() === cell.year;
 
-                                    return (
-                                        <div
-                                            key={cIdx}
-                                            className={[
-                                                "calendar-cell",
-                                                !cell.current && "dim",
-                                                cIdx === 5 && "saturday",
-                                                isSelected && "selected",
-                                            ]
-                                                .filter(Boolean)
-                                                .join(" ")}
-                                            onClick={() => {
-                                                if (!cell.current) return;
-                                                setSelectedDate(
-                                                    new Date(
-                                                        cell.year,
-                                                        cell.month,
-                                                        cell.day
-                                                    )
-                                                );
-                                            }}
-                                        >
-                                            {cell.day}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        ))}
-                    </div>
+                        <div className="calendar-grid">
+                            {daysMatrix.map((row, rIdx) => (
+                                <div className="calendar-row" key={rIdx}>
+                                    {row.map((cell, cIdx) => {
+                                        const isSelected =
+                                            selectedDate &&
+                                            cell.current &&
+                                            selectedDate.getDate() === cell.day &&
+                                            selectedDate.getMonth() === cell.month &&
+                                            selectedDate.getFullYear() === cell.year;
+
+                                        return (
+                                            <div
+                                                key={cIdx}
+                                                className={[
+                                                    "calendar-cell",
+                                                    !cell.current && "dim",
+                                                    cIdx === 5 && "saturday",
+                                                    isSelected && "selected",
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(" ")}
+                                                onClick={() => {
+                                                    if (!cell.current) return;
+                                                    setSelectedDate(
+                                                        new Date(
+                                                            cell.year,
+                                                            cell.month,
+                                                            cell.day
+                                                        )
+                                                    );
+                                                }}
+                                            >
+                                                {cell.day}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ))}
+                        </div>
                     </>
                 )}
 
+                {/* YEAR VIEW */}
                 {view === "year" && (
                     <YearGrid
                         activeYear={year}
+                        minYear={MIN_YEAR}
                         onSelect={(y) => {
                             setYear(y);
                             setView("month");
                         }}
                     />
                 )}
-
             </div>
         </div>
     );
 }
 
-function YearGrid({ activeYear, onSelect }) {
+/* ================= YEAR GRID ================= */
+
+function YearGrid({ activeYear, minYear, onSelect }) {
     const startYear = activeYear - 3;
     const years = Array.from({ length: 12 }, (_, i) => startYear + i);
 
@@ -154,13 +159,13 @@ function YearGrid({ activeYear, onSelect }) {
                     key={y}
                     className={[
                         "year-cell",
-                        y < 2025 && "disabled",
+                        y < minYear && "disabled",
                         y === activeYear && "selected",
                     ]
                         .filter(Boolean)
                         .join(" ")}
                     onClick={() => {
-                        if (y < 2025) return;
+                        if (y < minYear) return;
                         onSelect(y);
                     }}
                 >
@@ -171,16 +176,17 @@ function YearGrid({ activeYear, onSelect }) {
     );
 }
 
-/* REAL month matrix */
+/* ================= MONTH MATRIX ================= */
+
 function getMonthMatrix(year, month) {
     const firstDay = new Date(year, month, 1);
     const offset = (firstDay.getDay() + 6) % 7;
 
-    let matrix = [];
+    const matrix = [];
     let day = 1 - offset;
 
     for (let r = 0; r < 6; r++) {
-        let row = [];
+        const row = [];
         for (let c = 0; c < 7; c++) {
             const d = new Date(year, month, day);
             row.push({
@@ -193,5 +199,6 @@ function getMonthMatrix(year, month) {
         }
         matrix.push(row);
     }
+
     return matrix;
 }

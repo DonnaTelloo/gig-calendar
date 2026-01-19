@@ -6,7 +6,10 @@
     "title": "Calendar",
     "today": "Today",
     "explore": "Calendar",
-    "close": "Close"
+    "close": "Close",
+    "month": "Month",
+    "year": "Year",
+    "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
   },
   "months": [
     "January",
