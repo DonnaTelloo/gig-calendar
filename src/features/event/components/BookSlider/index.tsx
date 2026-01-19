@@ -71,8 +71,6 @@ export const BookSlider = () => {
         }, 1000);
     };
 
-    console.log('renders')
-
     if (!data) return null;
 
     return (

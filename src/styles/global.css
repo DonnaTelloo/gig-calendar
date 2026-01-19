@@ -95,6 +95,10 @@ img {
     display: block;
 }
 
+button {
+    color: inherit;
+}
+
 .layout-wrapper {
     width: 100%;
     margin: 0 auto;
@@ -162,6 +166,7 @@ img {
 
     .page {
         padding: 0 10%;
+        top: 5%;
     }
 
     .share-modal {
