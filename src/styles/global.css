@@ -159,6 +159,10 @@ img {
     .page {
         padding: 0 10%;
     }
+
+    .share-modal {
+        width: 90%
+    }
 }
 
 /* small desktop */
