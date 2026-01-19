@@ -84,25 +84,27 @@ export default function Header({ onOpenCalendar, calendarOpen }: HeaderProps) {
             {/* MOBILE LANGUAGE MENU */}
             {menuOpen && (
                 <div className="mobile-menu">
-                    <button
-                        className={`lang-item ${
-                            currentLang === "ka" ? "active" : ""
-                        }`}
-                        onClick={() => changeLanguage("ka")}
-                    >
-                        <img src={GeorgiaFlag} alt="KA" />
-                        ქართული
-                    </button>
+                    <div className="lang-switch">
+                        <button
+                            className={`lang-item ${
+                                currentLang === "ka" ? "active" : ""
+                            }`}
+                            onClick={() => changeLanguage("ka")}
+                        >
+                            <img src={GeorgiaFlag} alt="KA" />
+                            <span>ქართული</span>
+                        </button>
 
-                    <button
-                        className={`lang-item ${
-                            currentLang === "en" ? "active" : ""
-                        }`}
-                        onClick={() => changeLanguage("en")}
-                    >
-                        <img src={USFlag} alt="EN" />
-                        English
-                    </button>
+                        <button
+                            className={`lang-item ${
+                                currentLang === "en" ? "active" : ""
+                            }`}
+                            onClick={() => changeLanguage("en")}
+                        >
+                            <span>English</span>
+                            <img src={USFlag} alt="EN" />
+                        </button>
+                    </div>
                 </div>
             )}
         </header>

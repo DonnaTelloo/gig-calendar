@@ -136,6 +136,10 @@ img {
         height: 90vh;
     }
 
+    .header {
+        padding: 1vh 2vh;
+    }
+
     .sidebar {
         display: none;
     }
@@ -147,9 +151,9 @@ img {
         overflow-y: auto;
     }
 
-    .lang-switch {
-        display: none;
-    }
+    /*.lang-switch {*/
+    /*    display: none;*/
+    /*}*/
 
     .nav {
         width: 35px;
