@@ -1,17 +1,20 @@
 import "./style.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {useCalendarContext} from "../../../../context";
+
 
 const MIN_YEAR = 2025;
 
 export default function CalendarModal({ onClose }) {
     const { t } = useTranslation();
+    const { state, setDate, setYear, setMonth } = useCalendarContext();
 
     const today = new Date();
     const initialYear = Math.max(today.getFullYear(), MIN_YEAR);
 
-    const [month, setMonth] = useState(today.getMonth());
-    const [year, setYear] = useState(initialYear);
+    const [month, setLocalMonth] = useState(state.month);
+    const [year, setLocalYear] = useState(state.year);
     const [selectedDate, setSelectedDate] = useState(null);
     const [view, setView] = useState("month"); // "month" | "year"
 
@@ -23,10 +26,13 @@ export default function CalendarModal({ onClose }) {
 
     const nextMonth = () => {
         if (month === 11) {
+            setLocalMonth(0);
+            setLocalYear((y) => y + 1);
+            setYear(year + 1);
             setMonth(0);
-            setYear((y) => y + 1);
         } else {
-            setMonth((m) => m + 1);
+            setLocalMonth((m) => m + 1);
+            setMonth(month + 1);
         }
     };
 
@@ -34,10 +40,13 @@ export default function CalendarModal({ onClose }) {
         if (year === MIN_YEAR && month === 0) return;
 
         if (month === 0) {
+            setLocalMonth(11);
+            setLocalYear((y) => y - 1);
+            setYear(year - 1);
             setMonth(11);
-            setYear((y) => y - 1);
         } else {
-            setMonth((m) => m - 1);
+            setLocalMonth((m) => m - 1);
+            setMonth(month - 1);
         }
     };
 
@@ -111,13 +120,14 @@ export default function CalendarModal({ onClose }) {
                                                     .join(" ")}
                                                 onClick={() => {
                                                     if (!cell.current) return;
-                                                    setSelectedDate(
-                                                        new Date(
-                                                            cell.year,
-                                                            cell.month,
-                                                            cell.day
-                                                        )
-                                                    );
+
+                                                    const selected = new Date(cell.year, cell.month, cell.day);
+
+                                                    // ✅ Context update
+                                                    setDate(selected);
+
+                                                    // optional: modal close
+                                                    onClose?.();
                                                 }}
                                             >
                                                 {cell.day}

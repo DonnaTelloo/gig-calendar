@@ -64,10 +64,10 @@ export const BookSlider = () => {
         setFlipSlide(data.current);
 
         setTimeout(async () => {
+            setFlipSlide(null);
             await requestEventHandler(dir);
             setIsFlipping(false);
             setDirection(Direction.CURRENT);
-            setFlipSlide(null);
         }, 1000);
     };
 

@@ -17,7 +17,7 @@ const CalendarContext = createContext<CalendarContextType | null>(null);
 
 export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [date, setDateState] = useState<Date>(
-        new Date("2025-10-05")
+        new Date(2025, 9, 5)
     );
 
     const syncState = (d: Date): CalendarState => ({
