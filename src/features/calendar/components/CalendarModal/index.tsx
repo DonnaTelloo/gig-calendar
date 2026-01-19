@@ -147,6 +147,7 @@ export default function CalendarModal({ onClose }) {
                         minYear={MIN_YEAR}
                         onSelect={(y) => {
                             setYear(y);
+                            setLocalYear(y);
                             setView("month");
                         }}
                     />
