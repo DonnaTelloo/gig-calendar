@@ -32,13 +32,20 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const setYear = (year: number) => {
         const d = new Date(date);
+
+        d.setDate(1);
         d.setFullYear(year);
+
         setDateState(d);
     };
 
     const setMonth = (month: number) => {
         const d = new Date(date);
+
+        // reset day to avoid overflow
+        d.setDate(1);
         d.setMonth(month);
+
         setDateState(d);
     };
 

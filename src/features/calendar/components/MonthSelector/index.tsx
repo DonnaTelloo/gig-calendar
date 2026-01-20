@@ -19,7 +19,11 @@ export default function MonthSelector() {
 
             <div className="months">
                 {months.map((m, i) => (
-                    <div                         onClick={() => setMonth(i)}
+                    <div                         onClick={() => {
+                        if (i !== state.month) {
+                            setMonth(i);
+                        }
+                    }}
                                                  key={i}
                                                  className={`month ${i === state.month ? "active" : ""}`}
                         >
