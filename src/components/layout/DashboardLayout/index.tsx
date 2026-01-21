@@ -16,8 +16,6 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { NavLink, Outlet } from "react-router";
 import styles from "./index.module.css";
 
-const drawerWidth = 240;
-
 export default function DashboardLayout() {
     return (
         <div className={styles.dashboardLayout}>
@@ -25,10 +23,9 @@ export default function DashboardLayout() {
                 <Drawer
                     variant="permanent"
                     sx={{
-                        width: drawerWidth,
                         flexShrink: 0,
                         [`& .MuiDrawer-paper`]: {
-                            width: drawerWidth,
+                            width: "15%",
                             boxSizing: "border-box",
                             display: "flex",
                             flexDirection: "column"
@@ -43,14 +40,14 @@ export default function DashboardLayout() {
                             <ListItemIcon>
                                 <DashboardIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Dashboard" />
+                            <ListItemText primary="დეშბორდი" />
                         </ListItemButton>
 
                         <ListItemButton component={NavLink} to="/dashboard/posts">
                             <ListItemIcon>
                                 <ArticleIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Posts" />
+                            <ListItemText primary="კონტენტი" />
                         </ListItemButton>
                     </List>
 

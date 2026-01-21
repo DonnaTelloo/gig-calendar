@@ -1,5 +1,13 @@
 .dashboardLayout {
     display: flex;
-    background: red;
     height: 100%;
+    width: 100%;
+}
+
+.dashboardLayout aside {
+    width: 15%;
+}
+
+.dashboardLayout main {
+    width: 80%;
 }
