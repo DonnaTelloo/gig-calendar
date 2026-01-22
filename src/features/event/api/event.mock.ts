@@ -148,7 +148,7 @@ function buildSlide(dateISO: string): CalendarSlide {
         MOCK_DB[normalized] ?? {
             title: "No events",
             text: "No historical data for this date.",
-            image: "https://picsum.photos/600/400?grayscale",
+            image: "/public/assets/nothing-found.svg",
         };
 
     return {
@@ -164,9 +164,6 @@ function buildSlide(dateISO: string): CalendarSlide {
  */
 export async function fetchCalendarSlidesMock(dateISO: string) {
     const normalized = normalizeDate(dateISO);
-
-    // simulate network delay
-    await new Promise((r) => setTimeout(r, 300));
 
     return {
         prev: buildSlide(addDays(normalized, -1)),

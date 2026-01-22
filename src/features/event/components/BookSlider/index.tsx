@@ -12,10 +12,16 @@ enum Direction {
     CURRENT = 'current',
 }
 
-export const BookSlider = () => {
-    const { state } = useCalendarContext();
+const NotFound = () => (
+    <article className="page static not-found">
+        <h2>dsada</h2>
+    </article>
+);
 
-    const { requestEventHandler, data, isLoading } = useEvent();
+export const BookSlider = () => {
+    const { state, isLoading } = useCalendarContext();
+
+    const { requestEventHandler, data } = useEvent();
     const [direction, setDirection] = useState<Direction>(Direction.CURRENT);
     const [flipSlide, setFlipSlide] = useState<any>(null);
     const [isFlipping, setIsFlipping] = useState(false);
@@ -53,7 +59,7 @@ export const BookSlider = () => {
     };
 
     const handleFlip = async (dir: Direction) => {
-        if (isFlipping) return;
+        if (isFlipping || isLoading) return;
         const nextSlide = data[dir];
 
         await preloadImage(nextSlide.image);
@@ -71,7 +77,9 @@ export const BookSlider = () => {
         }, 1000);
     };
 
-    if (!data) return null;
+    if (!data) {
+        return null;
+    }
 
     return (
         <>

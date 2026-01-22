@@ -9,9 +9,7 @@ enum Direction {
 }
 
 const useEvent = () => {
-    const { state, setDate } = useCalendarContext();
-
-    const [isLoading, setIsLoading] = useState(false);
+    const { state, setDate, setIsLoading } = useCalendarContext();
     const [data, setData] = useState<any>(null);
 
     const addDays = (date: Date, days: number) => {
@@ -19,18 +17,17 @@ const useEvent = () => {
             date.getFullYear(),
             date.getMonth(),
             date.getDate()
-        ); // normalize to local midnight
+        );
         d.setDate(d.getDate() + days);
         return d;
     };
 
-    const toLocalDateString = (date: Date) => {
-        return [
+    const toLocalDateString = (date: Date) =>
+        [
             date.getFullYear(),
             String(date.getMonth() + 1).padStart(2, "0"),
             String(date.getDate()).padStart(2, "0"),
         ].join("-");
-    };
 
     const requestEventHandler = async (direction?: Direction) => {
         setIsLoading(true);
@@ -41,8 +38,10 @@ const useEvent = () => {
                 : addDays(state.date, -1)
             : state.date;
 
+        await new Promise((r) => setTimeout(r, 300));
+
         const result = await fetchCalendarSlidesMock(
-            toLocalDateString(nextDate) // ✅ DATE ONLY
+            toLocalDateString(nextDate)
         );
 
         setDate(nextDate);
@@ -51,7 +50,6 @@ const useEvent = () => {
     };
 
     return {
-        isLoading,
         data,
         requestEventHandler,
     };

@@ -6,7 +6,7 @@ import {useCalendarContext} from "../../../../context";
 export default function Calendar() {
     const { state } = useCalendarContext();
 
-    const [openYear, setOpenYear] = useState<number | null>(2024);
+    const [openYear, setOpenYear] = useState<number | null>(state.year);
 
     const toggleYear = (year: number) => {
         setOpenYear(prev => (prev === year ? null : year));
@@ -19,7 +19,7 @@ export default function Calendar() {
                     key={year}
                     year={year}
                     active={openYear === year}
-                    disabled={year !== 2025}
+                    disabled={year !== state.year}
                     onToggle={toggleYear}
                 />
             ))}

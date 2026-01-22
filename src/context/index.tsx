@@ -11,14 +11,33 @@ type CalendarContextType = {
     setDate: (date: Date) => void;
     setYear: (year: number) => void;
     setMonth: (month: number) => void;
+
+    isLoading: boolean;
+    setIsLoading: (v: boolean) => void;
+};
+
+
+type CalendarProviderProps = {
+    children: React.ReactNode;
+    initialDate?: string; // YYYY-MM-DD
 };
 
 const CalendarContext = createContext<CalendarContextType | null>(null);
 
-export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [date, setDateState] = useState<Date>(
-        new Date(2025, 9, 5)
-    );
+export const CalendarProvider: React.FC<CalendarProviderProps> = ({
+                                                                      children,
+                                                                      initialDate,
+                                                                  }) => {
+    const parseInitialDate = () => {
+        if (initialDate) {
+            const d = new Date(initialDate);
+            if (!isNaN(d.getTime())) return d;
+        }
+        return new Date();
+    };
+
+    const [date, setDateState] = useState<Date>(parseInitialDate);
+    const [isLoading, setIsLoading] = useState(false);
 
     const syncState = (d: Date): CalendarState => ({
         date: d,
@@ -26,26 +45,19 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         month: d.getMonth(),
     });
 
-    const setDate = (d: Date) => {
-        setDateState(d);
-    };
+    const setDate = (d: Date) => setDateState(d);
 
     const setYear = (year: number) => {
         const d = new Date(date);
-
         d.setDate(1);
         d.setFullYear(year);
-
         setDateState(d);
     };
 
     const setMonth = (month: number) => {
         const d = new Date(date);
-
-        // reset day to avoid overflow
         d.setDate(1);
         d.setMonth(month);
-
         setDateState(d);
     };
 
@@ -58,6 +70,8 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 setDate,
                 setYear,
                 setMonth,
+                isLoading,
+                setIsLoading,
             }}
         >
             {children}
@@ -67,6 +81,8 @@ export const CalendarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
 export const useCalendarContext = () => {
     const ctx = useContext(CalendarContext);
-    if (!ctx) throw new Error("useCalendarContext must be used inside CalendarProvider");
+    if (!ctx) {
+        throw new Error("useCalendarContext must be used inside CalendarProvider");
+    }
     return ctx;
 };

@@ -25,7 +25,7 @@ export default function DashboardLayout() {
                     sx={{
                         flexShrink: 0,
                         [`& .MuiDrawer-paper`]: {
-                            width: "15%",
+                            width: "250px",
                             boxSizing: "border-box",
                             display: "flex",
                             flexDirection: "column"

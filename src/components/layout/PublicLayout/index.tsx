@@ -1,16 +1,29 @@
-import { Outlet } from "react-router";
+import {Outlet} from "react-router";
 import Header from "./partials/Header";
 import {useState} from "react";
 import CalendarModal from "../../../features/calendar/components/CalendarModal";
 import Calendar from "../../../features/calendar/components/Calendar";
-import {CalendarProvider} from "../../../context";
+import {useCalendarContext} from "../../../context";
+import Logo from "../../../../public/assets/logo.svg";
+
+const PageLoader = () => (
+    <div className="page-loader">
+        <img src={Logo} alt=""/>
+    </div>
+);
 
 export default function PublicLayout() {
 
+    const { isLoading } = useCalendarContext();
+
     const [calendarOpen, setCalendarOpen] = useState(false);
 
+    console.log(isLoading);
+
     return (
-        <CalendarProvider>
+        <>
+            {/*{isLoading && <PageLoader />}*/}
+
             <div className="gig-container">
                 <Header calendarOpen={calendarOpen} onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
 
@@ -32,6 +45,6 @@ export default function PublicLayout() {
 
                 </div>
             </div>
-        </CalendarProvider>
-);
+        </>
+    );
 }

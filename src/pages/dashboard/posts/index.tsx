@@ -31,9 +31,12 @@ const PostsPage = () => {
     const [month, setMonth] = useState<number | "">("");
     const [day, setDay] = useState<number | "">("");
 
-    // form
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
+    // bilingual form (NEW)
+    const [titleKa, setTitleKa] = useState("");
+    const [titleEn, setTitleEn] = useState("");
+    const [descriptionKa, setDescriptionKa] = useState("");
+    const [descriptionEn, setDescriptionEn] = useState("");
+
     const [image, setImage] = useState<File | null>(null);
 
     const daysInMonth =
@@ -47,13 +50,22 @@ const PostsPage = () => {
             ? `${years.join(", ")} / ${MONTHS[month as number]} / ${day}`
             : "";
 
+    // step 2 validation (NEW)
+    const isStep2Valid =
+        titleKa.trim() &&
+        titleEn.trim() &&
+        descriptionKa.trim() &&
+        descriptionEn.trim();
+
     const resetAll = () => {
         setStep(0);
         setYears([]);
         setMonth("");
         setDay("");
-        setTitle("");
-        setDescription("");
+        setTitleKa("");
+        setTitleEn("");
+        setDescriptionKa("");
+        setDescriptionEn("");
         setImage(null);
     };
 
@@ -305,29 +317,63 @@ const PostsPage = () => {
                                 fullWidth
                             />
 
+                            <Typography variant="h6">ქართული</Typography>
+
                             <TextField
-                                label="სათაური"
-                                value={title}
+                                label="სათაური (KA)"
+                                required
+                                value={titleKa}
                                 onChange={(e) =>
-                                    setTitle(
+                                    setTitleKa(
                                         e.target.value.slice(0, 60)
                                     )
                                 }
-                                helperText={`${title.length}/60`}
+                                helperText={`${titleKa.length}/60`}
                                 fullWidth
                             />
 
                             <TextField
-                                label="აღწერა"
+                                label="აღწერა (KA)"
+                                required
                                 multiline
                                 rows={4}
-                                value={description}
+                                value={descriptionKa}
                                 onChange={(e) =>
-                                    setDescription(
+                                    setDescriptionKa(
                                         e.target.value.slice(0, 250)
                                     )
                                 }
-                                helperText={`${description.length}/250`}
+                                helperText={`${descriptionKa.length}/250`}
+                                fullWidth
+                            />
+
+                            <Typography variant="h6">English</Typography>
+
+                            <TextField
+                                label="Title (EN)"
+                                required
+                                value={titleEn}
+                                onChange={(e) =>
+                                    setTitleEn(
+                                        e.target.value.slice(0, 60)
+                                    )
+                                }
+                                helperText={`${titleEn.length}/60`}
+                                fullWidth
+                            />
+
+                            <TextField
+                                label="Description (EN)"
+                                required
+                                multiline
+                                rows={4}
+                                value={descriptionEn}
+                                onChange={(e) =>
+                                    setDescriptionEn(
+                                        e.target.value.slice(0, 250)
+                                    )
+                                }
+                                helperText={`${descriptionEn.length}/250`}
                                 fullWidth
                             />
 
@@ -364,13 +410,20 @@ const PostsPage = () => {
 
                                 <Button
                                     variant="contained"
+                                    disabled={!isStep2Valid}
                                     onClick={() => {
                                         console.log("CREATE POST:", {
                                             years,
                                             month,
                                             day,
-                                            title,
-                                            description,
+                                            title: {
+                                                ka: titleKa,
+                                                en: titleEn,
+                                            },
+                                            description: {
+                                                ka: descriptionKa,
+                                                en: descriptionEn,
+                                            },
                                             image,
                                         });
                                     }}

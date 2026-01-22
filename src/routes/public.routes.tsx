@@ -1,17 +1,21 @@
-import { Routes, Route } from "react-router";
+import {Route, useParams} from "react-router";
 import PublicLayout from "../components/layout/PublicLayout";
 import Home from "../pages/home";
+import {CalendarProvider} from "../context";
 
-// Pages
+const VaderProvider = () => {
+    const { date } = useParams<{ date?: string }>();
 
-
-export default function PublicRoutes() {
     return (
-        <Routes>
-            <Route element={<PublicLayout />}>
-                <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="*" element={<>Not Found</>} />
-        </Routes>
-    );
+        <CalendarProvider initialDate={date}>
+            <PublicLayout />
+        </CalendarProvider>
+    )
 }
+
+export const publicRoutes = (
+    <Route element={<VaderProvider />}>
+        <Route index element={<Home />} />
+        <Route path=":date" element={<Home />} />
+    </Route>
+);
