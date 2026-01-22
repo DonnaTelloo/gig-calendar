@@ -148,7 +148,7 @@ function buildSlide(dateISO: string): CalendarSlide {
         MOCK_DB[normalized] ?? {
             title: "No events",
             text: "No historical data for this date.",
-            image: "/public/assets/nothing-found.svg",
+            image: "/assets/nothing-found.svg",
         };
 
     return {
