@@ -94,8 +94,11 @@ body {
 body {
     background: #f7f7f7;
     color: #222;
+    overflow: hidden; /* Prevent whole page scrolling */
+    background: url(/public/assets/background.png);
+    background-size: cover;
+    background-clip: border-box;
     overflow-x: hidden!important;
-    overflow-y: auto;
 }
 
 a {
@@ -130,25 +133,36 @@ button {
 .content {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: minmax(230px, 250px) 1fr;
+    /*grid-template-columns: 250px 1fr;*/
     flex: 1;
+    margin-top: 7vh; /* Add margin to account for fixed header */
 }
 
-/* =========================
-   SIDEBAR / TIMELINE
-========================= */
+.MuiModal-root, .swal2-container {
+    z-index: 99999!important;
+}
+
+    /* =========================
+       SIDEBAR / TIMELINE
+    ========================= */
 
 .sidebar {
     z-index: 99;
     overflow: hidden;
+    position: fixed;
+    top: 7vh; /* Position below the header */
+    left: 0;
+    width: 250px; /* Fixed width for sidebar */
+    height: calc(100vh - 7vh); /* Full height minus header */
 }
 
 .timeline-panel {
-    background: url("/public/assets/background.png");
-    background-size: cover;
-    background-clip: border-box;
-    padding: 5% 10%;
+    padding: 5% 5%;
     height: calc(100vh - 7vh);
+    margin-left: 250px; /* Match sidebar width */
+    overflow-y: auto; /* Make it scrollable */
+    position: relative; /* Needed for proper scrolling */
+    width: calc(100% - 250px); /* Ensure it takes full width minus sidebar */
 }
 
 .timeline-center {
@@ -210,9 +224,12 @@ button {
     .timeline-panel {
         width: 100%;
         padding: 5% 4%;
-        /*overflow-y: auto;*/
+        margin-left: 0; /* Reset margin for mobile */
+        overflow-y: auto;
         padding-bottom: max(16px, env(safe-area-inset-bottom));
         background: none;
+        overflow-x: hidden;
+        padding-bottom: 50px;
     }
 
     .header {

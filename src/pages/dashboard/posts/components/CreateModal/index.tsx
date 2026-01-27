@@ -1,10 +1,11 @@
-import { Box, Button, Divider, TextField, Typography, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography, FormControl, InputLabel, MenuItem, Select, CircularProgress } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
 import useCreatePost from "../../hooks/usePost";
 import { getYearsApi } from "../../../../../features/calendar/api/calendar.api";
 import "../EditModal/style.css";
+import Swal from "sweetalert2";
 
 type CreateModalProps = {
     open: boolean;
@@ -23,13 +24,13 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
     const [year, setYear] = useState<number | "">("");
     const [month, setMonth] = useState<number | "">("");
     const [day, setDay] = useState<number | "">("");
-    
+
     const [titleKa, setTitleKa] = useState("");
     const [descriptionKa, setDescriptionKa] = useState("");
     const [titleEn, setTitleEn] = useState("");
     const [descriptionEn, setDescriptionEn] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
-    
+
     const { createPost, loading } = useCreatePost();
 
     // Load available years
@@ -66,7 +67,11 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
 
     const handleSave = async () => {
         if (!year || month === "" || !day || !titleKa || !descriptionKa || !titleEn || !descriptionEn || !imageFile) {
-            alert("Please fill all required fields");
+            Swal.fire({
+                title: 'შეცდომა',
+                text: 'გთხოვთ შეავსოთ ყველა სავალდებულო ველი',
+                icon: 'error',
+            });
             return;
         }
 
@@ -86,17 +91,20 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
             onSuccess();
         } catch (error) {
             console.error("Error creating post:", error);
-            alert("Failed to create post. Please try again.");
+            Swal.fire({
+                title: 'შეცდომა',
+                text: 'პოსტის შექმნა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან.',
+                icon: 'error',
+            });
         }
     };
 
     if (!open) return null;
 
     return (
-        <div className="edit-overlay" onClick={handleClose}>
+        <div className="edit-overlay">
             <div
                 className="edit-modal"
-                onClick={(e) => e.stopPropagation()}
             >
                 <Typography variant="h6" className="modal-title">ახალი პოსტის შექმნა</Typography>
                 <Button className="close-btn" onClick={handleClose}>
@@ -215,12 +223,12 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
 
                     <Box display="flex" gap={2} className="modal-actions">
                         <Button 
-                            startIcon={<SaveIcon />} 
+                            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />}
                             variant="contained" 
                             onClick={handleSave}
                             disabled={loading}
                         >
-                            {loading ? "შენახვა..." : "შენახვა"}
+                            {loading ? "იტვირთება..." : "შენახვა"}
                         </Button>
                         <Button
                             startIcon={<CloseIcon />}

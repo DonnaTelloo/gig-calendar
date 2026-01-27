@@ -1,4 +1,5 @@
 import './style.css';
+import { useState, useEffect } from 'react';
 
 type ShareModalProps = {
     open: boolean;
@@ -66,10 +67,29 @@ const Logo = () => {
 }
 
 export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
+    const [copyNotification, setCopyNotification] = useState<string | null>(null);
+
+    // Clear notification after 3 seconds
+    useEffect(() => {
+        if (copyNotification) {
+            const timer = setTimeout(() => {
+                setCopyNotification(null);
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [copyNotification]);
+
     if (!open) return null;
 
     const copyToClipboard = async () => {
-        await navigator.clipboard.writeText(url);
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopyNotification('Link has been copied to clipboard');
+        } catch (error) {
+            console.error('Failed to copy:', error);
+            setCopyNotification('Failed to copy to clipboard');
+        }
     };
 
     return (
@@ -91,6 +111,11 @@ export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
                     <input value={url} readOnly />
                     <button onClick={copyToClipboard}>📋</button>
                 </div>
+                {copyNotification && (
+                    <div className="copy-notification">
+                        {copyNotification}
+                    </div>
+                )}
             </div>
         </div>
     );

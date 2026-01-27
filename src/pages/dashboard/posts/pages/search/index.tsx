@@ -64,6 +64,8 @@ const SearchArticle = () => {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
     const [loading, setLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+    const [saveLoading, setSaveLoading] = useState(false);
     const [searched, setSearched] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [createOpen, setCreateOpen] = useState(false);
@@ -109,6 +111,7 @@ const SearchArticle = () => {
         if (!res.isConfirmed) return;
 
         try {
+            setDeleteLoading(date);
             await deleteArticleByDate(date);
             setArticleMap((prev) => {
                 if (!prev) return prev;
@@ -119,6 +122,8 @@ const SearchArticle = () => {
             Swal.fire("წაიშალა!", "პოსტი წარმატებით წაიშალა", "success");
         } catch {
             Swal.fire("შეცდომა", "წაშლა ვერ მოხერხდა", "error");
+        } finally {
+            setDeleteLoading(null);
         }
     };
 
@@ -127,6 +132,7 @@ const SearchArticle = () => {
         if (!editDraft || !selectedDate) return;
 
         try {
+            setSaveLoading(true);
             let imagePath = editDraft.imagePath;
 
             if (editDraft.imageFile) {
@@ -156,6 +162,8 @@ const SearchArticle = () => {
             Swal.fire("შენახულია!", "პოსტი წარმატებით განახლდა", "success");
         } catch {
             Swal.fire("შეცდომა", "განახლება ვერ მოხერხდა", "error");
+        } finally {
+            setSaveLoading(false);
         }
     };
 
@@ -256,8 +264,13 @@ const SearchArticle = () => {
                                                 <IconButton
                                                     color="error"
                                                     onClick={() => handleDelete(date)}
+                                                    disabled={deleteLoading === date}
                                                 >
-                                                    <DeleteIcon />
+                                                    {deleteLoading === date ? (
+                                                        <CircularProgress size={24} color="error" />
+                                                    ) : (
+                                                        <DeleteIcon />
+                                                    )}
                                                 </IconButton>
                                             </>
                                         ) : (
@@ -289,6 +302,7 @@ const SearchArticle = () => {
                 onSave={handleSave}
                 editDraft={editDraft}
                 setEditDraft={setEditDraft}
+                loading={saveLoading}
             />
 
             {/* CREATE MODAL */}

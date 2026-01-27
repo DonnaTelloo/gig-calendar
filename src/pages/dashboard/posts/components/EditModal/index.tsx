@@ -1,4 +1,4 @@
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography, CircularProgress } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
@@ -10,9 +10,10 @@ type EditModalProps = {
     onSave: () => void;
     editDraft: any;
     setEditDraft: (draft: any) => void;
+    loading?: boolean;
 };
 
-const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft }: EditModalProps) => {
+const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft, loading = false }: EditModalProps) => {
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     if (!open || !editDraft) return null;
@@ -22,10 +23,9 @@ const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft }: EditModal
         editDraft?.localizations?.[lang] ?? null;
 
     return (
-        <div className="edit-overlay" onClick={onClose}>
+        <div className="edit-overlay">
             <div
                 className="edit-modal"
-                onClick={(e) => e.stopPropagation()}
             >
                 <Typography variant="h6" className="modal-title">პოსტის რედაქტირება</Typography>
                 <Button className="close-btn" onClick={onClose}>
@@ -114,11 +114,16 @@ const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft }: EditModal
                     />
 
                     <Box display="flex" gap={2} className="modal-actions">
-                        <Button startIcon={<SaveIcon />} variant="contained" onClick={() => {
-                            onSave();
-                            setImageFile(null);
-                        }}>
-                            შენახვა
+                        <Button 
+                            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />} 
+                            variant="contained" 
+                            onClick={() => {
+                                onSave();
+                                setImageFile(null);
+                            }}
+                            disabled={loading}
+                        >
+                            {loading ? 'იტვირთება...' : 'შენახვა'}
                         </Button>
                         <Button
                             startIcon={<CloseIcon />}

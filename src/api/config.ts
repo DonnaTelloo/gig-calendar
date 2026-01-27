@@ -176,6 +176,7 @@ export const ENDPOINTS = {
   },
   CALENDAR: {
     YEARS: "/calendar/years",
+    YEAR_INFO: "/yearinfo",
   },
   EVENT: {
     ARTICLE_BY_DATE: "/calendar/monthly-articles",
