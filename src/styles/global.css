@@ -230,13 +230,16 @@ button {
     .sidebar {
         display: none;
     }
+    .yearinfo-modal h3 {
+        font-size: 16px;
+    }
 
     .timeline-panel {
         width: 100%;
         padding: 5% 4%;
         margin-left: 0; /* Reset margin for mobile */
         overflow-y: auto;
-        padding-bottom: max(30px, env(safe-area-inset-bottom)); /* Increased bottom padding */
+        padding-bottom: max(30px, env(safe-area-inset-bottom));
         background: none;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
