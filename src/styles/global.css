@@ -158,12 +158,11 @@ button {
 
 .timeline-panel {
     /*padding: 5% 5%;*/
-    /*height: calc(100vh - 7vh);*/
+    height: calc(100vh - 7vh);
     margin-left: 250px; /* Match sidebar width */
     overflow-y: auto; /* Make it scrollable */
     position: relative; /* Needed for proper scrolling */
     width: calc(100% - 250px); /* Ensure it takes full width minus sidebar */
-    margin-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
 }
 
 .timeline-center {
