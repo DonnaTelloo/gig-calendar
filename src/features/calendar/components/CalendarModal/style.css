@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: flex-start;
     z-index: 3000;
-    top: 10vh;
+    top: 7vh;
 }
 
 /* WHITE OUTER PANEL */
@@ -15,7 +15,7 @@
     background: #ffffff;
     padding: 60px 70px 70px;
     box-shadow: 0px 20px 20px rgb(0 0 0 / 3%);
-    height: 90vh;
+    height: 93vh;
 }
 
 /* HEADER */
@@ -266,7 +266,7 @@
 
 @media (max-width: 800px) {
     .calendar-overlay {
-        top: 10vh;
+        top: 7vh;
     }
 
     .calendar-row {
@@ -287,7 +287,7 @@
 @media (max-width: 640px) {
 
     .calendar-overlay {
-        top: 10vh;
+        top: 7vh;
         align-items: stretch;
     }
 

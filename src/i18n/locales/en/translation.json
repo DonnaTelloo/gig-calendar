@@ -25,5 +25,7 @@
     "November",
     "December"
   ],
-"notAvailable": "Not available"
+  "notAvailable": "Not available",
+  "noEventFound": "No events",
+  "noEventFoundDesc": "No historical data for this date."
 }

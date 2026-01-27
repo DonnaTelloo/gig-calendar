@@ -25,7 +25,7 @@ export default function CalendarItem({
                 className="year-header"
                 onClick={() => !disabled && onToggle(year)}
             >
-                <span>{year}</span>
+                <span className={`${active ? 'active' : ''}`}>{year}</span>
 
                 {!disabled && <span className={`arrow ${active ? "open" : ""}`}>
                     <img src={ArrowIcon} alt=""/>
@@ -34,7 +34,7 @@ export default function CalendarItem({
                 {disabled && <span className="badge">{t("notAvailable")}</span>}
             </div>
 
-            {active && <MonthSelector />}
+            {active && <MonthSelector year={year}/>}
         </div>
     );
 }

@@ -1,3 +1,7 @@
+body {
+    /*overflow: auto!important;*/
+}
+
 .dashboardLayout {
     display: flex;
     height: 100%;
@@ -10,4 +14,5 @@
 
 .dashboardLayout main {
     width: calc(100% - 250px);
+    padding: 5%;
 }

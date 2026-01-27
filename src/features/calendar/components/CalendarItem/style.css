@@ -19,11 +19,12 @@
     height: 62px
 }
 
-.year-header span:first-child {
+.year-header span.active {
     font-weight: 700;
+    color: black;
 }
 
-.year.disabled {
+.year span {
     color: #cfcfcf;
 }
 

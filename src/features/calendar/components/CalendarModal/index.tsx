@@ -1,53 +1,70 @@
 import "./style.css";
-import { useState } from "react";
+import {useEffect, useState, useCallback, useRef} from "react";
 import { useTranslation } from "react-i18next";
 import {useCalendarContext} from "../../../../context";
 
-
-const MIN_YEAR = 2025;
-
 export default function CalendarModal({ onClose }) {
     const { t } = useTranslation();
-    const { state, setDate, setYear, setMonth } = useCalendarContext();
+    const { state, setDate, setYear, setMonth, setYearMonth } = useCalendarContext();
 
-    const today = new Date();
-    const initialYear = Math.max(today.getFullYear(), MIN_YEAR);
+    const MIN_YEAR = state.years?.length ? Math.min(...state.years) : new Date().getFullYear();
 
-    const [month, setLocalMonth] = useState(state.month);
-    const [year, setLocalYear] = useState(state.year);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const month = state.month;
+    const year = state.year;
+
     const [view, setView] = useState("month"); // "month" | "year"
 
-    // 🌍 i18n
     const months = t("months", { returnObjects: true });
     const weekdays = t("calendar.weekdays", { returnObjects: true }) as Array<string>;
 
     const monthName = months[month];
 
+    // Debounce function to prevent rapid clicks
+    const debounce = (func, delay) => {
+        let timeoutId;
+        return function(...args) {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+                timeoutId = null;
+            }, delay);
+        };
+    };
+
+    // Use useRef to maintain the debounced function instances
+    const nextMonthRef = useRef(null);
+    const prevMonthRef = useRef(null);
+
+    // Initialize debounced functions with useCallback
+    useEffect(() => {
+        nextMonthRef.current = debounce(() => {
+            if (state.month === 11) {
+                setYearMonth(state.year + 1, 0);
+            } else {
+                setMonth(state.month + 1);
+            }
+        }, 300);
+
+        prevMonthRef.current = debounce(() => {
+            if (state.year === MIN_YEAR && state.month === 0) return;
+
+            if (state.month === 0) {
+                setYearMonth(state.year - 1, 11);
+            } else {
+                setMonth(state.month - 1);
+            }
+        }, 300);
+    }, [state.month, state.year, MIN_YEAR, setMonth, setYearMonth]);
+
+    // Wrapper functions to call the debounced functions
     const nextMonth = () => {
-        if (month === 11) {
-            setLocalMonth(0);
-            setLocalYear((y) => y + 1);
-            setYear(year + 1);
-            setMonth(0);
-        } else {
-            setLocalMonth((m) => m + 1);
-            setMonth(month + 1);
-        }
+        nextMonthRef.current();
     };
 
     const prevMonth = () => {
-        if (year === MIN_YEAR && month === 0) return;
-
-        if (month === 0) {
-            setLocalMonth(11);
-            setLocalYear((y) => y - 1);
-            setYear(year - 1);
-            setMonth(11);
-        } else {
-            setLocalMonth((m) => m - 1);
-            setMonth(month - 1);
-        }
+        prevMonthRef.current();
     };
 
     const daysMatrix = getMonthMatrix(year, month);
@@ -101,11 +118,10 @@ export default function CalendarModal({ onClose }) {
                                 <div className="calendar-row" key={rIdx}>
                                     {row.map((cell, cIdx) => {
                                         const isSelected =
-                                            selectedDate &&
                                             cell.current &&
-                                            selectedDate.getDate() === cell.day &&
-                                            selectedDate.getMonth() === cell.month &&
-                                            selectedDate.getFullYear() === cell.year;
+                                            state.date.getDate() === cell.day &&
+                                            state.date.getMonth() === cell.month &&
+                                            state.date.getFullYear() === cell.year;
 
                                         return (
                                             <div
@@ -123,10 +139,8 @@ export default function CalendarModal({ onClose }) {
 
                                                     const selected = new Date(cell.year, cell.month, cell.day);
 
-                                                    // ✅ Context update
                                                     setDate(selected);
 
-                                                    // optional: modal close
                                                     onClose?.();
                                                 }}
                                             >
@@ -143,11 +157,11 @@ export default function CalendarModal({ onClose }) {
                 {/* YEAR VIEW */}
                 {view === "year" && (
                     <YearGrid
+                        years={state.years}
                         activeYear={year}
                         minYear={MIN_YEAR}
                         onSelect={(y) => {
                             setYear(y);
-                            setLocalYear(y);
                             setView("month");
                         }}
                     />
@@ -159,13 +173,12 @@ export default function CalendarModal({ onClose }) {
 
 /* ================= YEAR GRID ================= */
 
-function YearGrid({ activeYear, minYear, onSelect }) {
-    const startYear = activeYear - 3;
-    const years = Array.from({ length: 12 }, (_, i) => startYear + i);
+function YearGrid({ years, activeYear, minYear, onSelect }) {
+    const yearsArray = years || [];
 
     return (
         <div className="year-grid">
-            {years.map((y) => (
+            {yearsArray.map((y) => (
                 <div
                     key={y}
                     className={[

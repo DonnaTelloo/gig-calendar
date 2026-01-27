@@ -1,21 +1,37 @@
-import { Routes, Route } from "react-router";
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import { publicRoutes } from "./public.routes";
 import { dashboardRoutes } from "./dashboard.routes";
-import ProtectedRoute from "./protected.routes";
+import PageLoader from "../components/common/PageLoader";
 
+// Lazy load the protected route component
+const ProtectedRoute = lazy(() => import("./protected.routes"));
+
+// Not found component
+const NotFound = () => <div>Page Not Found</div>;
+const Auth = lazy(() => import("../pages/auth"));
+
+/**
+ * Main application routes
+ */
 export default function AppRoutes() {
     return (
-        <Routes>
-            {/* PUBLIC */}
-            {publicRoutes}
+        <Suspense fallback={<PageLoader />}>
+            <Routes>
+                {/* PUBLIC */}
+                {publicRoutes}
 
-            {/* PROTECTED */}
-            <Route element={<ProtectedRoute />}>
-                {dashboardRoutes}
-            </Route>
+                {/* AUTH */}
+                <Route path="auth" element={<Auth />} />
 
-            {/* 404 */}
-            <Route path="*" element={<>Not Found</>} />
-        </Routes>
+                {/* PROTECTED */}
+                <Route element={<ProtectedRoute />}>
+                    {dashboardRoutes}
+                </Route>
+
+                {/* 404 */}
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+        </Suspense>
     );
 }

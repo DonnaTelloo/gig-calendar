@@ -11,7 +11,7 @@
 
 /* Modal */
 .share-modal {
-    width: 40%;
+    width: 500px;
     background: #ffffff;
     border-radius: 24px;
     padding: 48px 56px 56px;
@@ -40,11 +40,10 @@
 }
 
 /* Logo */
-.share-overlay .logo {
-    width: 100%;
-    height: 56px;
-    /*margin: 0 auto;*/
-    margin-bottom: 3em;
+.share-overlay .logo svg {
+    width: 80%;
+    height: 46px;
+    margin: 0 auto 3em;
 }
 
 /* Title */
@@ -69,17 +68,18 @@
     padding: 16px 20px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    /*gap: 16px;*/
+    position: relative;
 }
 
 /* Input */
 .share-input input {
-    flex: 1;
     border: none;
     background: transparent;
     font-size: 16px;
     color: #9b9b9b;
     outline: none;
+    width: 90%;
 }
 
 /* Copy button */
@@ -89,4 +89,6 @@
     cursor: pointer;
     font-size: 20px;
     color: #333;
+    position: absolute;
+    right: 2%;
 }

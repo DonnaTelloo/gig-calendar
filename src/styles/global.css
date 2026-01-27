@@ -1,3 +1,7 @@
+/* =========================
+   FONTS
+========================= */
+
 @font-face {
     font-family: 'Firago';
     src: url('/assets/fonts/firago-latin-100-normal.ttf') format('truetype');
@@ -70,19 +74,28 @@
     font-display: swap;
 }
 
+/* =========================
+   RESET / GLOBAL
+========================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Firago', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Firago', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
 }
 
 body {
     background: #f7f7f7;
     color: #222;
-    width: 100%;
-    overflow: hidden;
+    overflow-x: hidden!important;
+    overflow-y: auto;
 }
 
 a {
@@ -99,48 +112,61 @@ button {
     color: inherit;
 }
 
+/* =========================
+   LAYOUT
+========================= */
+
 .layout-wrapper {
     width: 100%;
     margin: 0 auto;
 }
 
 .gig-container {
-    width: 100%;
-    height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 .content {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: minmax(230px, 250px) 1fr;
+    flex: 1;
 }
 
-.timeline-panel {
-    background-clip: border-box;
-    background: url("/public/assets/background.png");
-    background-size: cover;
-    padding: 5% 10%;
-    height: calc(100% - 10vh);
-}
-
-.timeline-center {
-    height: 100%;
-    /*overflow: hidden;*/
-}
+/* =========================
+   SIDEBAR / TIMELINE
+========================= */
 
 .sidebar {
     z-index: 99;
     overflow: hidden;
 }
 
+.timeline-panel {
+    background: url("/public/assets/background.png");
+    background-size: cover;
+    background-clip: border-box;
+    padding: 5% 10%;
+    height: calc(100vh - 7vh);
+}
+
+.timeline-center {
+    height: 100%;
+}
+
+/* =========================
+   PAGE LOADER
+========================= */
+
 .page-loader {
     width: 100%;
     height: 100%;
     background: white;
     z-index: 99999999;
-    position: absolute;
+    position: fixed;
+    inset: 0;
     display: flex;
-    overflow: hidden;
     justify-content: center;
     align-items: center;
 }
@@ -150,25 +176,31 @@ button {
 }
 
 @keyframes blink {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.2;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
 }
 
+/* =========================
+   SWEETALERT
+========================= */
 
+.swal2-container {
+    z-index: 2000 !important;
+}
 
-/* tablet */
+/* =========================
+   TABLET / MOBILE
+========================= */
+
 @media (max-width: 800px) {
-    .content {
-        grid-template-columns: 1fr;
-        height: 90vh;
+
+    .share-modal {
+        width: 80%!important;
     }
 
-    .header {
-        padding: 1vh 2vh;
+    .content {
+        grid-template-columns: 1fr;
+        min-height: calc(100% - 7vh);
     }
 
     .sidebar {
@@ -177,32 +209,54 @@ button {
 
     .timeline-panel {
         width: 100%;
-        height: 100%;
-        padding: 5% 2%;
-        overflow-y: auto;
+        padding: 5% 4%;
+        /*overflow-y: auto;*/
+        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        background: none;
     }
 
-    /*.lang-switch {*/
-    /*    display: none;*/
-    /*}*/
+    .header {
+        padding: 1vh 2vh;
+    }
 
     .nav {
-        width: 35px;
-        height: 35px;
+        width: 35px!important;
+        height: 35px!important;
+    }
+
+    .book-header {
+        height: 10%;
+        /*background: yellow;*/
+        margin-top: 1em;
+    }
+
+    .page > .page-content {
+        display: unset;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /*background: red;*/
+        height: calc(100% - 15%);
     }
 
     .page {
         padding: 0 10%;
-        top: 5%;
+        min-height: calc(100% - 7vh);
     }
 
     .share-modal {
-        width: 90%
+        width: 90%;
     }
 }
 
-/* small desktop */
+/* =========================
+   SMALL DESKTOP
+========================= */
+
 @media (max-width: 1024px) {}
 
-/* large desktop */
+/* =========================
+   LARGE DESKTOP
+========================= */
+
 @media (min-width: 1280px) {}

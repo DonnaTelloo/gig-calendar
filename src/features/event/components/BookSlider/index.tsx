@@ -1,131 +1,224 @@
-import { useEffect, useRef, useState } from 'react';
-import './index.css';
-import ShareIcon from '../../../../../public/assets/share.svg';
+import { useEffect, useState } from "react";
+import "./index.css";
+import ShareIcon from "../../../../../public/assets/share.svg";
 import useEvent from "../../hooks/useEvent";
-import {ShareModal} from "../ShareModal";
-import {useTranslation} from "react-i18next";
-import {useCalendarContext} from "../../../../context";
+import { ShareModal } from "../ShareModal";
+import { useTranslation } from "react-i18next";
+import { useCalendarContext } from "../../../../context";
+import PageHeader from "./micro-components/article-header.component.tsx";
+
 
 enum Direction {
-    LEFT = 'prev',
-    RIGHT = 'next',
-    CURRENT = 'current',
+    LEFT = "prev",
+    RIGHT = "next",
+    CURRENT = "current",
 }
-
-const NotFound = () => (
-    <article className="page static not-found">
-        <h2>dsada</h2>
-    </article>
-);
 
 export const BookSlider = () => {
     const { state, isLoading } = useCalendarContext();
+    const { t, i18n } = useTranslation();
 
-    const { requestEventHandler, data } = useEvent();
+    const months = t("months", { returnObjects: true }) as string[];
+    const weekdays = t("calendar.weekdays", { returnObjects: true }) as string[];
+
+    const { data, requestEventHandler, localLoading } = useEvent(months, weekdays, t);
+
     const [direction, setDirection] = useState<Direction>(Direction.CURRENT);
     const [flipSlide, setFlipSlide] = useState<any>(null);
     const [isFlipping, setIsFlipping] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
-
-    const {t} = useTranslation();
+    const [pendingDirection, setPendingDirection] = useState<Direction | null>(null);
 
     useEffect(() => {
-        requestEventHandler();
-    }, [state.date]);
+        if (!pendingDirection) return;
 
+        requestEventHandler(i18n.language, pendingDirection).finally(() => {
+            setIsFlipping(false);
+            setDirection(Direction.CURRENT);
+            setPendingDirection(null);
+        });
+    }, [pendingDirection, i18n.language]);
+
+    /* ---------- initial + date change fetch ---------- */
+    useEffect(() => {
+        requestEventHandler(i18n.language);
+    }, [state.date, i18n.language]);
+
+    /* ---------- preload images ---------- */
     useEffect(() => {
         if (!data) return;
 
-        const images = [
-            data.prev?.image,
-            data.current?.image,
-            data.next?.image,
-        ].filter(Boolean);
-
-        images.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
+        [data.prev, data.current, data.next]
+            .map(p => p?.image)
+            .filter(Boolean)
+            .forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
     }, [data]);
 
+    useEffect(() => {
+        document.body.style.overflow = isFlipping ? "hidden" : "auto";
 
-    const preloadImage = (src: string): Promise<void> => {
-        return new Promise((resolve, reject) => {
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isFlipping]);
+
+    const preloadImage = (src: string): Promise<void> =>
+        new Promise((resolve, reject) => {
             const img = new Image();
             img.src = src;
             img.onload = () => resolve();
             img.onerror = reject;
         });
+
+    /* ---------- check if month is changing ---------- */
+    const isMonthChanging = (dir: Direction): boolean => {
+        if (!data) return false;
+
+        const currentDate = new Date(data.current.date.iso);
+        const targetDate = dir === Direction.RIGHT 
+            ? new Date(data.next.date.iso) 
+            : new Date(data.prev.date.iso);
+
+        return currentDate.getMonth() !== targetDate.getMonth() || 
+               currentDate.getFullYear() !== targetDate.getFullYear();
     };
 
+    /* ---------- flip handler ---------- */
     const handleFlip = async (dir: Direction) => {
-        if (isFlipping || isLoading) return;
-        const nextSlide = data[dir];
+        if (isFlipping || localLoading || !data) return;
 
-        await preloadImage(nextSlide.image);
+        const nextSlide = data[dir];
+        if (!nextSlide?.image) return;
+
+        if (isMonthChanging(dir)) {
+            setPendingDirection(dir);
+            return;
+        }
+
+        // 🔒 SNAPSHOT
+        const snapshot = {
+            ...data.current,
+            image: data.current.image,
+            date: { ...data.current.date }
+        };
 
         setIsFlipping(true);
-
         setDirection(dir);
-        setFlipSlide(data.current);
+        setFlipSlide(snapshot);
 
         setTimeout(async () => {
             setFlipSlide(null);
-            await requestEventHandler(dir);
+            await requestEventHandler(i18n.language, dir);
             setIsFlipping(false);
             setDirection(Direction.CURRENT);
         }, 1000);
     };
 
+    // Show a placeholder when data is null but loading is in progress
     if (!data) {
-        return null;
+        return (
+            <section className="book-slider">
+                <div className="book-stage">
+                    <button className="nav left" disabled>‹</button>
+                    <article className="page static">
+                        <div style={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center', 
+                            height: '100%' 
+                        }}>
+                            <p>Loading content...</p>
+                        </div>
+                    </article>
+                    <button className="nav right" disabled>›</button>
+                </div>
+            </section>
+        );
     }
+    const isFound = data[direction].title !== null;
 
     return (
         <>
             <ShareModal
                 open={isShareOpen}
                 onClose={() => setIsShareOpen(false)}
-                url={`https://www.gig.ge/event/${data.current.date.iso}`}
+                url={`${window.location.origin}/${data.current.date.iso}`}
             />
+
             <section className="book-slider">
-                <header className="book-header">
-                    <div className="date">
-                        <div className="day">{data.current.date.day}</div>
-                        <div>
-                            <div className="month">{data.current.date.month}</div>
-                            <div className="weekday">{data.current.date.weekday}</div>
-                        </div>
-                    </div>
-
-                    <button className="share-btn"   onClick={() => setIsShareOpen(true)}>
-                        <img src={ShareIcon} alt=""/>
-                        {t('share')}
-                    </button>
-                </header>
                 <div className="book-stage">
-                    <button className="nav left" onClick={() => handleFlip(Direction.LEFT)}>‹</button>
+                    <button
+                        className="nav left"
+                        onClick={() => handleFlip(Direction.LEFT)}
+                        disabled={localLoading}
+                    >
+                        ‹
+                    </button>
 
-                    {/* STATIC PAGE: This is the "new" page that appears underneath */}
+                    {/* STATIC PAGE */}
                     <article className="page static">
-                        <img src={data[direction].image}/>
-                        <h2>{data[direction].title}</h2>
-                        <p>{data[direction].text}</p>
+                        <PageHeader
+                            date={data[direction].date}
+                            onShare={() => setIsShareOpen(true)}
+                        />
+
+
+
+                        {!isFound ? (
+                                <div className="page-content" style={{
+                                    display: "flex",
+                                }}>
+                                    <img style={{
+                                        width: "20%",
+                                    }} src={'/assets/nothing-found.svg'} />
+                                    <h2 style={{textAlign: 'center'}}>{data[direction].title ?? t("noEventFound")}</h2>
+                                    <p style={{textAlign: 'center'}}>{data[direction].text ?? t("noEventFoundDesc")}</p>
+                                </div>
+                        ) : (
+                            <div className="page-content">
+                                <img src={import.meta.env.VITE_API_BASE_URL + data[direction].image} />
+                                <h2>{data[direction].title}</h2>
+                                <p>{data[direction].text}</p>
+                            </div>
+                        )}
                     </article>
 
+                    {/* FLIP PAGE */}
                     {flipSlide && (
                         <article className={`page flip ${direction} animate`}>
-                            <div className="page-content">
-                                <img src={flipSlide.image} alt=""/>
-                                <h2>{flipSlide.title}</h2>
-                                <p>{flipSlide.text}</p>
-                            </div>
+                            <PageHeader
+                                date={flipSlide.date}
+                                onShare={() => setIsShareOpen(true)}
+                            />
+                                <div className="page-content" style={{
+                                    display: "flex",
+                                }}>
+                                    {!flipSlide.title ? (
+                                        <img style={{
+                                        width: "20%",
+                                    }} src={'/assets/nothing-found.svg'} />
+                                    ) : (
+                                        <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
+                                    )}
+                                    <h2>{flipSlide.title ??  t("noEventFound") }</h2>
+                                    <p>{flipSlide.text ?? t("noEventFoundDesc")}</p>
+                                </div>
                         </article>
                     )}
 
-                    <button className="nav right" onClick={() => handleFlip(Direction.RIGHT)}>›</button>
+                    <button
+                        className="nav right"
+                        onClick={() => handleFlip(Direction.RIGHT)}
+                        disabled={localLoading}
+                    >
+                        ›
+                    </button>
                 </div>
             </section>
         </>
     );
+
 };
