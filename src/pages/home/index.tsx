@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { BookSlider } from "../../features/event/components/BookSlider";
-import { YearInfoModal } from "../../features/event/components/YearInfoModal";
 import { getYearsApi, getYearInfoApi } from "../../features/calendar/api/calendar.api";
+import {YearInfoModal} from "../../features/event/components/YearInfoModal";
+import {useCalendarContext} from "../../context";
 
 const Home = () => {
     const [modalOpen, setModalOpen] = useState(true);
     const [yearInfo, setYearInfo] = useState<string | null>(null);
-    const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+    const {
+        state
+    } = useCalendarContext()
 
     // Fetch year info when component mounts
     useEffect(() => {
         const fetchYearInfo = async () => {
             try {
-                const data = await getYearInfoApi(currentYear.toString());
+                const data = await getYearInfoApi(state.year.toString());
                 if (data) {
                     setYearInfo(data.description || data.content || "");
                 }
@@ -26,7 +29,7 @@ const Home = () => {
         };
 
         fetchYearInfo();
-    }, [currentYear]);
+    }, [state.year]);
 
     return(
         <>
