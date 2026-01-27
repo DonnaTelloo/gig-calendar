@@ -271,10 +271,12 @@ button {
     }
 
     .page {
-        padding: 0 10%;
+        /*padding: 0 10%;*/
         min-height: calc(100% - 7vh);
-        /*padding-bottom: calc(env(safe-area-inset-bottom) + 68px);*/
-    }
+        padding:
+                calc(env(safe-area-inset-top) + 16px)
+                10%
+                calc(env(safe-area-inset-bottom) + 68px);    }
 
     .page p {
         padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
