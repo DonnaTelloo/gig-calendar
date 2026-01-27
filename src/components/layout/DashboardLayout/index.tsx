@@ -21,6 +21,11 @@ export default function DashboardLayout() {
     const [showLoader, setShowLoader] = useState(false);
     const { isLoading } = useCalendarContext();
 
+    useEffect(() => {
+        document.body.style.setProperty('overflow-y', 'scroll', 'important');
+        document.body.style.setProperty('overflow-x', 'hidden', 'important');
+    }, []);
+
     // Update loader state when isLoading changes
     useEffect(() => {
         if (isLoading) {
