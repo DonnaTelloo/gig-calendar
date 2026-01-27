@@ -271,8 +271,9 @@ button {
     }
 
     .page {
-        /*min-height: calc(100% - 7vh);*/
-        padding: 0 10% calc(env(safe-area-inset-bottom) + 100px);
+        padding: 0 10%;
+        min-height: calc(100% - 7vh);
+        /*padding-bottom: calc(env(safe-area-inset-bottom) + 68px);*/
     }
 
     .page p {
