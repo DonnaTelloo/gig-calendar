@@ -170,9 +170,13 @@ export const BookSlider = () => {
                         {!isFound ? (
                                 <div className="page-content" style={{
                                     display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
                                 }}>
                                     <img style={{
                                         width: "20%",
+                                        maxHeight: "150px",
+                                        objectFit: "contain",
                                     }} src={'/assets/nothing-found.svg'} />
                                     <h2 style={{textAlign: 'center'}}>{data[direction].title ?? t("noEventFound")}</h2>
                                     <p style={{textAlign: 'center'}}>{data[direction].text ?? t("noEventFoundDesc")}</p>
@@ -195,10 +199,14 @@ export const BookSlider = () => {
                             />
                                 <div className="page-content" style={{
                                     display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
                                 }}>
                                     {!flipSlide.title ? (
                                         <img style={{
                                         width: "20%",
+                                        maxHeight: "150px",
+                                        objectFit: "contain",
                                     }} src={'/assets/nothing-found.svg'} />
                                     ) : (
                                         <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
