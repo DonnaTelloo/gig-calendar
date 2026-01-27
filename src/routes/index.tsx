@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { publicRoutes } from "./public.routes";
 import { dashboardRoutes } from "./dashboard.routes";
-import PageLoader from "../components/common/PageLoader/index.tsx";
+import PageLoader from "../components/common/PageLoader";
 
 // Lazy load the protected route component
 const ProtectedRoute = lazy(() => import("./protected.routes"));
