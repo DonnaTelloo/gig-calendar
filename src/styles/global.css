@@ -274,7 +274,7 @@ button {
     }
 
     .page p {
-        padding-bottom: 30px!important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
     }
 
     .share-modal {
