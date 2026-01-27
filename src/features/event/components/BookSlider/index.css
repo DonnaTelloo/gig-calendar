@@ -125,7 +125,7 @@
     /*background: green;*/
 
     /* Enable scrolling for page content */
-    -webkit-overflow-scrolling: touch;
+    /*-webkit-overflow-scrolling: touch;*/
     touch-action: pan-y;
 }
 

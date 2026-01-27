@@ -229,7 +229,7 @@ button {
         padding-bottom: max(16px, env(safe-area-inset-bottom));
         background: none;
         overflow-x: hidden;
-        padding-bottom: 50px;
+        margin-bottom: 50px;
     }
 
     .header {
