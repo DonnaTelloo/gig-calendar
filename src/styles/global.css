@@ -272,7 +272,8 @@ button {
 
     .page {
         padding: 0 10%;
-        min-height: calc(100% - 7vh);
+        /*min-height: calc(100% - 7vh);*/
+        padding-bottom: calc(env(safe-area-inset-bottom) + 68px);
     }
 
     .page p {
