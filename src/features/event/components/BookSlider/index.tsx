@@ -58,10 +58,11 @@ export const BookSlider = () => {
     }, [data]);
 
     useEffect(() => {
+        console.log(isFlipping)
         document.body.style.overflow = isFlipping ? "hidden" : "auto";
 
         return () => {
-            document.body.style.overflow = "hidden";
+            document.body.style.overflow = "auto";
         };
     }, [isFlipping]);
 
@@ -98,6 +99,8 @@ export const BookSlider = () => {
             return;
         }
 
+        setIsFlipping(true);
+
         // 🔒 SNAPSHOT
         const snapshot = {
             ...data.current,
@@ -105,7 +108,6 @@ export const BookSlider = () => {
             date: { ...data.current.date }
         };
 
-        setIsFlipping(true);
         setDirection(dir);
         setFlipSlide(snapshot);
 

@@ -98,7 +98,6 @@ body {
     background: url(/public/assets/background.png);
     background-size: cover;
     background-clip: border-box;
-    overflow: hidden!important;
 }
 
 a {
@@ -231,7 +230,7 @@ button {
         display: none;
     }
     .yearinfo-modal h3 {
-        font-size: 16px;
+        font-size: 14px!important;
     }
 
     .timeline-panel {
