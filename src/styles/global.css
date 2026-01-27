@@ -241,6 +241,7 @@ button {
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         height: calc(100vh - 7vh); /* Full height minus header */
+        padding-bottom: 0;
     }
 
     .header {
