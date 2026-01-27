@@ -243,7 +243,7 @@ button {
         background: none;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-        height: calc(100vh - 7vh); /* Full height minus header */
+        min-height: calc(100vh - 7vh); /* Full height minus header */
         padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
     }
 
