@@ -22,8 +22,11 @@ export default function DashboardLayout() {
     const { isLoading } = useCalendarContext();
 
     useEffect(() => {
-        document.body.style.setProperty('overflow-y', 'scroll', 'important');
-        document.body.style.setProperty('overflow-x', 'hidden', 'important');
+        // We don't need to modify body overflow anymore since we're using overflow-y: auto on the main element
+        return () => {
+            // Reset body overflow when component unmounts
+            document.body.style.removeProperty('overflow');
+        };
     }, []);
 
     // Update loader state when isLoading changes

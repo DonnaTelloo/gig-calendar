@@ -206,22 +206,24 @@ export const BookSlider = () => {
                                 date={flipSlide.date}
                                 onShare={() => setIsShareOpen(true)}
                             />
-                                <div className="page-content" style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                }}>
+                                <div className="page-content">
                                     {!flipSlide.title ? (
-                                        <img style={{
-                                        width: "20%",
-                                        maxHeight: "150px",
-                                        objectFit: "contain",
-                                    }} src={'/assets/nothing-found.svg'} />
+                                        <>
+                                            <img style={{
+                                                width: "20%",
+                                                maxHeight: "150px",
+                                                objectFit: "contain",
+                                            }} src={'/assets/nothing-found.svg'} />
+                                            <h2 style={{textAlign: 'center'}}>{flipSlide.title ?? t("noEventFound")}</h2>
+                                            <p style={{textAlign: 'center'}}>{flipSlide.text ?? t("noEventFoundDesc")}</p>
+                                        </>
                                     ) : (
-                                        <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
+                                        <>
+                                            <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
+                                            <h2>{flipSlide.title}</h2>
+                                            <p>{flipSlide.text}</p>
+                                        </>
                                     )}
-                                    <h2>{flipSlide.title ??  t("noEventFound") }</h2>
-                                    <p>{flipSlide.text ?? t("noEventFoundDesc")}</p>
                                 </div>
                         </article>
                     )}

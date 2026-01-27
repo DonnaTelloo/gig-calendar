@@ -15,4 +15,6 @@ body {
 .dashboardLayout main {
     width: calc(100% - 250px);
     padding: 5%;
+    height: 100vh;
+    overflow-y: auto;
 }
