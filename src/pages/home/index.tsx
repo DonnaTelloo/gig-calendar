@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 
 const Home = () => {
     const [modalOpen, setModalOpen] = useState(true);
-    const [yearInfo, setYearInfo] = useState<string | null>(null);
+    const [yearInfo, setYearInfo] = useState<any>();
     const { i18n } = useTranslation();
     const {
         state
@@ -27,7 +27,7 @@ const Home = () => {
                                         data.localizations[0];
 
                     if (localization) {
-                        setYearInfo(localization.description || "");
+                        setYearInfo(localization);
                     }
                 }
             } catch (error: any) {

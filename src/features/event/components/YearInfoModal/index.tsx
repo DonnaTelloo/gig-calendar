@@ -39,7 +39,7 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
 
                 <div 
                     className="yearinfo-content"
-                    dangerouslySetInnerHTML={{ __html: yearInfo }}
+                    dangerouslySetInnerHTML={{ __html: yearInfo.description }}
                 />
 
                 <div className="dont-show-again">
