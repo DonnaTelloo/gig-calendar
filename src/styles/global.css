@@ -274,9 +274,10 @@ button {
         /*padding: 0 10%;*/
         min-height: calc(100% - 7vh);
         padding:
-                calc(env(safe-area-inset-top) + 46px)
+                calc(env(safe-area-inset-top) + 16px)
                 10%
-                calc(env(safe-area-inset-bottom) + 100px);    }
+                calc(env(safe-area-inset-bottom) + 130px)!important;
+    }
 
     .page p {
         padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
