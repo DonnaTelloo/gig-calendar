@@ -105,6 +105,15 @@ export const BookSlider = () => {
             date: { ...data.current.date }
         };
 
+        // Preload the next image before flipping
+        try {
+            if (nextSlide.image) {
+                await preloadImage(import.meta.env.VITE_API_BASE_URL + nextSlide.image);
+            }
+        } catch (error) {
+            console.error("Failed to preload image:", error);
+        }
+
         setIsFlipping(true);
         setDirection(dir);
         setFlipSlide(snapshot);

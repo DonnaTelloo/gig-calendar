@@ -125,7 +125,7 @@
     /*background: green;*/
 
     /* Enable scrolling for page content */
-    /*-webkit-overflow-scrolling: touch;*/
+    -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
 }
 
@@ -157,8 +157,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    /*overflow-y: auto;*/
+    justify-content: flex-start;
+    overflow-y: auto;
     padding-top: 20px;
 }
 
@@ -359,7 +359,7 @@
         padding:
                 calc(env(safe-area-inset-top) + 16px)
                 20px
-                calc(env(safe-area-inset-bottom) + 32px);
+                calc(env(safe-area-inset-bottom) + 60px);
     }
 
     .page p {
