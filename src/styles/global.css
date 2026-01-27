@@ -94,7 +94,7 @@ body {
 body {
     background: #f7f7f7;
     color: #222;
-    overflow: hidden; /* Prevent whole page scrolling */
+    overflow: hidden!important; /* Prevent whole page scrolling */
     background: url(/public/assets/background.png);
     background-size: cover;
     background-clip: border-box;
@@ -235,15 +235,13 @@ button {
 
     .timeline-panel {
         width: 100%;
-        padding: 5% 4%;
         margin-left: 0; /* Reset margin for mobile */
         overflow-y: auto;
-        padding-bottom: max(30px, env(safe-area-inset-bottom));
+        padding: 5% 4% max(30px, env(safe-area-inset-bottom));
         background: none;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         height: calc(100vh - 7vh); /* Full height minus header */
-        padding-bottom: 0;
     }
 
     .header {
@@ -257,7 +255,6 @@ button {
 
     .book-header {
         height: 10%;
-        /*background: yellow;*/
         margin-top: 1em;
     }
 
