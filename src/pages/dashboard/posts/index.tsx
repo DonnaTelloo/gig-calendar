@@ -24,14 +24,17 @@ export default function PostsPage() {
     const [openReviewModal, setOpenReviewModal] = useState(false);
     const [years, setYears] = useState<number[]>([]);
     const [year, setYear] = useState<string>(new Date().getFullYear().toString());
-    const [title, setTitle] = useState("");
-    const [reviewData, setReviewData] = useState("");
+    const [titleKa, setTitleKa] = useState("");
+    const [titleEn, setTitleEn] = useState("");
+    const [reviewDataKa, setReviewDataKa] = useState("");
+    const [reviewDataEn, setReviewDataEn] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [yearInfoId, setYearInfoId] = useState<number | null>(null);
     const [dataFound, setDataFound] = useState<boolean>(false);
     const [searched, setSearched] = useState<boolean>(false);
-    const editorRef = useRef<HTMLDivElement>(null);
+    const editorRefKa = useRef<HTMLDivElement>(null);
+    const editorRefEn = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         getYearsApi().then((res) => setYears(res));
@@ -43,30 +46,43 @@ export default function PostsPage() {
         // Reset all form data when modal is closed
         setOpenReviewModal(false);
         setYear(new Date().getFullYear().toString());
-        setTitle("");
-        setReviewData("");
+        setTitleKa("");
+        setTitleEn("");
+        setReviewDataKa("");
+        setReviewDataEn("");
         setError(null);
         setYearInfoId(null);
         setDataFound(false);
         setSearched(false);
 
         // Clear the editor content
-        if (editorRef.current) {
-            editorRef.current.innerHTML = "";
+        if (editorRefKa.current) {
+            editorRefKa.current.innerHTML = "";
+        }
+        if (editorRefEn.current) {
+            editorRefEn.current.innerHTML = "";
         }
     };
 
-    // Update editor content when reviewData changes
+    // Update editor content when reviewDataKa changes
     useEffect(() => {
-        if (editorRef.current && reviewData) {
-            editorRef.current.innerHTML = reviewData;
+        if (editorRefKa.current && reviewDataKa) {
+            editorRefKa.current.innerHTML = reviewDataKa;
         }
-    }, [reviewData]);
+    }, [reviewDataKa]);
 
-    // Set default title when year changes and no data is found
+    // Update editor content when reviewDataEn changes
+    useEffect(() => {
+        if (editorRefEn.current && reviewDataEn) {
+            editorRefEn.current.innerHTML = reviewDataEn;
+        }
+    }, [reviewDataEn]);
+
+    // Set default titles when year changes and no data is found
     useEffect(() => {
         if (!dataFound) {
-            setTitle(`${year} წელი`);
+            setTitleKa(`${year} წელი`);
+            setTitleEn(`Year ${year}`);
         }
     }, [year, dataFound]);
 
@@ -76,27 +92,48 @@ export default function PostsPage() {
             setError(null);
             setDataFound(false);
             setYearInfoId(null);
-            setTitle("");
-            setReviewData("");
+            setTitleKa("");
+            setTitleEn("");
+            setReviewDataKa("");
+            setReviewDataEn("");
             setSearched(true); // Mark that a search has been performed
 
             try {
                 const data = await getYearInfoApi(year);
                 if (data && data.id) {
                     setYearInfoId(data.id);
-                    setTitle(data.title || `${year} წელი`);
-                    setReviewData(data.description || data.content || "");
+                    setTitleKa(`${year} წელი`);
+                    setTitleEn(`Year ${year}`);
+
+                    // Extract descriptions from localizations
+                    if (data.localizations && data.localizations.length > 0) {
+                        // Find Georgian description
+                        const kaLocalization = data.localizations.find(loc => loc.languageCode === "ka");
+                        if (kaLocalization) {
+                            setReviewDataKa(kaLocalization.description || "");
+                        }
+
+                        // Find English description
+                        const enLocalization = data.localizations.find(loc => loc.languageCode === "en");
+                        if (enLocalization) {
+                            setReviewDataEn(enLocalization.description || "");
+                        }
+                    }
+
                     setDataFound(true);
                 } else {
                     setDataFound(false);
-                    setTitle("");
-                    setReviewData("");
+                    setTitleKa("");
+                    setTitleEn("");
+                    setReviewDataKa("");
+                    setReviewDataEn("");
                 }
             } catch (error: any) {
                 if (error.response && error.response.status === 404) {
                     // 404 means no data for this year - this is expected
                     setDataFound(false);
-                    setReviewData("");
+                    setReviewDataKa("");
+                    setReviewDataEn("");
                 } else {
                     // Other errors should be reported
                     throw error;
@@ -120,16 +157,30 @@ export default function PostsPage() {
             setLoading(true);
             setError(null);
 
-            // Get content from the HTML editor
-            const description = editorRef.current ? editorRef.current.innerHTML : reviewData;
+            // Get content from the HTML editors
+            const descriptionKa = editorRefKa.current ? editorRefKa.current.innerHTML : reviewDataKa;
+            const descriptionEn = editorRefEn.current ? editorRefEn.current.innerHTML : reviewDataEn;
+
+            // Construct localizations array with titles in the description
+            const localizations = [
+                {
+                    languageCode: "ka",
+                    description: descriptionKa,
+                    title: titleKa
+                },
+                {
+                    languageCode: "en",
+                    description: descriptionEn,
+                    title: titleEn
+                }
+            ];
 
             if (dataFound && yearInfoId) {
                 // Update existing year info
                 await updateYearInfoApi(yearInfoId, {
                     id: yearInfoId,
                     year,
-                    title,
-                    description
+                    localizations
                 });
 
                 Swal.fire({
@@ -141,8 +192,7 @@ export default function PostsPage() {
                 // Create new year info
                 const result = await submitYearInfoApi({
                     year,
-                    title,
-                    description
+                    localizations
                 });
 
                 if (result && result.id) {
@@ -318,27 +368,44 @@ export default function PostsPage() {
 
                     {searched && dataFound ? (
                         <>
+                            {/* Georgian Title */}
+                            <Typography variant="subtitle1" mb={1}>
+                                სათაური KA:
+                            </Typography>
                             <TextField
-                                label="სათაური"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                label="სათაური (ქართულად)"
+                                value={titleKa}
+                                onChange={(e) => setTitleKa(e.target.value)}
                                 fullWidth
                                 margin="normal"
                                 sx={{ mb: 2 }}
                             />
 
+                            {/* English Title */}
                             <Typography variant="subtitle1" mb={1}>
-                                აღწერა:
+                                სათაური EN:
                             </Typography>
+                            <TextField
+                                label="Title (in English)"
+                                value={titleEn}
+                                onChange={(e) => setTitleEn(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                                sx={{ mb: 2 }}
+                            />
 
+                            {/* Georgian Description */}
+                            <Typography variant="subtitle1" mb={1}>
+                                აღწერა KA:
+                            </Typography>
                             <Box
-                                ref={editorRef}
+                                ref={editorRefKa}
                                 contentEditable
                                 sx={{
                                     border: '1px solid #ccc',
                                     borderRadius: 1,
                                     p: 2,
-                                    minHeight: 200,
+                                    minHeight: 150,
                                     mb: 2,
                                     fontFamily: 'inherit',
                                     fontSize: '14px',
@@ -348,7 +415,31 @@ export default function PostsPage() {
                                     },
                                     overflowY: 'auto',
                                 }}
-                                dangerouslySetInnerHTML={{ __html: reviewData }}
+                                dangerouslySetInnerHTML={{ __html: reviewDataKa }}
+                            />
+
+                            {/* English Description */}
+                            <Typography variant="subtitle1" mb={1}>
+                                აღწერა EN:
+                            </Typography>
+                            <Box
+                                ref={editorRefEn}
+                                contentEditable
+                                sx={{
+                                    border: '1px solid #ccc',
+                                    borderRadius: 1,
+                                    p: 2,
+                                    minHeight: 150,
+                                    mb: 2,
+                                    fontFamily: 'inherit',
+                                    fontSize: '14px',
+                                    '&:focus': {
+                                        outline: 'none',
+                                        border: '1px solid #666',
+                                    },
+                                    overflowY: 'auto',
+                                }}
+                                dangerouslySetInnerHTML={{ __html: reviewDataEn }}
                             />
 
                             <Stack direction="row" spacing={2} justifyContent="space-between">
@@ -386,27 +477,67 @@ export default function PostsPage() {
                                 ინფორმაცია ამ წლისთვის არ მოიძებნა.
                             </Alert>
 
+                            {/* Georgian Title */}
+                            <Typography variant="subtitle1" mb={1}>
+                                სათაური KA:
+                            </Typography>
                             <TextField
-                                label="სათაური"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
+                                label="სათაური (ქართულად)"
+                                value={titleKa}
+                                onChange={(e) => setTitleKa(e.target.value)}
                                 fullWidth
                                 margin="normal"
                                 sx={{ mb: 2 }}
                             />
 
+                            {/* English Title */}
                             <Typography variant="subtitle1" mb={1}>
-                                აღწერა:
+                                სათაური EN:
                             </Typography>
+                            <TextField
+                                label="Title (in English)"
+                                value={titleEn}
+                                onChange={(e) => setTitleEn(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                                sx={{ mb: 2 }}
+                            />
 
+                            {/* Georgian Description */}
+                            <Typography variant="subtitle1" mb={1}>
+                                აღწერა KA:
+                            </Typography>
                             <Box
-                                ref={editorRef}
+                                ref={editorRefKa}
                                 contentEditable
                                 sx={{
                                     border: '1px solid #ccc',
                                     borderRadius: 1,
                                     p: 2,
-                                    minHeight: 200,
+                                    minHeight: 150,
+                                    mb: 2,
+                                    fontFamily: 'inherit',
+                                    fontSize: '14px',
+                                    '&:focus': {
+                                        outline: 'none',
+                                        border: '1px solid #666',
+                                    },
+                                    overflowY: 'auto',
+                                }}
+                            />
+
+                            {/* English Description */}
+                            <Typography variant="subtitle1" mb={1}>
+                                აღწერა EN:
+                            </Typography>
+                            <Box
+                                ref={editorRefEn}
+                                contentEditable
+                                sx={{
+                                    border: '1px solid #ccc',
+                                    borderRadius: 1,
+                                    p: 2,
+                                    minHeight: 150,
                                     mb: 2,
                                     fontFamily: 'inherit',
                                     fontSize: '14px',

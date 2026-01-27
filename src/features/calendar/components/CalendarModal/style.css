@@ -267,6 +267,8 @@
 @media (max-width: 800px) {
     .calendar-overlay {
         top: 7vh;
+        overflow: hidden;
+        touch-action: none;
     }
 
     .calendar-row {

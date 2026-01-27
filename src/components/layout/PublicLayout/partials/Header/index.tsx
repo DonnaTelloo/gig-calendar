@@ -1,6 +1,6 @@
 import "./style.css";
 import { Link } from "react-router";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 
 import CalendarIcon from "../../../../../../public/assets/calendar.svg";
@@ -15,12 +15,36 @@ import Logo from "../../../../../../public/assets/logo.svg";
 type HeaderProps = {
     onOpenCalendar: () => void;
     calendarOpen: boolean;
+    onMenuOpen?: () => void;
 };
 
-export default function Header({ onOpenCalendar, calendarOpen }: HeaderProps) {
+export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: HeaderProps) {
     const { i18n, t } = useTranslation();
     const currentLang = i18n.language;
     const [menuOpen, setMenuOpen] = useState(false);
+
+    // Prevent scrolling when mobile menu is open
+    useEffect(() => {
+        const timelinePanel = document.querySelector('.timeline-panel');
+        if (menuOpen) {
+            // Disable scrolling on timeline-panel when mobile menu is open
+            if (timelinePanel) {
+                timelinePanel.classList.add('no-scroll');
+            }
+        } else {
+            // Re-enable scrolling on timeline-panel when mobile menu is closed
+            if (timelinePanel) {
+                timelinePanel.classList.remove('no-scroll');
+            }
+        }
+    }, [menuOpen]);
+
+    // Close mobile menu when calendar modal is opened
+    useEffect(() => {
+        if (calendarOpen) {
+            setMenuOpen(false);
+        }
+    }, [calendarOpen]);
 
     const changeLanguage = (lng: "en" | "ka") => {
         i18n.changeLanguage(lng);
@@ -75,7 +99,13 @@ export default function Header({ onOpenCalendar, calendarOpen }: HeaderProps) {
                 {/* MOBILE BURGER */}
                 <button
                     className="burger-btn mobile-only"
-                    onClick={() => setMenuOpen((v) => !v)}
+                    onClick={() => {
+                        const newMenuState = !menuOpen;
+                        setMenuOpen(newMenuState);
+                        if (newMenuState && onMenuOpen) {
+                            onMenuOpen();
+                        }
+                    }}
                 >
                     <img src={MenuIcon} alt="menu" />
                 </button>

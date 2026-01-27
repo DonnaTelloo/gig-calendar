@@ -61,7 +61,7 @@ export const BookSlider = () => {
         document.body.style.overflow = isFlipping ? "hidden" : "auto";
 
         return () => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "hidden";
         };
     }, [isFlipping]);
 

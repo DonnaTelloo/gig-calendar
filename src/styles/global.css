@@ -98,7 +98,6 @@ body {
     background: url(/public/assets/background.png);
     background-size: cover;
     background-clip: border-box;
-    overflow-x: hidden!important;
 }
 
 a {
@@ -160,13 +159,18 @@ button {
     padding: 5% 5%;
     height: calc(100vh - 7vh);
     margin-left: 250px; /* Match sidebar width */
-    /*overflow-y: auto; !* Make it scrollable *!*/
+    overflow-y: auto; /* Make it scrollable */
     position: relative; /* Needed for proper scrolling */
     width: calc(100% - 250px); /* Ensure it takes full width minus sidebar */
 }
 
 .timeline-center {
     height: 100%;
+}
+
+/* Prevent scrolling */
+.no-scroll {
+    overflow: hidden !important;
 }
 
 /* =========================
@@ -208,6 +212,11 @@ button {
 
 @media (max-width: 800px) {
 
+    .header {
+        padding-right: 4%!important;
+        padding-left: 4% !important;
+    }
+
     .share-modal {
         width: 80%!important;
     }
@@ -226,10 +235,11 @@ button {
         padding: 5% 4%;
         margin-left: 0; /* Reset margin for mobile */
         overflow-y: auto;
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        padding-bottom: max(30px, env(safe-area-inset-bottom)); /* Increased bottom padding */
         background: none;
         overflow-x: hidden;
-        margin-bottom: 50px;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        height: calc(100vh - 7vh); /* Full height minus header */
     }
 
     .header {

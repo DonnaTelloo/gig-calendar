@@ -11,6 +11,22 @@ export default function PublicLayout() {
     const [showLoader, setShowLoader] = useState(false);
     const { isLoading } = useCalendarContext();
 
+    // Prevent scrolling when calendar modal is open
+    useEffect(() => {
+        const timelinePanel = document.querySelector('.timeline-panel');
+        if (calendarOpen) {
+            // Disable scrolling on timeline-panel when modal is open
+            if (timelinePanel) {
+                timelinePanel.classList.add('no-scroll');
+            }
+        } else {
+            // Re-enable scrolling on timeline-panel when modal is closed
+            if (timelinePanel) {
+                timelinePanel.classList.remove('no-scroll');
+            }
+        }
+    }, [calendarOpen]);
+
     // Update loader state when isLoading changes
     useEffect(() => {
         if (isLoading) {
@@ -29,7 +45,15 @@ export default function PublicLayout() {
             {showLoader && <PageLoader />}
 
             <div className="gig-container">
-                <Header calendarOpen={calendarOpen} onOpenCalendar={() => setCalendarOpen(!calendarOpen)} />
+                <Header 
+                    calendarOpen={calendarOpen} 
+                    onOpenCalendar={() => setCalendarOpen(!calendarOpen)}
+                    onMenuOpen={() => {
+                        if (calendarOpen) {
+                            setCalendarOpen(false);
+                        }
+                    }}
+                />
 
                 <div className="content">
 

@@ -5,20 +5,22 @@ export interface YearsResponse {
     years: number[];
 }
 
+export interface YearInfoLocalization {
+    languageCode: string;
+    description: string;
+    title?: string;
+}
+
 export interface YearInfoResponse {
     id?: number;
     year?: number;
-    title?: string;
-    description?: string;
-    content: string;
+    localizations: YearInfoLocalization[];
 }
 
 export interface YearInfoRequest {
-    id: number;
+    id?: number;
     year: string;
-    title?: string;
-    description?: string;
-    content?: string;
+    localizations: YearInfoLocalization[];
 }
 
 /**
@@ -33,7 +35,7 @@ export async function getYearsApi(): Promise<YearsResponse> {
 /**
  * Fetches year information from the API with retry capability
  * @param year The year to fetch information for
- * @returns Promise with year information data
+ * @returns Promise with year information data including localizations
  */
 export async function getYearInfoApi(year: string): Promise<YearInfoResponse> {
     const response = await getWithRetry<YearInfoResponse>(`${ENDPOINTS.CALENDAR.YEAR_INFO}/by-year?year=${year}`);
@@ -42,7 +44,7 @@ export async function getYearInfoApi(year: string): Promise<YearInfoResponse> {
 
 /**
  * Submits year information to the API with retry capability
- * @param data The year information data to submit
+ * @param data The year information data to submit including localizations
  * @returns Promise with the response
  */
 export async function submitYearInfoApi(data: YearInfoRequest): Promise<any> {
@@ -53,7 +55,7 @@ export async function submitYearInfoApi(data: YearInfoRequest): Promise<any> {
 /**
  * Updates year information in the API with retry capability
  * @param id The ID of the year information to update
- * @param data The year information data to update
+ * @param data The year information data to update including localizations
  * @returns Promise with the response
  */
 export async function updateYearInfoApi(id: number, data: YearInfoRequest): Promise<any> {
