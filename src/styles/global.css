@@ -98,6 +98,7 @@ body {
     background: url(/public/assets/background.png);
     background-size: cover;
     background-clip: border-box;
+    overflow: hidden!important;
 }
 
 a {
