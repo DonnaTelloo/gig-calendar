@@ -99,27 +99,14 @@ export const BookSlider = () => {
                currentDate.getFullYear() !== targetDate.getFullYear();
     };
 
-    const playSoundAndWait = (audio: HTMLAudioElement) => {
-        return new Promise<void>((resolve, reject) => {
-            const onPlaying = () => {
-                audio.removeEventListener("playing", onPlaying);
-                resolve();
-            };
-
-            audio.addEventListener("playing", onPlaying, { once: true });
-
-            audio.currentTime = 0;
-            audio.play().catch(reject);
-        });
-    };
-
     /* ---------- flip handler ---------- */
     const handleFlip = async (dir: Direction) => {
         if (isFlipping || localLoading || !data) return;
 
         // Play page flip sound
         if (pageFlipSound.current) {
-            await playSoundAndWait(pageFlipSound.current);
+            pageFlipSound.current.currentTime = 0;
+            await pageFlipSound.current.play();
         }
 
         const nextSlide = data[dir];
