@@ -1,5 +1,9 @@
 import './style.css';
 import { useState, useEffect } from 'react';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 type ShareModalProps = {
     open: boolean;
@@ -124,30 +128,51 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
         }
     };
 
-    // const shareToInstagramStory = async () => {
-    //
-    //         // ✅ Web Share API (mobile browsers)
-    //         if (navigator.share) {
-    //             try {
-    //                 await navigator.share({
-    //                     title,
-    //                     text: description,
-    //                     url,
-    //                 });
-    //             } catch (err) {
-    //                 console.warn("Share cancelled", err);
-    //             }
-    //             return;
-    //         }
-    //
-    //         // ❌ Fallback (desktop or unsupported browsers)
-    //         try {
-    //             await navigator.clipboard.writeText(url);
-    //             // setError("Link copied. Open Instagram and paste it into your story.");
-    //         } catch {
-    //             // setError("Sharing not supported on this browser.");
-    //         }
-    //     };
+    // Share to Facebook
+    const shareToFacebook = () => {
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent((title || 'Historical Event') + ': ' + (description || 'Check out this historical event'))}&hashtag=%23HistoricalEvent`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    };
+
+    // Share to Instagram
+    const shareToInstagram = async () => {
+        // Try Web Share API first (mobile)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: title || 'Historical Event',
+                    text: description || 'Check out this historical event',
+                    url,
+                });
+                return;
+            } catch (err) {
+                console.warn("Share cancelled", err);
+            }
+        }
+
+        // Fallback for Instagram (copy to clipboard with formatted text)
+        try {
+            const formattedText = `${title || 'Historical Event'}\n\n${description || 'Check out this historical event'}\n\n${url}`;
+            await navigator.clipboard.writeText(formattedText);
+            setCopyNotification('Content copied. Open Instagram and paste it to share.');
+        } catch {
+            setCopyNotification('Sharing not supported on this browser.');
+        }
+    };
+
+    // Share to WhatsApp
+    const shareToWhatsApp = () => {
+        // Format the text to be more readable with line breaks
+        const shareText = `${title || 'Historical Event'}\n\n${description || 'Check out this historical event'}\n\n${url}`;
+        const shareUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+        window.open(shareUrl, '_blank');
+    };
+
+    // Share to LinkedIn
+    const shareToLinkedIn = () => {
+        const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title || 'Historical Event')}&summary=${encodeURIComponent(description || 'Check out this historical event')}&source=GigCalendar`;
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+    };
 
     return (
         <div className="share-overlay" onClick={onClose}>
@@ -176,10 +201,32 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
 
                 {/*<div className="share-buttons">*/}
                 {/*    <button */}
-                {/*        className="instagram-story-button"*/}
-                {/*        onClick={shareToInstagramStory}*/}
+                {/*        className="social-share-button facebook-button"*/}
+                {/*        onClick={shareToFacebook}*/}
                 {/*    >*/}
-                {/*        Share as Story on Instagram*/}
+                {/*        <FacebookIcon style={{ marginRight: '8px' }} />*/}
+                {/*        Share on Facebook*/}
+                {/*    </button>*/}
+                {/*    <button */}
+                {/*        className="social-share-button instagram-button"*/}
+                {/*        onClick={shareToInstagram}*/}
+                {/*    >*/}
+                {/*        <InstagramIcon style={{ marginRight: '8px' }} />*/}
+                {/*        Share on Instagram*/}
+                {/*    </button>*/}
+                {/*    <button */}
+                {/*        className="social-share-button whatsapp-button"*/}
+                {/*        onClick={shareToWhatsApp}*/}
+                {/*    >*/}
+                {/*        <WhatsAppIcon style={{ marginRight: '8px' }} />*/}
+                {/*        Share on WhatsApp*/}
+                {/*    </button>*/}
+                {/*    <button */}
+                {/*        className="social-share-button linkedin-button"*/}
+                {/*        onClick={shareToLinkedIn}*/}
+                {/*    >*/}
+                {/*        <LinkedInIcon style={{ marginRight: '8px' }} />*/}
+                {/*        Share on LinkedIn*/}
                 {/*    </button>*/}
                 {/*</div>*/}
             </div>
