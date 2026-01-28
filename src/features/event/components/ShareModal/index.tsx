@@ -174,14 +174,14 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                     </div>
                 )}
 
-                <div className="share-buttons">
-                    <button 
-                        className="instagram-story-button"
-                        onClick={shareToInstagramStory}
-                    >
-                        Share as Story on Instagram
-                    </button>
-                </div>
+                {/*<div className="share-buttons">*/}
+                {/*    <button */}
+                {/*        className="instagram-story-button"*/}
+                {/*        onClick={shareToInstagramStory}*/}
+                {/*    >*/}
+                {/*        Share as Story on Instagram*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </div>
         </div>
     );
