@@ -124,21 +124,30 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
         }
     };
 
-    const shareToInstagramStory = () => {
-        // Instagram story deep link
-        // Format: instagram-stories://share?source_application=app_id
-        // With media: instagram-stories://share?source_application=app_id&media=image_url&text=text
+    const shareToInstagramStory = async () => {
 
-        const instagramUrl = `instagram-stories://share?source_application=${window.location.hostname}`;
+            // ✅ Web Share API (mobile browsers)
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title,
+                        text: description,
+                        url,
+                    });
+                } catch (err) {
+                    console.warn("Share cancelled", err);
+                }
+                return;
+            }
 
-        // If we have an image, add it to the URL
-        const fullUrl = image 
-            ? `${instagramUrl}&media=${encodeURIComponent(image)}&text=${encodeURIComponent(title || '')}` 
-            : instagramUrl;
-
-        // Open the URL
-        window.location.href = fullUrl;
-    };
+            // ❌ Fallback (desktop or unsupported browsers)
+            try {
+                await navigator.clipboard.writeText(url);
+                // setError("Link copied. Open Instagram and paste it into your story.");
+            } catch {
+                // setError("Sharing not supported on this browser.");
+            }
+        };
 
     return (
         <div className="share-overlay" onClick={onClose}>
