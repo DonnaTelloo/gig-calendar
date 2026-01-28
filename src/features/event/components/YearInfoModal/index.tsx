@@ -42,15 +42,15 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
                     dangerouslySetInnerHTML={{ __html: yearInfo.description }}
                 />
 
-                <div className="dont-show-again">
-                    <input 
-                        type="checkbox" 
-                        id="dont-show-again" 
-                        checked={dontShowAgain}
-                        onChange={handleCheckboxChange}
-                    />
-                    <label htmlFor="dont-show-again">აღარ მაჩვენო</label>
-                </div>
+                {/*<div className="dont-show-again">*/}
+                {/*    <input */}
+                {/*        type="checkbox" */}
+                {/*        id="dont-show-again" */}
+                {/*        checked={dontShowAgain}*/}
+                {/*        onChange={handleCheckboxChange}*/}
+                {/*    />*/}
+                {/*    <label htmlFor="dont-show-again">აღარ მაჩვენო</label>*/}
+                {/*</div>*/}
             </div>
         </div>
     );
