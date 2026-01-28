@@ -119,11 +119,7 @@ export const BookSlider = () => {
 
         // Play page flip sound
         if (pageFlipSound.current) {
-            try {
-                await playSoundAndWait(pageFlipSound.current);
-            } catch (err) {
-                console.error("Error playing sound:", err);
-            }
+            await playSoundAndWait(pageFlipSound.current);
         }
 
         const nextSlide = data[dir];
