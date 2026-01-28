@@ -142,6 +142,8 @@ export const BookSlider = () => {
             await requestEventHandler(i18n.language, dir);
             setIsFlipping(false);
             setDirection(Direction.CURRENT);
+            pageFlipSound.current.pause();
+            pageFlipSound.current.currentTime = 0;
         }, 1000);
     };
 
