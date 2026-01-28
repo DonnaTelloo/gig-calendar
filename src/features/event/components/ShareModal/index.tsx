@@ -83,6 +83,35 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
         }
     }, [copyNotification]);
 
+    // Add Open Graph meta tags when modal is opened
+    useEffect(() => {
+        if (open) {
+            // Remove any existing OG meta tags
+            document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+
+            // Add new OG meta tags
+            const metaTags = [
+                { property: 'og:url', content: url },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:title', content: title || 'Historical Event' },
+                { property: 'og:description', content: description || 'Check out this historical event' },
+                { property: 'og:image', content: image || `${window.location.origin}/assets/nothing-found.svg` }
+            ];
+
+            metaTags.forEach(tag => {
+                const meta = document.createElement('meta');
+                meta.setAttribute('property', tag.property);
+                meta.setAttribute('content', tag.content);
+                document.head.appendChild(meta);
+            });
+        }
+
+        // Cleanup function to remove OG meta tags when modal is closed
+        return () => {
+            document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+        };
+    }, [open, url, title, description, image]);
+
     if (!open) return null;
 
     const copyToClipboard = async () => {

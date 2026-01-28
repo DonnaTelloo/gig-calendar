@@ -172,20 +172,6 @@ export const BookSlider = () => {
 
     return (
         <>
-            <Helmet>
-                <meta property="og:url" content={window.location.href} />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content={data.current.title || "Historical Event"} />
-                <meta property="og:description" content={data.current.text || "Check out this historical event"} />
-                <meta
-                    property="og:image"
-                    content={
-                        data.current.image
-                            ? `${import.meta.env.VITE_API_BASE_URL}${data.current.image}`
-                            : `${window.location.origin}/assets/nothing-found.svg`
-                    }
-                />
-            </Helmet>
             <ShareModal
                 open={isShareOpen}
                 onClose={() => setIsShareOpen(false)}
