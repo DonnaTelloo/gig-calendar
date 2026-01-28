@@ -274,6 +274,7 @@ button {
     .page {
         /*padding: 0 10%;*/
         min-height: calc(100% - 7vh);
+        height: auto!important;
         padding:
                 calc(env(safe-area-inset-top) + 16px)
                 10%
