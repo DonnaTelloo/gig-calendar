@@ -2,7 +2,7 @@
     width: 100%;
     background: #fff;
     border-bottom: 1px solid #eee;
-    padding: 1vh 5vh;
+    padding: 1vh 2vh;
     height: 7vh;
     display: flex;
     align-items: center;
@@ -16,8 +16,14 @@
 
 /* ------------------- LOGO ------------------- */
 
+.logo a {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
 .logo img {
-    height: 5vh;
+    height: 3vh;
     /*width: auto;*/
 }
 

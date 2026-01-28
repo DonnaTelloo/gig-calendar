@@ -192,6 +192,7 @@ button {
 
 .page-loader img {
     animation: blink 1s infinite;
+    width: 250px;
 }
 
 @keyframes blink {

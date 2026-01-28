@@ -8,7 +8,10 @@ import CloseIcon from "../../../../../../public/assets/close.svg";
 import GeorgiaFlag from "../../../../../../public/assets/georgia-flag.svg";
 import USFlag from "../../../../../../public/assets/us-flag.svg";
 import MenuIcon from "../../../../../../public/assets/menu.svg";
-import Logo from "../../../../../../public/assets/logo.svg";
+import LogoKA from "../../../../../../public/assets/logo-ka.png";
+import LogoEN from "../../../../../../public/assets/logo-en.png";
+import LogoBejuaKA from "../../../../../../public/assets/d-bejuashvili-logo.png";
+import LogoBejuaEN from "../../../../../../public/assets/d-bejuashvili-logo-en.png";
 
 /* ------------------- HEADER ------------------- */
 
@@ -56,7 +59,17 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
             {/* LEFT – LOGO */}
             <div className="logo">
                 <Link to="/" reloadDocument>
-                    <img src={Logo} alt=""/>
+                    {i18n.language === "ka" ? (
+                        <>
+                            <img src={LogoKA} alt=""/>
+                            <img src={LogoBejuaKA} alt=""/>
+                        </>
+                    ) : (
+                        <>
+                            <img src={LogoEN} alt=""/>
+                            <img src={LogoBejuaEN} alt=""/>
+                        </>
+                    )}
                 </Link>
             </div>
 
