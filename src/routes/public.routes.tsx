@@ -1,10 +1,10 @@
 import { lazy } from "react";
 import { Route, useParams } from "react-router-dom";
 import { CalendarProvider } from "../context";
+import Home from "../pages/home";
 
 // Lazy load components
 const PublicLayout = lazy(() => import("../components/layout/PublicLayout"));
-const Home = lazy(() => import("../pages/home"));
 
 /**
  * Provider component that wraps public layout with calendar context
