@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./index.css";
 import ShareIcon from "../../../../../public/assets/share.svg";
 import useEvent from "../../hooks/useEvent";
@@ -28,6 +28,7 @@ export const BookSlider = () => {
     const [isFlipping, setIsFlipping] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [pendingDirection, setPendingDirection] = useState<Direction | null>(null);
+    const pageFlipSound = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         if (!pendingDirection) return;
@@ -43,6 +44,18 @@ export const BookSlider = () => {
     useEffect(() => {
         requestEventHandler(i18n.language);
     }, [state.date, i18n.language]);
+
+
+    /* ---------- initialize page flip sound ---------- */
+    useEffect(() => {
+        pageFlipSound.current = new Audio('/assets/sounds/page-flip.mp3');
+        return () => {
+            if (pageFlipSound.current) {
+                pageFlipSound.current.pause();
+                pageFlipSound.current = null;
+            }
+        };
+    }, []);
 
     /* ---------- preload images ---------- */
     useEffect(() => {
@@ -89,6 +102,12 @@ export const BookSlider = () => {
     /* ---------- flip handler ---------- */
     const handleFlip = async (dir: Direction) => {
         if (isFlipping || localLoading || !data) return;
+
+        // Play page flip sound
+        if (pageFlipSound.current) {
+            pageFlipSound.current.currentTime = 0;
+            pageFlipSound.current.play().catch(err => console.error("Error playing sound:", err));
+        }
 
         const nextSlide = data[dir];
         if (!nextSlide?.image) return;
@@ -155,6 +174,9 @@ export const BookSlider = () => {
                 open={isShareOpen}
                 onClose={() => setIsShareOpen(false)}
                 url={`${window.location.origin}/${data.current.date.iso}`}
+                title={data.current.title || t("noEventFound")}
+                description={data.current.text || t("noEventFoundDesc")}
+                image={data.current.image ? `${import.meta.env.VITE_API_BASE_URL}${data.current.image}` : '/assets/nothing-found.svg'}
             />
 
             <section className="book-slider">

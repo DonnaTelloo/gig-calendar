@@ -5,6 +5,9 @@ type ShareModalProps = {
     open: boolean;
     url: string;
     onClose: () => void;
+    title?: string;
+    description?: string;
+    image?: string;
 };
 
 const Logo = () => {
@@ -66,7 +69,7 @@ const Logo = () => {
     )
 }
 
-export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
+export const ShareModal = ({ open, url, onClose, title, description, image }: ShareModalProps) => {
     const [copyNotification, setCopyNotification] = useState<string | null>(null);
 
     // Clear notification after 3 seconds
@@ -80,6 +83,35 @@ export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
         }
     }, [copyNotification]);
 
+    // Add Open Graph meta tags when modal is opened
+    useEffect(() => {
+        if (open) {
+            // Remove any existing OG meta tags
+            document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+
+            // Add new OG meta tags
+            const metaTags = [
+                { property: 'og:url', content: url },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:title', content: title || 'Historical Event' },
+                { property: 'og:description', content: description || 'Check out this historical event' },
+                { property: 'og:image', content: image || `${window.location.origin}/assets/nothing-found.svg` }
+            ];
+
+            metaTags.forEach(tag => {
+                const meta = document.createElement('meta');
+                meta.setAttribute('property', tag.property);
+                meta.setAttribute('content', tag.content);
+                document.head.appendChild(meta);
+            });
+        }
+
+        // Cleanup function to remove OG meta tags when modal is closed
+        return () => {
+            document.querySelectorAll('meta[property^="og:"]').forEach(el => el.remove());
+        };
+    }, [open, url, title, description, image]);
+
     if (!open) return null;
 
     const copyToClipboard = async () => {
@@ -90,6 +122,22 @@ export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
             console.error('Failed to copy:', error);
             setCopyNotification('Failed to copy to clipboard');
         }
+    };
+
+    const shareToInstagramStory = () => {
+        // Instagram story deep link
+        // Format: instagram-stories://share?source_application=app_id
+        // With media: instagram-stories://share?source_application=app_id&media=image_url&text=text
+
+        const instagramUrl = `instagram-stories://share?source_application=${window.location.hostname}`;
+
+        // If we have an image, add it to the URL
+        const fullUrl = image 
+            ? `${instagramUrl}&media=${encodeURIComponent(image)}&text=${encodeURIComponent(title || '')}` 
+            : instagramUrl;
+
+        // Open the URL
+        window.location.href = fullUrl;
     };
 
     return (
@@ -116,6 +164,15 @@ export const ShareModal = ({ open, url, onClose }: ShareModalProps) => {
                         {copyNotification}
                     </div>
                 )}
+
+                <div className="share-buttons">
+                    <button 
+                        className="instagram-story-button"
+                        onClick={shareToInstagramStory}
+                    >
+                        Share as Story on Instagram
+                    </button>
+                </div>
             </div>
         </div>
     );
