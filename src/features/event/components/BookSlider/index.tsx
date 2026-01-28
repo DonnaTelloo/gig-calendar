@@ -230,11 +230,7 @@ export const BookSlider = () => {
                                 date={flipSlide.date}
                                 onShare={() => setIsShareOpen(true)}
                             />
-                                <div className="page-content" style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                }}>
+                                <div className="page-content">
                                     {!flipSlide.title ? (
                                         <>
                                             <img style={{
