@@ -99,14 +99,31 @@ export const BookSlider = () => {
                currentDate.getFullYear() !== targetDate.getFullYear();
     };
 
+    const playSoundAndWait = (audio: HTMLAudioElement) => {
+        return new Promise<void>((resolve, reject) => {
+            const onPlaying = () => {
+                audio.removeEventListener("playing", onPlaying);
+                resolve();
+            };
+
+            audio.addEventListener("playing", onPlaying, { once: true });
+
+            audio.currentTime = 0;
+            audio.play().catch(reject);
+        });
+    };
+
     /* ---------- flip handler ---------- */
     const handleFlip = async (dir: Direction) => {
         if (isFlipping || localLoading || !data) return;
 
         // Play page flip sound
         if (pageFlipSound.current) {
-            pageFlipSound.current.currentTime = 0;
-            pageFlipSound.current.play().catch(err => console.error("Error playing sound:", err));
+            try {
+                await playSoundAndWait(pageFlipSound.current);
+            } catch (err) {
+                console.error("Error playing sound:", err);
+            }
         }
 
         const nextSlide = data[dir];
@@ -228,7 +245,11 @@ export const BookSlider = () => {
                                 date={flipSlide.date}
                                 onShare={() => setIsShareOpen(true)}
                             />
-                                <div className="page-content">
+                                <div className="page-content" style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                }}>
                                     {!flipSlide.title ? (
                                         <>
                                             <img style={{
