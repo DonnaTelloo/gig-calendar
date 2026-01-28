@@ -6,6 +6,7 @@ import { ShareModal } from "../ShareModal";
 import { useTranslation } from "react-i18next";
 import { useCalendarContext } from "../../../../context";
 import PageHeader from "./micro-components/article-header.component.tsx";
+import {Helmet} from "react-helmet-async";
 
 
 enum Direction {
@@ -169,6 +170,23 @@ export const BookSlider = () => {
         );
     }
     const isFound = data[direction].title !== null;
+
+    {data && (
+        <Helmet>
+            <meta property="og:url" content={window.location.href} />
+            <meta property="og:type" content="website" />
+            <meta property="og:title" content={data.current.title || "Historical Event"} />
+            <meta property="og:description" content={data.current.text || "Check out this historical event"} />
+            <meta
+                property="og:image"
+                content={
+                    data.current.image
+                        ? `${import.meta.env.VITE_API_BASE_URL}${data.current.image}`
+                        : `${window.location.origin}/assets/nothing-found.svg`
+                }
+            />
+        </Helmet>
+    )}
 
     return (
         <>
