@@ -249,8 +249,8 @@
     transform: translateY(-50%);
 }
 
-.nav.left  { left: -15%; }
-.nav.right { right: -15%; }
+.nav.left  { left: 0 }
+.nav.right { right: 0 }
 
 .nav:disabled {
     opacity: 0.5;
@@ -266,19 +266,22 @@
     .book-slider {
         width: 100%;
         touch-action: pan-y;
+        padding: 1%;
     }
 
     /* Hide arrows on mobile */
-    .nav.left,
-    .nav.right {
-        display: none;
-    }
+    /*.nav.left,*/
+    /*.nav.right {*/
+    /*    display: none;*/
+    /*}*/
 
     .page {
         padding:
                 calc(env(safe-area-inset-top) + 16px)
                 20px
                 calc(env(safe-area-inset-bottom) + 60px);
+        padding-right: 0;
+        padding-left: 0;
     }
 
     .page h2,
