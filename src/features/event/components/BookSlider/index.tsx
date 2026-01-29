@@ -101,7 +101,7 @@ export const BookSlider = () => {
         const currentSlider = document.querySelector('.book-slider');
         if (currentSlider) {
             sliderRef.current = currentSlider as HTMLElement;
-            currentSlider.addEventListener('touchstart', handleTouchStart, { passive: true });
+            currentSlider.addEventListener('touchstart', handleTouchStart, { passive: false });
             currentSlider.addEventListener('touchmove', handleTouchMove, { passive: false });
             currentSlider.addEventListener('touchend', handleTouchEnd, { passive: true });
         }

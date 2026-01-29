@@ -351,7 +351,7 @@
 @media (max-width: 800px) {
     .book-slider {
         width: 100%;
-        touch-action: manipulation; /* Enable both horizontal and vertical interactions */
+        touch-action: none;
     }
 
     /* Hide navigation arrows on mobile */
