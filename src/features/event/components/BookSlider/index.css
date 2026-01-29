@@ -8,13 +8,13 @@
 
     display: flex;
     flex-direction: column;
-
-    /* 🔑 do NOT use height:100% */
     flex: 1;
-    /*min-height: calc(100% - 7vh);*/
     height: 100%;
-    touch-action: manipulation;
+
     padding: 5%;
+
+    /* 🔥 allow vertical scroll, capture horizontal swipe */
+    touch-action: pan-y;
 }
 
 /* =========================
@@ -81,13 +81,11 @@
 }
 
 /* =========================
-   STAGE (CRITICAL FIX)
+   STAGE (CRITICAL)
 ========================= */
 
 .book-stage {
     position: relative;
-
-    /* 🔥 dynamic viewport safe */
     flex: 1;
     min-height: 0;
 
@@ -99,7 +97,9 @@
     align-items: center;
 
     padding-bottom: max(16px, env(safe-area-inset-bottom));
-    touch-action: manipulation;
+
+    /* 🔥 REQUIRED */
+    touch-action: pan-y;
 }
 
 /* =========================
@@ -109,7 +109,6 @@
 .page {
     position: absolute;
     inset: 0;
-
     width: 100%;
 
     padding:
@@ -121,13 +120,10 @@
     transform-style: preserve-3d;
 
     border-radius: 4px;
-    /*background: red;*/
-    /*background: green;*/
-
-    /* Enable scrolling for page content */
-    -webkit-overflow-scrolling: touch;
-    touch-action: manipulation;
     height: calc(100% - 7vh);
+
+    /* 🔥 DO NOT BLOCK SWIPE */
+    touch-action: pan-y;
 }
 
 /* subtle paper thickness */
@@ -152,15 +148,25 @@
     will-change: transform;
 }
 
+/* =========================
+   PAGE CONTENT (MOST IMPORTANT)
+========================= */
+
 .page-content {
     will-change: filter;
     min-height: calc(100% - 75px);
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow-y: auto;
+
     padding-top: 20px;
+
+    /* 🔥 allow vertical scroll, let horizontal swipe bubble */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
 }
 
 .page.flip.animate .page-content {
@@ -200,11 +206,12 @@
 .page img {
     width: 100%;
     max-width: 500px;
-    max-height: 50vh; /* Limit height to prevent overflow */
+    max-height: 50vh;
     margin: 0 auto 24px;
     display: block;
+
     filter: grayscale(60%);
-    object-fit: contain; /* Maintain aspect ratio */
+    object-fit: contain;
 }
 
 .page h2 {
@@ -219,102 +226,7 @@
 }
 
 /* =========================
-   SKELETON LOADING
-========================= */
-
-@keyframes pulse {
-    0% {
-        background-position: 0% 0%;
-    }
-    100% {
-        background-position: -135% 0%;
-    }
-}
-
-.skeleton-loader {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.skeleton-image {
-    width: 100%;
-    max-width: 500px;
-    height: 250px;
-    margin: 0 auto 24px;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-title {
-    width: 70%;
-    height: 28px;
-    margin-bottom: 16px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-text {
-    width: 90%;
-    height: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-text:last-child {
-    width: 75%;
-}
-
-/* Skeleton header specific styles */
-.skeleton-day {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    background: linear-gradient(90deg, #f5f0e6 25%, #efe5d2 50%, #f5f0e6 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-month {
-    width: 80px;
-    height: 20px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-weekday {
-    width: 60px;
-    height: 12px;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.skeleton-share-btn {
-    width: 80px;
-    height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 400% 100%;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-/* =========================
-   NAV BUTTONS (MOBILE SAFE)
+   NAV BUTTONS
 ========================= */
 
 .nav {
@@ -334,28 +246,30 @@
 
     top: 50%;
     transform: translateY(-50%);
-    transition: opacity 0.3s ease, background-color 0.3s ease;
 }
+
+.nav.left  { left: -15%; }
+.nav.right { right: -15%; }
 
 .nav:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
 
-/* desktop */
-.nav.left  { left: -15%; }
-.nav.right { right: -15%; }
+/* =========================
+   MOBILE FIXES
+========================= */
 
-/* mobile fix */
 @media (max-width: 800px) {
+
     .book-slider {
         width: 100%;
-        touch-action: none;
+        touch-action: pan-y;
     }
 
-    /* Hide navigation arrows on mobile */
-    .nav.left, .nav.right {
+    /* Hide arrows on mobile */
+    .nav.left,
+    .nav.right {
         display: none;
     }
 
@@ -366,26 +280,10 @@
                 calc(env(safe-area-inset-bottom) + 60px);
     }
 
+    .page h2,
     .page p {
         padding: 0 20px;
         text-align: center;
-    }
-
-    .page h2 {
-        padding: 0 20px;
-        text-align: center;
-    }
-}
-
-/* Fix for specific dimensions mentioned in issue (around 1643px width and 735px height) */
-@media (min-width: 1600px) and (max-width: 1700px) and (min-height: 700px) and (max-height: 800px) {
-    .page-content {
-        padding-top: 30px;
-    }
-
-    .page img {
-        max-height: 400px;
-        object-fit: contain;
     }
 }
 
@@ -396,24 +294,13 @@
 @keyframes flip-next {
     0% {
         background: rgba(243, 243, 243, 0.28);
-        transform: rotateY(0deg) scaleX(1) skewY(0deg);
+        transform: rotateY(0deg) scaleX(1);
     }
-
-    20% {
-        background: #f3f3f3;
-        transform: rotateY(-30deg) scaleX(0.98) skewY(-3.5deg);
-    }
-
     45% {
-        transform: rotateY(-70deg) scaleX(0.94) skewY(-6deg);
+        transform: rotateY(-70deg) scaleX(0.94);
     }
-
-    65% {
-        transform: rotateY(-120deg) scaleX(0.97) skewY(-1deg);
-    }
-
     100% {
-        transform: rotateY(-179.9deg) scaleX(1) skewY(0deg);
+        transform: rotateY(-179.9deg);
     }
 }
 
@@ -422,15 +309,9 @@
         background: #f3f3f3;
         transform: rotateY(0deg);
     }
-
-    35% {
-        transform: rotateY(55deg) translateZ(10px);
-    }
-
     65% {
-        transform: rotateY(120deg) translateZ(6px);
+        transform: rotateY(120deg);
     }
-
     100% {
         transform: rotateY(179.9deg);
     }
