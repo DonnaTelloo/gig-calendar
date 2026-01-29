@@ -31,6 +31,8 @@ export const BookSlider = () => {
     const pageFlipSound = useRef<HTMLAudioElement | null>(null);
     const touchStartX = useRef<number | null>(null);
     const touchEndX = useRef<number | null>(null);
+    const touchMoveX = useRef<number | null>(null);
+    const isSwiping = useRef<boolean>(false);
     const sliderRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -46,6 +48,26 @@ export const BookSlider = () => {
     // Handle touch events for swipe functionality
     const handleTouchStart = useCallback((e: TouchEvent) => {
         touchStartX.current = e.touches[0].clientX;
+        isSwiping.current = false;
+    }, []);
+
+    const handleTouchMove = useCallback((e: TouchEvent) => {
+        if (!touchStartX.current) return;
+
+        touchMoveX.current = e.touches[0].clientX;
+
+        // Calculate current swipe distance
+        const currentSwipeDistance = touchMoveX.current - touchStartX.current;
+
+        // Mark as swiping if the movement is significant (more than 10px)
+        if (Math.abs(currentSwipeDistance) > 10) {
+            isSwiping.current = true;
+        }
+
+        // Prevent default to avoid scrolling while swiping horizontally
+        if (isSwiping.current && Math.abs(currentSwipeDistance) > 30) {
+            e.preventDefault();
+        }
     }, []);
 
     const handleTouchEnd = useCallback((e: TouchEvent) => {
@@ -56,8 +78,8 @@ export const BookSlider = () => {
         // Calculate swipe distance
         const swipeDistance = touchEndX.current - touchStartX.current;
 
-        // If swipe distance is significant enough (more than 50px)
-        if (Math.abs(swipeDistance) > 50) {
+        // If swipe distance is significant enough (more than 50px) and we're in a swiping state
+        if (Math.abs(swipeDistance) > 50 || isSwiping.current) {
             if (swipeDistance > 0) {
                 // Swipe right - go to previous
                 handleFlip(Direction.LEFT);
@@ -67,9 +89,11 @@ export const BookSlider = () => {
             }
         }
 
-        // Reset touch coordinates
+        // Reset touch coordinates and state
         touchStartX.current = null;
         touchEndX.current = null;
+        touchMoveX.current = null;
+        isSwiping.current = false;
     }, []);
 
     // Add and remove touch event listeners
@@ -77,17 +101,19 @@ export const BookSlider = () => {
         const currentSlider = document.querySelector('.book-slider');
         if (currentSlider) {
             sliderRef.current = currentSlider as HTMLElement;
-            currentSlider.addEventListener('touchstart', handleTouchStart);
-            currentSlider.addEventListener('touchend', handleTouchEnd);
+            currentSlider.addEventListener('touchstart', handleTouchStart, { passive: true });
+            currentSlider.addEventListener('touchmove', handleTouchMove, { passive: false });
+            currentSlider.addEventListener('touchend', handleTouchEnd, { passive: true });
         }
 
         return () => {
             if (sliderRef.current) {
                 sliderRef.current.removeEventListener('touchstart', handleTouchStart);
+                sliderRef.current.removeEventListener('touchmove', handleTouchMove);
                 sliderRef.current.removeEventListener('touchend', handleTouchEnd);
             }
         };
-    }, [handleTouchStart, handleTouchEnd]);
+    }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
     /* ---------- initial + date change fetch ---------- */
     useEffect(() => {
