@@ -94,11 +94,14 @@ body {
 body {
     background: #f7f7f7;
     color: #222;
-    overflow-x: hidden!important; /* Prevent whole page scrolling */
-    overflow-y: hidden!important; /* Prevent whole page scrolling */
+    /*overflow-x: hidden!important; !* Prevent whole page scrolling *!*/
+    /*overflow-y: hidden!important; !* Prevent whole page scrolling *!*/
     background: url(/public/assets/background.png);
     background-size: cover;
     background-clip: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    touch-action: pan-y;
 }
 
 a {
@@ -161,6 +164,8 @@ button {
     height: calc(100vh - 7vh);
     margin-left: 250px; /* Match sidebar width */
     overflow-y: auto; /* Make it scrollable */
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     position: relative; /* Needed for proper scrolling */
     width: calc(100% - 250px); /* Ensure it takes full width minus sidebar */
 }
@@ -172,6 +177,12 @@ button {
 /* Prevent scrolling */
 .no-scroll {
     overflow: hidden !important;
+}
+
+.book-slider,
+.book-stage,
+.page {
+    pointer-events: auto;
 }
 
 /* =========================
