@@ -6,14 +6,14 @@ import { useCalendarContext } from "../../context";
 import { useTranslation } from "react-i18next";
 
 const Home = () => {
-    const [modalOpen, setModalOpen] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
     const [yearInfo, setYearInfo] = useState<any>();
     const { i18n } = useTranslation();
     const {
         state
     } = useCalendarContext()
 
-    // Fetch year info when component mounts
+    // Fetch year info when component mounts or year changes
     useEffect(() => {
         const fetchYearInfo = async () => {
             try {
@@ -41,6 +41,19 @@ const Home = () => {
 
         fetchYearInfo();
     }, [state.year, i18n.language]);
+
+    // Listen for openYearInfoModal event
+    useEffect(() => {
+        const handleOpenYearInfoModal = () => {
+            setModalOpen(true);
+        };
+
+        window.addEventListener('openYearInfoModal', handleOpenYearInfoModal);
+
+        return () => {
+            window.removeEventListener('openYearInfoModal', handleOpenYearInfoModal);
+        };
+    }, []);
 
     return(
         <>

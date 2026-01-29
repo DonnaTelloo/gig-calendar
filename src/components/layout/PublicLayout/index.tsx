@@ -11,6 +11,19 @@ export default function PublicLayout() {
     const [showLoader, setShowLoader] = useState(false);
     const { isLoading } = useCalendarContext();
 
+    // Listen for openCalendarModal event
+    useEffect(() => {
+        const handleOpenCalendarModal = () => {
+            setCalendarOpen(true);
+        };
+
+        window.addEventListener('openCalendarModal', handleOpenCalendarModal);
+
+        return () => {
+            window.removeEventListener('openCalendarModal', handleOpenCalendarModal);
+        };
+    }, []);
+
     // Prevent scrolling when calendar modal is open
     useEffect(() => {
         const timelinePanel = document.querySelector('.timeline-panel');

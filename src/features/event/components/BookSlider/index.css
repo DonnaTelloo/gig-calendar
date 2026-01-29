@@ -351,10 +351,13 @@
 @media (max-width: 800px) {
     .book-slider {
         width: 100%;
+        touch-action: pan-x; /* Enable horizontal swiping */
     }
 
-    .nav.left  { left: -5%}
-    .nav.right { right: -5%; }
+    /* Hide navigation arrows on mobile */
+    .nav.left, .nav.right {
+        display: none;
+    }
 
     .page {
         padding:

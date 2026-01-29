@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import "./index.css";
 import ShareIcon from "../../../../../public/assets/share.svg";
 import useEvent from "../../hooks/useEvent";
@@ -29,6 +29,9 @@ export const BookSlider = () => {
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [pendingDirection, setPendingDirection] = useState<Direction | null>(null);
     const pageFlipSound = useRef<HTMLAudioElement | null>(null);
+    const touchStartX = useRef<number | null>(null);
+    const touchEndX = useRef<number | null>(null);
+    const sliderRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         if (!pendingDirection) return;
@@ -39,6 +42,52 @@ export const BookSlider = () => {
             setPendingDirection(null);
         });
     }, [pendingDirection, i18n.language]);
+
+    // Handle touch events for swipe functionality
+    const handleTouchStart = useCallback((e: TouchEvent) => {
+        touchStartX.current = e.touches[0].clientX;
+    }, []);
+
+    const handleTouchEnd = useCallback((e: TouchEvent) => {
+        if (!touchStartX.current) return;
+
+        touchEndX.current = e.changedTouches[0].clientX;
+
+        // Calculate swipe distance
+        const swipeDistance = touchEndX.current - touchStartX.current;
+
+        // If swipe distance is significant enough (more than 50px)
+        if (Math.abs(swipeDistance) > 50) {
+            if (swipeDistance > 0) {
+                // Swipe right - go to previous
+                handleFlip(Direction.LEFT);
+            } else {
+                // Swipe left - go to next
+                handleFlip(Direction.RIGHT);
+            }
+        }
+
+        // Reset touch coordinates
+        touchStartX.current = null;
+        touchEndX.current = null;
+    }, []);
+
+    // Add and remove touch event listeners
+    useEffect(() => {
+        const currentSlider = document.querySelector('.book-slider');
+        if (currentSlider) {
+            sliderRef.current = currentSlider as HTMLElement;
+            currentSlider.addEventListener('touchstart', handleTouchStart);
+            currentSlider.addEventListener('touchend', handleTouchEnd);
+        }
+
+        return () => {
+            if (sliderRef.current) {
+                sliderRef.current.removeEventListener('touchstart', handleTouchStart);
+                sliderRef.current.removeEventListener('touchend', handleTouchEnd);
+            }
+        };
+    }, [handleTouchStart, handleTouchEnd]);
 
     /* ---------- initial + date change fetch ---------- */
     useEffect(() => {

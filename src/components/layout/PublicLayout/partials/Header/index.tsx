@@ -61,13 +61,13 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
                 <Link to="/" reloadDocument>
                     {i18n.language === "ka" ? (
                         <>
-                            <img src={LogoKA} alt=""/>
                             <img src={LogoBejuaKA} alt=""/>
+                            <img src={LogoKA} alt=""/>
                         </>
                     ) : (
                         <>
-                            <img src={LogoEN} alt=""/>
                             <img src={LogoBejuaEN} alt=""/>
+                            <img src={LogoEN} alt=""/>
                         </>
                     )}
                 </Link>

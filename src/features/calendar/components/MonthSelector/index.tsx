@@ -35,6 +35,13 @@ export default function MonthSelector({
         }, 300);
     }, [setYearMonth]);
 
+    // Function to open calendar modal
+    const openCalendarModal = () => {
+        // Dispatch a custom event that the PublicLayout component will listen for
+        const event = new CustomEvent('openCalendarModal');
+        window.dispatchEvent(event);
+    };
+
     return (
         <div className="month-selector">
             <div className="ruler">
@@ -46,14 +53,17 @@ export default function MonthSelector({
 
             <div className="months">
                 {months.map((m, i) => (
-                    <div                         onClick={() => {
-                        if (i !== state.month || year !== state.year) {
-                            debouncedSetYearMonthRef.current(year, i);
-                        }
-                    }}
-                                                 key={i}
-                                                 className={`month ${(i === state.month && year === state.year) ? "active" : ""}`}
-                        >
+                    <div                         
+                        onClick={() => {
+                            if (i !== state.month || year !== state.year) {
+                                debouncedSetYearMonthRef.current(year, i);
+                            }
+                            // Open calendar modal when month is clicked
+                            openCalendarModal();
+                        }}
+                        key={i}
+                        className={`month ${(i === state.month && year === state.year) ? "active" : ""}`}
+                    >
                         {m}
                     </div>
                 ))}
