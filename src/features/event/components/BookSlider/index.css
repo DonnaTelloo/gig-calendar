@@ -11,7 +11,7 @@
     flex: 1;
     height: 100%;
 
-    padding: 5%;
+    /*padding: 5%;*/
 
     /* 🔥 allow vertical scroll, capture horizontal swipe */
     touch-action: pan-y;
@@ -90,14 +90,14 @@
     flex: 1;
     min-height: 0;
 
-    perspective: 2600px;
+    perspective: 1500px;
     perspective-origin: center;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    /*padding-bottom: max(16px, env(safe-area-inset-bottom));*/
 
     /* 🔥 REQUIRED */
     touch-action: pan-y;
@@ -112,10 +112,10 @@
     inset: 0;
     width: 100%;
 
-    padding:
-            calc(env(safe-area-inset-top) + 16px)
-            48px
-            calc(env(safe-area-inset-bottom) + 48px);
+    /*padding:*/
+    /*        calc(env(safe-area-inset-top) + 16px)*/
+    /*        48px*/
+    /*        calc(env(safe-area-inset-bottom) + 48px);*/
 
     box-sizing: border-box;
     transform-style: preserve-3d;
@@ -162,7 +162,7 @@
     align-items: center;
     justify-content: center;
 
-    padding-top: 20px;
+    /*padding-top: 20px;*/
 
     /* 🔥 allow vertical scroll, let horizontal swipe bubble */
     overflow-y: auto;
@@ -205,13 +205,12 @@
 ========================= */
 
 .page img {
-    width: 100%;
-    max-width: 500px;
-    max-height: 50vh;
-    margin: 0 auto 24px;
+    width: auto;
+    height: 93vh;
+    /*margin: 0 auto 24px;*/
     display: block;
 
-    filter: grayscale(60%);
+    /*filter: grayscale(60%);*/
     object-fit: contain;
 }
 

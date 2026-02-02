@@ -86,10 +86,41 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
     // Clear error state
     const clearError = () => setError(null);
 
+    // Update background color based on year and month
+    const updateBackgroundColor = (year: number, month: number) => {
+        if (year === 2026) {
+            const quarter = Math.floor(month / 3) + 1;
+            let backgroundColor;
+
+            switch (quarter) {
+                case 1:
+                    backgroundColor = '#e6f7ff'; // Light blue for Q1
+                    break;
+                case 2:
+                    backgroundColor = '#f6ffed'; // Light green for Q2
+                    break;
+                case 3:
+                    backgroundColor = '#fff7e6'; // Light orange for Q3
+                    break;
+                case 4:
+                    backgroundColor = '#f9f0ff'; // Light purple for Q4
+                    break;
+                default:
+                    backgroundColor = '';
+            }
+
+            document.body.style.backgroundColor = backgroundColor;
+        } else {
+            // Reset background color for other years
+            document.body.style.backgroundColor = '';
+        }
+    };
+
     // Date setters
     const setDate = (d: Date) => {
         clearError();
         setDateState(d);
+        updateBackgroundColor(d.getFullYear(), d.getMonth());
     };
 
     const setYear = (year: number) => {
@@ -98,6 +129,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
         d.setDate(1);
         d.setFullYear(year);
         setDateState(d);
+        updateBackgroundColor(year, d.getMonth());
     };
 
     const setMonth = (month: number) => {
@@ -106,6 +138,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
         d.setDate(1);
         d.setMonth(month);
         setDateState(d);
+        updateBackgroundColor(d.getFullYear(), month);
     };
 
     const setYearMonth = (year: number, month: number) => {
@@ -115,6 +148,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
         d.setFullYear(year);
         d.setMonth(month);
         setDateState(d);
+        updateBackgroundColor(year, month);
     };
 
     // Fetch years from API
@@ -157,6 +191,11 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
     useEffect(() => {
         getYears();
     }, [getYears]);
+
+    // Set initial background color
+    useEffect(() => {
+        updateBackgroundColor(date.getFullYear(), date.getMonth());
+    }, []);
 
     // Log years state after it's updated
     useEffect(() => {

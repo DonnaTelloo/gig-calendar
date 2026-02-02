@@ -146,7 +146,8 @@ export const BookSlider = () => {
     }, [data]);
 
     useEffect(() => {
-        document.body.style.overflow = isFlipping ? "hidden" : "auto";
+        document.body.style.overflowX = isFlipping ? "hidden" : "auto";
+        document.body.style.overflowY = isFlipping ? "hidden" : "auto";
 
         return () => {
             document.body.style.overflow = "hidden";
@@ -268,10 +269,10 @@ export const BookSlider = () => {
 
                     {/* STATIC PAGE */}
                     <article className="page static">
-                        <PageHeader
-                            date={data[direction].date}
-                            onShare={() => setIsShareOpen(true)}
-                        />
+                        {/*<PageHeader*/}
+                        {/*    date={data[direction].date}*/}
+                        {/*    onShare={() => setIsShareOpen(true)}*/}
+                        {/*/>*/}
 
 
 
@@ -286,14 +287,14 @@ export const BookSlider = () => {
                                         maxHeight: "150px",
                                         objectFit: "contain",
                                     }} src={'/assets/nothing-found.svg'} />
-                                    <h2 style={{textAlign: 'center'}}>{data[direction].title ?? t("noEventFound")}</h2>
-                                    <p style={{textAlign: 'center'}}>{data[direction].text ?? t("noEventFoundDesc")}</p>
+                                    {/*<h2 style={{textAlign: 'center'}}>{data[direction].title ?? t("noEventFound")}</h2>*/}
+                                    {/*<p style={{textAlign: 'center'}}>{data[direction].text ?? t("noEventFoundDesc")}</p>*/}
                                 </div>
                         ) : (
                             <div className="page-content">
                                 <img src={import.meta.env.VITE_API_BASE_URL + data[direction].image} />
-                                <h2>{data[direction].title}</h2>
-                                <p>{data[direction].text}</p>
+                                {/*<h2>{data[direction].title}</h2>*/}
+                                {/*<p>{data[direction].text}</p>*/}
                             </div>
                         )}
                     </article>
@@ -301,10 +302,10 @@ export const BookSlider = () => {
                     {/* FLIP PAGE */}
                     {flipSlide && (
                         <article className={`page flip ${direction} animate`}>
-                            <PageHeader
-                                date={flipSlide.date}
-                                onShare={() => setIsShareOpen(true)}
-                            />
+                            {/*<PageHeader*/}
+                            {/*    date={flipSlide.date}*/}
+                            {/*    onShare={() => setIsShareOpen(true)}*/}
+                            {/*/>*/}
                             <div
                                 className="page-content"
                                 style={
@@ -324,14 +325,14 @@ export const BookSlider = () => {
                                                 maxHeight: "150px",
                                                 objectFit: "contain",
                                             }} src={'/assets/nothing-found.svg'} />
-                                            <h2 style={{textAlign: 'center'}}>{flipSlide.title ?? t("noEventFound")}</h2>
-                                            <p style={{textAlign: 'center'}}>{flipSlide.text ?? t("noEventFoundDesc")}</p>
+                                            {/*<h2 style={{textAlign: 'center'}}>{flipSlide.title ?? t("noEventFound")}</h2>*/}
+                                            {/*<p style={{textAlign: 'center'}}>{flipSlide.text ?? t("noEventFoundDesc")}</p>*/}
                                         </>
                                     ) : (
                                         <>
                                             <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
-                                            <h2>{flipSlide.title}</h2>
-                                            <p>{flipSlide.text}</p>
+                                            {/*<h2>{flipSlide.title}</h2>*/}
+                                            {/*<p>{flipSlide.text}</p>*/}
                                         </>
                                     )}
                                 </div>

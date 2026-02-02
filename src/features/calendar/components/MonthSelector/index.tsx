@@ -55,11 +55,14 @@ export default function MonthSelector({
                 {months.map((m, i) => (
                     <div                         
                         onClick={() => {
-                            if (i !== state.month || year !== state.year) {
-                                debouncedSetYearMonthRef.current(year, i);
-                            }
-                            // Open calendar modal when month is clicked
-                            openCalendarModal();
+                            // Always set the date to the 1st day of the month before opening the modal
+                            setYearMonth(year, i);
+
+                            // Open calendar modal after setting the date
+                            // Use setTimeout with 0ms to ensure the date is set before opening the modal
+                            setTimeout(() => {
+                                openCalendarModal();
+                            }, 0);
                         }}
                         key={i}
                         className={`month ${(i === state.month && year === state.year) ? "active" : ""}`}
