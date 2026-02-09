@@ -1,0 +1,28 @@
+.image-zoom-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-zoom-container {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  outline: none;
+}
+
+.image-zoom-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+  border-radius: 4px;
+  z-index: 1;
+}
