@@ -32,7 +32,6 @@ const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft, loading = f
 
     const { updateImage, loading: updateLoading } = useImage();
 
-    // Load available years
     useEffect(() => {
         getYearsApi().then((res) => setYears(res));
     }, []);
