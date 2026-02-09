@@ -12,7 +12,7 @@
 /* Modal */
 .yearinfo-modal {
     width: 100%;
-    background: #ffffff;
+    background: #ded2bd;
     padding: 60px 70px 70px;
     box-shadow: 0px 20px 20px rgb(0 0 0 / 3%);
     height: 93vh;
@@ -55,7 +55,7 @@
 
 /* Content */
 .yearinfo-content {
-    text-align: left;
+    text-align: center;
     font-size: 16px;
     line-height: 1.6;
     color: #333;
