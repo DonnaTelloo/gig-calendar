@@ -175,7 +175,7 @@ export const ENDPOINTS = {
     LOGOUT: "/auth/logout",
   },
   CALENDAR: {
-    YEARS: "/calendar/years",
+    YEARS: "/Image/years",
     YEAR_INFO: "/yearinfo",
   },
   EVENT: {
@@ -183,6 +183,6 @@ export const ENDPOINTS = {
     ARTICLES: "/Image/days-in-month-with-images",
     UPLOAD_IMAGE: "/calendar/upload-image",
     BASE: "/Image",
-    UPDATE_BY_DATE: "/calendar/update-by-date",
+    UPDATE_BY_DATE: "/Image/update-by-date",
   },
 };

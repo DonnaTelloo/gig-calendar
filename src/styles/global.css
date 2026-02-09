@@ -213,7 +213,7 @@ button {
    TABLET / MOBILE
 ========================= */
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
 
     .header {
         padding-right: 4%!important;
@@ -251,6 +251,10 @@ button {
 
     .header {
         padding: 1vh 2vh;
+    }
+
+    .book-slider {
+        width: 90%;
     }
 
     .nav {

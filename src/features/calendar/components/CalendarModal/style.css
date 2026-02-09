@@ -254,7 +254,7 @@
 
     .calendar-container {
         padding: 40px 32px;
-        height: auto;
+        /*height: auto;*/
         overflow-y: auto;
     }
 
@@ -294,7 +294,7 @@
     }
 
     .calendar-container {
-        height: auto;
+        /*height: auto;*/
         min-height: 100vh;
         padding: 20px 16px;
     }

@@ -106,7 +106,7 @@
 @media (max-width: 1024px) {
     .yearinfo-modal {
         padding: 40px 32px;
-        height: auto;
+        /*height: auto;*/
         overflow-y: auto;
     }
 }
