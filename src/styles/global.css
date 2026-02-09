@@ -282,6 +282,10 @@ button {
                 calc(env(safe-area-inset-bottom) + 130px)!important;
     }
 
+    .page img {
+        height: calc(100% - 7vh);
+    }
+
     .page p {
         padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
     }
