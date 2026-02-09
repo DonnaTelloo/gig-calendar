@@ -257,8 +257,6 @@ export const BookSlider = () => {
     }
     const isFound = data[direction].image !== "/assets/nothing-found.svg";
 
-    console.log(data[direction]);
-
     return (
         <>
             <ShareModal
@@ -307,7 +305,7 @@ export const BookSlider = () => {
 
                     {/* FLIP PAGE */}
                     {flipSlide && (
-                        <article className={`page flip ${direction} animate`}>
+                        <article className={`page flip ${direction} animate`} style={{background: 'red'}}>
                             {/*<PageHeader*/}
                             {/*    date={flipSlide.date}*/}
                             {/*    onShare={() => setIsShareOpen(true)}*/}

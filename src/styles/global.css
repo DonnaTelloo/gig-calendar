@@ -273,7 +273,7 @@ button {
         align-items: center;
         justify-content: center;
         /*background: red;*/
-        height: 93vh;
+        height: calc(100% - 15%);
     }
 
     .header-actions span:last-child {
@@ -291,7 +291,7 @@ button {
     }
 
     .page img {
-        height: calc(100% - 7vh);
+        /*height: calc(100% - 7vh);*/
     }
 
     .page p {
