@@ -279,15 +279,15 @@
     /*    display: none;*/
     /*}*/
 
-    .page {
-        padding:
-                0
-                20px
-                calc(env(safe-area-inset-bottom) + 60px);
-        padding-right: 0;
-        padding-left: 0;
-        padding-top: 0;
-    }
+    /*.page {*/
+    /*    padding:*/
+    /*            calc(env(safe-area-inset-top) + 16px)*/
+    /*            20px*/
+    /*            calc(env(safe-area-inset-bottom) + 60px);*/
+    /*    padding-right: 0;*/
+    /*    padding-left: 0;*/
+    /*    padding-top: 0;*/
+    /*}*/
 
     .page h2,
     .page p {

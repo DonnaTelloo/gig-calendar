@@ -276,10 +276,10 @@ button {
         /*padding: 0 10%;*/
         min-height: calc(100% - 7vh);
         height: max-content!important;
-        /*padding:*/
-        /*        0*/
-        /*        10%*/
-        /*        calc(env(safe-area-inset-bottom) + 130px)!important;*/
+        padding:
+                0
+                10%
+                calc(env(safe-area-inset-bottom) + 130px)!important;
     }
 
     .page p {
