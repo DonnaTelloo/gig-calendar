@@ -273,6 +273,12 @@
         padding: 1%;
     }
 
+    /* Add space above image on mobile */
+    .page-content {
+        padding-top: 20px;
+        justify-content: flex-start;
+    }
+
     /* Hide arrows on mobile */
     /*.nav.left,*/
     /*.nav.right {*/

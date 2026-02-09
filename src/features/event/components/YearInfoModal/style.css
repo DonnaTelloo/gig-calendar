@@ -2,25 +2,23 @@
 .yearinfo-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 9999;
+    align-items: flex-start;
+    z-index: 100;
+    top: 7vh;
 }
 
 /* Modal */
 .yearinfo-modal {
-    width: 600px;
-    background: #ede5dc;
-    border-radius: 24px;
-    padding: 48px 56px 56px;
+    width: 100%;
+    background: #ffffff;
+    padding: 60px 70px 70px;
+    box-shadow: 0px 20px 20px rgb(0 0 0 / 3%);
+    height: 93vh;
     position: relative;
     text-align: center;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
-    max-height: 80vh;
     overflow-y: auto;
-    min-height: 300px;
 }
 
 /* Close button */
@@ -30,20 +28,29 @@
     right: 20px;
     width: 40px;
     height: 40px;
-    border-radius: 20%;
+    border-radius: 8px;
     border: none;
-    background: #e1caae;
-    box-shadow: 0px 2px 4px 0px #1B1C1D0A;
-    font-size: 20px;
+    background: #FFF;
+    font-size: 30px;
+    color: #444;
+    opacity: 0.55;
+    transition: 0.15s;
     cursor: pointer;
+}
+
+.close-btn:hover {
+    opacity: 1;
 }
 
 /* Title */
 .yearinfo-modal h3 {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 600;
-    color: #111;
-    margin-bottom: 24px;
+    color: #3a3a3a;
+    margin-bottom: 28px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Content */
@@ -53,6 +60,27 @@
     line-height: 1.6;
     color: #333;
     margin-bottom: 24px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 1024px) {
+    .yearinfo-modal h3,
+    .yearinfo-content {
+        width: 90%;
+    }
+}
+
+@media (max-width: 640px) {
+    .yearinfo-modal h3,
+    .yearinfo-content {
+        width: 100%;
+    }
+
+    .yearinfo-modal h3 {
+        font-size: 22px;
+    }
 }
 
 /* Checkbox container */
@@ -75,9 +103,31 @@
 }
 
 /* Responsive */
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
     .yearinfo-modal {
-        width: 90%;
-        padding: 32px 24px;
+        padding: 40px 32px;
+        height: auto;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 800px) {
+    .yearinfo-overlay {
+        top: 7vh;
+        overflow: hidden;
+        touch-action: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .yearinfo-overlay {
+        top: 7vh;
+        align-items: stretch;
+    }
+
+    .yearinfo-modal {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 16px;
     }
 }
