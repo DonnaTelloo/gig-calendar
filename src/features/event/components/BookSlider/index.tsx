@@ -289,7 +289,7 @@ export const BookSlider = () => {
                                     alignItems: "center",
                                 }}>
                                     <img style={{
-                                        width: "20%",
+                                        width: "50%",
                                         maxHeight: "150px",
                                         objectFit: "contain",
                                     }} src={'/assets/nothing-found.svg'} />
