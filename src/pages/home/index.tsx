@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 const Home = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [yearInfo, setYearInfo] = useState<any>();
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const {
         state
     } = useCalendarContext()
@@ -33,14 +33,20 @@ const Home = () => {
             } catch (error: any) {
                 console.error("Failed to fetch year info:", error);
                 // 404 is expected if no year info exists
-                if (error.response && error.response.status !== 404) {
+                if (error.response && error.response.status === 404) {
+                    // Create a dummy yearInfo object with a localized message
+                    setYearInfo({
+                        title: t("yearInfoNotFound", "Year Info Not Found"),
+                        description: t("yearInfoNotFoundDesc", "This year does not contain any data")
+                    });
+                } else if (error.response) {
                     console.error("Error fetching year info:", error);
                 }
             }
         };
 
         fetchYearInfo();
-    }, [state.year, i18n.language]);
+    }, [state.year, i18n.language, t]);
 
     // Listen for openYearInfoModal event
     useEffect(() => {

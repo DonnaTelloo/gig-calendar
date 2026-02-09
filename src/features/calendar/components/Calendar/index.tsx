@@ -6,7 +6,7 @@ import useCalendar from "../../hooks/useCalendar";
 import { useTranslation } from "react-i18next";
 
 export default function Calendar() {
-    const { state } = useCalendarContext();
+    const { state, setYear } = useCalendarContext();
     const { getYears } = useCalendar();
     const { t } = useTranslation();
     const [openYear, setOpenYear] = useState<number | null>(state.year);
@@ -23,6 +23,8 @@ export default function Calendar() {
 
     const toggleYear = (year: number) => {
         setOpenYear(prev => (prev === year ? null : year));
+        // Update the year in the CalendarContext
+        setYear(year);
     };
 
     useEffect(() => {

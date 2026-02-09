@@ -25,10 +25,8 @@ export async function getArticleByDate(date: string) {
  * @param date The date of the article to delete
  * @returns Promise with the delete response
  */
-export async function deleteArticleByDate(date: string) {
-    const response = await deleteWithRetry(ENDPOINTS.EVENT.BASE, {
-        params: { date }
-    });
+export async function deleteArticleByDate(id: string) {
+    const response = await deleteWithRetry(ENDPOINTS.EVENT.BASE + "/" + id);
 
     return response.data;
 }
@@ -67,9 +65,13 @@ export async function updateArticleByDate(
  * @param lang The language code
  * @returns Promise with the articles response
  */
-export async function getArticles(date: any, lang: string = "ka") {
+export async function getArticles(date: any) {
+    const formatedDate = new Date(date);
+
+    const year = formatedDate.getFullYear();
+    const month = formatedDate.getMonth() + 1;
     const response = await getWithRetry(ENDPOINTS.EVENT.ARTICLES, {
-        params: { date, languageCode: lang }
+        params: { year, month },
     });
 
     return response;

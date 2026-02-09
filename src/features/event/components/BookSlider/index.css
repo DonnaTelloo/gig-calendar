@@ -170,6 +170,11 @@
     touch-action: pan-y;
 }
 
+/* Hide scrollbars during flipping */
+.page.flip .page-content {
+    overflow: hidden !important;
+}
+
 .page.flip.animate .page-content {
     animation: content-blur 0.8s linear forwards;
 }
@@ -309,7 +314,7 @@
 
 @keyframes flip-prev {
     0% {
-        background: #f3f3f3;
+        background: rgba(243, 243, 243, 0.28);
         transform: rotateY(0deg);
     }
     65% {

@@ -146,11 +146,20 @@ export const BookSlider = () => {
     }, [data]);
 
     useEffect(() => {
-        document.body.style.overflowX = isFlipping ? "hidden" : "auto";
-        document.body.style.overflowY = isFlipping ? "hidden" : "auto";
+        // Hide all scrollbars during flipping
+        if (isFlipping) {
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden"; // Also hide scrollbars on html element
+        } else {
+            document.body.style.overflowX = "auto";
+            document.body.style.overflowY = "auto";
+            document.documentElement.style.overflowX = "auto";
+            document.documentElement.style.overflowY = "auto";
+        }
 
         return () => {
             document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "auto";
         };
     }, [isFlipping]);
 
@@ -223,6 +232,8 @@ export const BookSlider = () => {
         }, 1000);
     };
 
+    console.log(data)
+
     // Show a placeholder when data is null but loading is in progress
     if (!data) {
         return (
@@ -244,7 +255,9 @@ export const BookSlider = () => {
             </section>
         );
     }
-    const isFound = data[direction].title !== null;
+    const isFound = data[direction].image !== "/assets/nothing-found.svg";
+
+    console.log(data[direction]);
 
     return (
         <>
@@ -269,13 +282,6 @@ export const BookSlider = () => {
 
                     {/* STATIC PAGE */}
                     <article className="page static">
-                        {/*<PageHeader*/}
-                        {/*    date={data[direction].date}*/}
-                        {/*    onShare={() => setIsShareOpen(true)}*/}
-                        {/*/>*/}
-
-
-
                         {!isFound ? (
                                 <div className="page-content" style={{
                                     display: "flex",
@@ -309,7 +315,7 @@ export const BookSlider = () => {
                             <div
                                 className="page-content"
                                 style={
-                                    !flipSlide?.title
+                                    flipSlide?.image == "/assets/nothing-found.svg"
                                         ? {
                                             display: "flex",
                                             flexDirection: "column",
@@ -318,10 +324,10 @@ export const BookSlider = () => {
                                         : {}
                                 }
                             >
-                            {!flipSlide.title ? (
+                            {flipSlide.image == "/assets/nothing-found.svg" ? (
                                         <>
                                             <img style={{
-                                                width: "20%",
+                                                width: "50%",
                                                 maxHeight: "150px",
                                                 objectFit: "contain",
                                             }} src={'/assets/nothing-found.svg'} />

@@ -1,8 +1,16 @@
-import { Box, Button, Divider, TextField, Typography, CircularProgress } from "@mui/material";
+import { Box, Button, Divider, Typography, CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.css";
+import ImageDropzone from "../../../../../components/common/ImageDropzone";
+import useImage from "../../hooks/useImage";
+import { getYearsApi } from "../../../../../features/calendar/api/calendar.api";
+
+const MONTHS = [
+    "იანვარი", "თებერვალი", "მარტი", "აპრილი", "მაისი", "ივნისი",
+    "ივლისი", "აგვისტო", "სექტემბერი", "ოქტომბერი", "ნოემბერი", "დეკემბერი",
+];
 
 type EditModalProps = {
     open: boolean;
@@ -14,13 +22,32 @@ type EditModalProps = {
 };
 
 const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft, loading = false }: EditModalProps) => {
-    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [years, setYears] = useState<number[]>([]);
+    const [year, setYear] = useState<number | "">("");
+    const [month, setMonth] = useState<number | "">("");
+    const [day, setDay] = useState<number | "">("");
+
+    const [kaImage, setKaImage] = useState<File | null>(null);
+    const [enImage, setEnImage] = useState<File | null>(null);
+
+    const { updateImage, loading: updateLoading } = useImage();
+
+    // Load available years
+    useEffect(() => {
+        getYearsApi().then((res) => setYears(res));
+    }, []);
+
+    // Parse date from editDraft when it changes
+    useEffect(() => {
+        if (editDraft?.date) {
+            const date = new Date(editDraft.date);
+            setYear(date.getFullYear());
+            setMonth(date.getMonth());
+            setDay(date.getDate());
+        }
+    }, [editDraft]);
 
     if (!open || !editDraft) return null;
-
-    /* helpers */
-    const getLoc = (lang: "ka" | "en") =>
-        editDraft?.localizations?.[lang] ?? null;
 
     return (
         <div className="edit-overlay">
@@ -33,104 +60,120 @@ const EditModal = ({ open, onClose, onSave, editDraft, setEditDraft, loading = f
                 </Button>
 
                 <Box className="modal-content">
-                    {(imageFile || editDraft.imagePath) && (
-                        <img
-                            src={"http://localhost:5000" + (imageFile ? URL.createObjectURL(imageFile) : editDraft.imagePath)}
-                            alt="preview"
-                            style={{ maxWidth: 300, borderRadius: 8 }}
-                        />
-                    )}
+                    {/* Date Selection */}
+                    <Box display="flex" gap={2}>
+                        <FormControl fullWidth>
+                            <InputLabel>წელი</InputLabel>
+                            <Select
+                                value={year}
+                                label="წელი"
+                                onChange={(e) => setYear(e.target.value as number)}
+                            >
+                                {years.map((y) => (
+                                    <MenuItem key={y} value={y}>{y}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                    <Button component="label" variant="outlined">
-                        სურათის შეცვლა
-                        <input
-                            hidden
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                                if (e.target.files) {
-                                    const file = e.target.files[0];
-                                    setImageFile(file);
-                                    // Update the editDraft with the image file
-                                    setEditDraft({
-                                        ...editDraft,
-                                        imageFile: file
-                                    });
-                                }
-                            }}
-                        />
-                    </Button>
+                        <FormControl fullWidth>
+                            <InputLabel>თვე</InputLabel>
+                            <Select
+                                value={month}
+                                label="თვე"
+                                onChange={(e) => setMonth(e.target.value as number)}
+                            >
+                                {MONTHS.map((m, i) => (
+                                    <MenuItem key={i} value={i}>{m}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                    <Divider />
-
-                    <TextField
-                        label="სათაური (KA)"
-                        value={getLoc("ka")?.title || ""}
-                        onChange={(e) => {
-                            editDraft.localizations.ka.title = e.target.value;
-                            setEditDraft({ ...editDraft });
-                        }}
-                        fullWidth
-                        margin="normal"
-                    />
-
-                    <TextField
-                        label="აღწერა (KA)"
-                        value={getLoc("ka")?.description || ""}
-                        onChange={(e) => {
-                            editDraft.localizations.ka.description = e.target.value;
-                            setEditDraft({ ...editDraft });
-                        }}
-                        fullWidth
-                        multiline
-                        rows={3}
-                        margin="normal"
-                    />
+                        <FormControl fullWidth>
+                            <InputLabel>დღე</InputLabel>
+                            <Select
+                                value={day}
+                                label="დღე"
+                                onChange={(e) => setDay(e.target.value as number)}
+                            >
+                                {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                                    <MenuItem key={d} value={d}>{d}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
 
                     <Divider />
 
-                    <TextField
-                        label="Title (EN)"
-                        value={getLoc("en")?.title || ""}
-                        onChange={(e) => {
-                            editDraft.localizations.en.title = e.target.value;
-                            setEditDraft({ ...editDraft });
-                        }}
-                        fullWidth
-                        margin="normal"
-                    />
+                    {/* Georgian Image Upload */}
+                    <Typography variant="h6">ქართული სურათი (KA)</Typography>
+                    <Box sx={{ my: 2 }}>
+                        <ImageDropzone
+                            onImageChange={(file) => setKaImage(file)}
+                            initialImage={import.meta.env.VITE_API_BASE_URL + editDraft.localizations["ka"].imagePath}
+                            label="ატვირთეთ ქართული სურათი"
+                        />
+                    </Box>
 
-                    <TextField
-                        label="Description (EN)"
-                        value={getLoc("en")?.description || ""}
-                        onChange={(e) => {
-                            editDraft.localizations.en.description = e.target.value;
-                            setEditDraft({ ...editDraft });
-                        }}
-                        fullWidth
-                        multiline
-                        rows={3}
-                        margin="normal"
-                    />
+                    <Divider />
+
+                    {/* English Image Upload */}
+                    <Typography variant="h6">ინგლისური სურათი (EN)</Typography>
+                    <Box sx={{ my: 2 }}>
+                        <ImageDropzone
+                            onImageChange={(file) => setEnImage(file)}
+                            initialImage={import.meta.env.VITE_API_BASE_URL + editDraft.localizations["en"].imagePath}
+                            label="Upload English image"
+                        />
+                    </Box>
 
                     <Box display="flex" gap={2} className="modal-actions">
                         <Button 
-                            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />} 
+                            startIcon={(loading || updateLoading) ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />} 
                             variant="contained" 
-                            onClick={() => {
-                                onSave();
-                                setImageFile(null);
+                            onClick={async () => {
+                                if (!year || month === "" || !day) {
+                                    // Show error if date is not selected
+                                    return;
+                                }
+
+                                try {
+                                    // Create date with UTC time set to noon to avoid timezone issues
+                                    const date = new Date(Date.UTC(
+                                        year as number,
+                                        month as number,
+                                        day as number,
+                                        12, 0, 0
+                                    ));
+
+                                    // Update the image with the new date and images
+                                    await updateImage(
+                                        editDraft.id,
+                                        date,
+                                        kaImage,
+                                        enImage
+                                    );
+
+                                    // Call the onSave callback to refresh the data
+                                    onSave();
+
+                                    // Reset the image states
+                                    setKaImage(null);
+                                    setEnImage(null);
+                                } catch (error) {
+                                    console.error("Error updating image:", error);
+                                }
                             }}
-                            disabled={loading}
+                            disabled={loading || updateLoading}
                         >
-                            {loading ? 'იტვირთება...' : 'შენახვა'}
+                            {(loading || updateLoading) ? 'იტვირთება...' : 'შენახვა'}
                         </Button>
                         <Button
                             startIcon={<CloseIcon />}
                             variant="outlined"
                             onClick={() => {
                                 onClose();
-                                setImageFile(null);
+                                setKaImage(null);
+                                setEnImage(null);
                             }}
                         >
                             გაუქმება

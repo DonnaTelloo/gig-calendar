@@ -1,5 +1,5 @@
 // CreatePostPage.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Stepper,
     Step,
@@ -8,55 +8,62 @@ import {
 import Swal from "sweetalert2";
 
 import DateStep from "../../components/DateStep.tsx";
-import useCreatePost from "../../hooks/usePost.ts";
+import useImage from "../../hooks/useImage";
 import ContentStep from "../../components/ContentStep.tsx";
+import { getYearsApi } from "../../../../../features/calendar/api/calendar.api";
 
 export default function CreatePostPage() {
     const [step, setStep] = useState(0);
 
-    const [year, setYear] = useState<number[]>([]);
+    const [years, setYears] = useState<number[]>([]);
+    const [year, setYear] = useState<number | "">("");
     const [month, setMonth] = useState<number | "">("");
     const [day, setDay] = useState<number | "">("");
 
-    const [titleKa, setTitleKa] = useState("");
-    const [descriptionKa, setDescriptionKa] = useState("");
-    const [titleEn, setTitleEn] = useState("");
-    const [descriptionEn, setDescriptionEn] = useState("");
-    const [image, setImage] = useState<File | null>(null);
+    const [kaImage, setKaImage] = useState<File | null>(null);
+    const [enImage, setEnImage] = useState<File | null>(null);
 
-    const { createPost, loading } = useCreatePost();
+    const { createImage, loading } = useImage();
+
+    // Load available years
+    useEffect(() => {
+        getYearsApi().then((res) => setYears(res));
+    }, []);
 
     const resetForm = () => {
         setStep(0);
-
-        setYear([]);
+        setYear("");
         setMonth("");
         setDay("");
-
-        setTitleKa("");
-        setDescriptionKa("");
-        setTitleEn("");
-        setDescriptionEn("");
-        setImage(null);
+        setKaImage(null);
+        setEnImage(null);
     };
 
     const handleCreatePost = async () => {
-        try {
-            await createPost({
-                year,
-                month,
-                day,
-                titleKa,
-                descriptionKa,
-                titleEn,
-                descriptionEn,
-                image,
+        if (!year || month === "" || !day || !kaImage || !enImage) {
+            Swal.fire({
+                title: 'შეცდომა',
+                text: 'გთხოვთ შეავსოთ ყველა სავალდებულო ველი',
+                icon: 'error',
             });
+            return;
+        }
+
+        try {
+            // Create date with UTC time set to noon to avoid timezone issues
+            const date = new Date(Date.UTC(
+                year as number,
+                month as number,
+                day as number,
+                12, 0, 0
+            ));
+
+            await createImage(date, kaImage, enImage);
 
             const result = await Swal.fire({
                 icon: "success",
                 title: "წარმატება",
-                text: "პოსტი წარმატებით შეიქმნა",
+                text: "სურათი წარმატებით შეიქმნა",
                 confirmButtonText: "კარგი",
             });
 
@@ -70,7 +77,7 @@ export default function CreatePostPage() {
                 title: "შეცდომა",
                 text:
                     err?.response?.data?.message ||
-                    "პოსტის შექმნისას მოხდა შეცდომა",
+                    "სურათის შექმნისას მოხდა შეცდომა",
                 confirmButtonText: "დახურვა",
             });
 
@@ -84,12 +91,12 @@ export default function CreatePostPage() {
         <Container>
             <Stepper activeStep={step} sx={{ mb: 4 }}>
                 <Step><StepLabel>თარიღი</StepLabel></Step>
-                <Step><StepLabel>კონტენტი</StepLabel></Step>
+                <Step><StepLabel>სურათები</StepLabel></Step>
             </Stepper>
 
             {step === 0 && (
                 <DateStep
-                    years={year}
+                    years={years}
                     setYear={setYear}
                     month={month}
                     setMonth={setMonth}
@@ -101,16 +108,10 @@ export default function CreatePostPage() {
 
             {step === 1 && (
                 <ContentStep
-                    titleKa={titleKa}
-                    setTitleKa={setTitleKa}
-                    descriptionKa={descriptionKa}
-                    setDescriptionKa={setDescriptionKa}
-                    titleEn={titleEn}
-                    setTitleEn={setTitleEn}
-                    descriptionEn={descriptionEn}
-                    setDescriptionEn={setDescriptionEn}
-                    image={image}
-                    setImage={setImage}
+                    kaImage={kaImage}
+                    setKaImage={setKaImage}
+                    enImage={enImage}
+                    setEnImage={setEnImage}
                     loading={loading}
                     onBack={() => setStep(0)}
                     onSubmit={() => handleCreatePost()}

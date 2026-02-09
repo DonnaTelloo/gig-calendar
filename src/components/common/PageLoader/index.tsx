@@ -14,13 +14,13 @@ const PageLoader = () => {
                 flexDirection: "column",
                 gap: "2em"
             }}>
-                <img src={LogoKA} alt=""/>
                 <img src={BejuaKA} alt=""/>
+                <img src={LogoKA} alt=""/>
             </div>
         ) : (
             <div>
-                <img src={LogoEN} alt=""/>
                 <img src={BejuaEN} alt=""/>
+                <img src={LogoEN} alt=""/>
             </div>
         )}
     </div>)

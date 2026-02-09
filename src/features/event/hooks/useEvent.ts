@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useCalendarContext } from "../../../context";
-import { getArticles } from "../api/event.api.ts";
-import type {TFunction} from "i18next";
+import { getArticles } from "../api/event.api";
+import type { TFunction } from "i18next";
 
 export enum Direction {
     LEFT = "prev",
@@ -9,24 +9,26 @@ export enum Direction {
     CURRENT = "current",
 }
 
-const useEvent = (months: string[], weekdays: string[], t: TFunction) => {
+const useEvent = (
+    months: string[],
+    weekdays: string[],
+    t: TFunction
+) => {
     const { state, setDate, setIsLoading } = useCalendarContext();
+
     const [data, setData] = useState<any>(null);
     const [localLoading, setLocalLoading] = useState(false);
+
     const isInitialLoad = useRef(true);
 
-    // Cache to store data by month
+    /** Cache per YYYY-MM */
     const monthDataCache = useRef<Record<string, any>>({});
     const lastRequestedMonth = useRef<string | null>(null);
 
-    /* ---------- helpers ---------- */
+    /* -------------------------------- helpers -------------------------------- */
 
     const addDays = (date: Date, days: number) => {
-        const d = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate()
-        );
+        const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
         d.setDate(d.getDate() + days);
         return d;
     };
@@ -45,97 +47,70 @@ const useEvent = (months: string[], weekdays: string[], t: TFunction) => {
             month: months[date.getMonth()],
             weekday: weekdays[(date.getDay() + 6) % 7],
         },
-        title: null,
-        text: null,
+        title: t("noEventFound"),
+        text: t("noEventFoundDesc"),
         image: "/assets/nothing-found.svg",
     });
 
-    /* ---------- normalize ---------- */
+    /* -------------------------- page builder (SAFE) -------------------------- */
 
-    const normalizeArticles = (articlesData: Record<string, any>, baseDate: Date, lang: string = "ka") => {
-        // Create empty pages for prev, current, and next
-        const prevDate = addDays(baseDate, -1);
-        const nextDate = addDays(baseDate, 1);
+    const buildPage = (
+        date: Date,
+        articlesData: Record<string, any>,
+        lang: string
+    ) => {
+        const dateKey = toISO(date);
+        const article = articlesData?.[dateKey];
 
-        let prev = createEmptyPage(prevDate);
-        let current = createEmptyPage(baseDate);
-        let next = createEmptyPage(nextDate);
-
-        // Format dates to match the keys in the response
-        const currentDateKey = toISO(baseDate);
-        const prevDateKey = toISO(prevDate);
-        const nextDateKey = toISO(nextDate);
-
-        // Check if we have data for the current date
-        if (articlesData[currentDateKey]) {
-            const article = articlesData[currentDateKey];
-            // Get the current language from i18n
-            const currentLang = lang || "ka"; // Default to "ka" if lang is not provided
-
-            // Extract title and description from localizations if available
-            const localization = article.localizations?.[currentLang];
-
-            current = {
-                date: {
-                    iso: currentDateKey,
-                    day: String(baseDate.getDate()),
-                    month: months[baseDate.getMonth()],
-                    weekday: weekdays[(baseDate.getDay() + 6) % 7],
-                },
-                title: localization?.title || article.title || t("noEventFound"),
-                text: localization?.description || article.description || t("noEventFoundDesc"),
-                image: article.imagePath || "/assets/nothing-found.svg",
-            };
+        // ⛔ null or missing → empty page
+        if (!article) {
+            return createEmptyPage(date);
         }
 
-        // Check if we have data for the previous date
-        if (articlesData[prevDateKey]) {
-            const article = articlesData[prevDateKey];
-            // Get the current language from i18n
-            const currentLang = lang || "ka"; // Default to "ka" if lang is not provided
+        let imagePath = "/assets/nothing-found.svg";
 
-            // Extract title and description from localizations if available
-            const localization = article.localizations?.[currentLang];
-
-            prev = {
-                date: {
-                    iso: prevDateKey,
-                    day: String(prevDate.getDate()),
-                    month: months[prevDate.getMonth()],
-                    weekday: weekdays[(prevDate.getDay() + 6) % 7],
-                },
-                title: localization?.title || article.title || "No events",
-                text: localization?.description || article.description || "No historical data for this date.",
-                image: article.imagePath || "/assets/nothing-found.svg",
-            };
+        // new format: array
+        if (Array.isArray(article.localizations)) {
+            const loc = article.localizations.find(
+                (l: any) => l.languageCode === lang
+            );
+            if (loc?.imagePath) imagePath = loc.imagePath;
+        }
+        // old format: object
+        else if (article.localizations?.[lang]?.imagePath) {
+            imagePath = article.localizations[lang].imagePath;
+        }
+        // fallback
+        else if (article.imagePath) {
+            imagePath = article.imagePath;
         }
 
-        // Check if we have data for the next date
-        if (articlesData[nextDateKey]) {
-            const article = articlesData[nextDateKey];
-            // Get the current language from i18n
-            const currentLang = lang || "ka"; // Default to "ka" if lang is not provided
-
-            // Extract title and description from localizations if available
-            const localization = article.localizations?.[currentLang];
-
-            next = {
-                date: {
-                    iso: nextDateKey,
-                    day: String(nextDate.getDate()),
-                    month: months[nextDate.getMonth()],
-                    weekday: weekdays[(nextDate.getDay() + 6) % 7],
-                },
-                title: localization?.title || article.title || "No events",
-                text: localization?.description || article.description || "No historical data for this date.",
-                image: article.imagePath || "/assets/nothing-found.svg",
-            };
-        }
-
-        return { prev, current, next };
+        return {
+            date: {
+                iso: dateKey,
+                day: String(date.getDate()),
+                month: months[date.getMonth()],
+                weekday: weekdays[(date.getDay() + 6) % 7],
+            },
+            title: article.title || t("noEventFound"),
+            text: article.description || t("noEventFoundDesc"),
+            image: imagePath,
+        };
     };
 
-    /* ---------- main handler ---------- */
+    /* --------------------------- normalize handler --------------------------- */
+
+    const normalizeArticles = (
+        articlesData: Record<string, any>,
+        baseDate: Date,
+        lang: string
+    ) => ({
+        prev: buildPage(addDays(baseDate, -1), articlesData, lang),
+        current: buildPage(baseDate, articlesData, lang),
+        next: buildPage(addDays(baseDate, 1), articlesData, lang),
+    });
+
+    /* ---------------------------- main request ---------------------------- */
 
     const requestEventHandler = async (
         lang: string,
@@ -150,14 +125,17 @@ const useEvent = (months: string[], weekdays: string[], t: TFunction) => {
 
         const iso = toISO(baseDate);
 
-        // Get the year and month for caching
-        const yearMonth = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, "0")}`;
-        const currentYearMonth = `${state.date.getFullYear()}-${String(state.date.getMonth() + 1).padStart(2, "0")}`;
+        const yearMonth = `${baseDate.getFullYear()}-${String(
+            baseDate.getMonth() + 1
+        ).padStart(2, "0")}`;
 
-        // Check if month is changing
+        const currentYearMonth = `${state.date.getFullYear()}-${String(
+            state.date.getMonth() + 1
+        ).padStart(2, "0")}`;
+
         const isMonthChanging = yearMonth !== currentYearMonth;
 
-        // Use global loader for initial page load or when month changes
+        // loader logic
         if ((isInitialLoad.current && direction === Direction.CURRENT) || isMonthChanging) {
             setIsLoading(true);
         } else {
@@ -165,18 +143,13 @@ const useEvent = (months: string[], weekdays: string[], t: TFunction) => {
         }
 
         try {
-            let articlesData = {};
+            let articlesData = monthDataCache.current[yearMonth];
 
-            // Check if we need to fetch new data (if month changed or first load)
-            if (!monthDataCache.current[yearMonth] || yearMonth !== lastRequestedMonth.current) {
-                console.log(`Fetching data for month: ${yearMonth}`);
-                const result = await getArticles(iso, lang);
-                monthDataCache.current[yearMonth] = result.data ?? {};
+            if (!articlesData || lastRequestedMonth.current !== yearMonth) {
+                const res = await getArticles(iso);
+                articlesData = res.data ?? {};
+                monthDataCache.current[yearMonth] = articlesData;
                 lastRequestedMonth.current = yearMonth;
-                articlesData = monthDataCache.current[yearMonth];
-            } else {
-                console.log(`Using cached data for month: ${yearMonth}`);
-                articlesData = monthDataCache.current[yearMonth];
             }
 
             setData(normalizeArticles(articlesData, baseDate, lang));
@@ -184,12 +157,10 @@ const useEvent = (months: string[], weekdays: string[], t: TFunction) => {
             setData(normalizeArticles({}, baseDate, lang));
         }
 
-        setDate(baseDate); // 🔒 single source of truth
+        setDate(baseDate);
 
-        // Reset the appropriate loading state
         if ((isInitialLoad.current && direction === Direction.CURRENT) || isMonthChanging) {
             setIsLoading(false);
-            // After initial load, set flag to false
             isInitialLoad.current = false;
         } else {
             setLocalLoading(false);

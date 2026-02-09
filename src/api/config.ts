@@ -179,10 +179,10 @@ export const ENDPOINTS = {
     YEAR_INFO: "/yearinfo",
   },
   EVENT: {
-    ARTICLE_BY_DATE: "/calendar/monthly-articles",
-    ARTICLES: "/calendar/monthly-articles",
+    ARTICLE_BY_DATE: "/Image/days-in-month-with-images",
+    ARTICLES: "/Image/days-in-month-with-images",
     UPLOAD_IMAGE: "/calendar/upload-image",
-    BASE: "/calendar",
+    BASE: "/Image",
     UPDATE_BY_DATE: "/calendar/update-by-date",
   },
 };

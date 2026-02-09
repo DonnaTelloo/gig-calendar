@@ -94,16 +94,16 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
 
             switch (quarter) {
                 case 1:
-                    backgroundColor = '#e6f7ff'; // Light blue for Q1
+                    backgroundColor = '#D9EDF1'; // Light blue for Q1
                     break;
                 case 2:
-                    backgroundColor = '#f6ffed'; // Light green for Q2
+                    backgroundColor = '#F9E5EF'; // Light green for Q2
                     break;
                 case 3:
-                    backgroundColor = '#fff7e6'; // Light orange for Q3
+                    backgroundColor = '#F1F6D5'; // Light orange for Q3
                     break;
                 case 4:
-                    backgroundColor = '#f9f0ff'; // Light purple for Q4
+                    backgroundColor = '#D6CFE7'; // Light purple for Q4
                     break;
                 default:
                     backgroundColor = '';

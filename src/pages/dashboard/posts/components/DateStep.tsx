@@ -12,8 +12,8 @@ function DateStep({
                   }: any) {
     const YEARS = [2023, 2024, 2025, 2026, 2027];
     const MONTHS = [
-        "January","February","March","April","May","June",
-        "July","August","September","October","November","December"
+        "იანვარი", "თებერვალი", "მარტი", "აპრილი", "მაისი", "ივნისი",
+        "ივლისი", "აგვისტო", "სექტემბერი", "ოქტომბერი", "ნოემბერი", "დეკემბერი",
     ];
 
     const daysInMonth =

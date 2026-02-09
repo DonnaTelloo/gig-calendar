@@ -22,13 +22,13 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-import { ENDPOINTS } from "../../../../../api/config";
+import { ENDPOINTS, apiClient } from "../../../../../api/config";
 import { getYearsApi } from "../../../../../features/calendar/api/calendar.api";
 import {
     deleteArticleByDate,
-    getArticleByDate,
-    updateArticleByDate,
+    getArticleByDate, getArticles,
 } from "../../../../../features/event/api/event.api";
+import ImageZoom from "../../../../../components/common/ImageZoom";
 import EditModal from "../../components/EditModal";
 import CreateModal from "../../components/CreateModal";
 
@@ -88,8 +88,8 @@ const SearchArticle = () => {
 
         try {
             const isoDate = `${year}-${String((month as number) + 1).padStart(2, "0")}-01`;
-            const data = await getArticleByDate(isoDate);
-            setArticleMap(data);
+            const response = await getArticles(isoDate);
+            setArticleMap(response.data);
         } catch {
             setArticleMap(null);
         } finally {
@@ -98,7 +98,7 @@ const SearchArticle = () => {
     };
 
     /* DELETE */
-    const handleDelete = async (date: string) => {
+    const handleDelete = async (id: string) => {
         const res = await Swal.fire({
             title: "წაშლა?",
             text: "დარწმუნებული ხარ?",
@@ -111,11 +111,11 @@ const SearchArticle = () => {
         if (!res.isConfirmed) return;
 
         try {
-            setDeleteLoading(date);
-            await deleteArticleByDate(date);
+            setDeleteLoading(id);
+            await deleteArticleByDate(id);
             setArticleMap((prev) => {
                 if (!prev) return prev;
-                return { ...prev, [date]: null };
+                return { ...prev, [id]: null };
             });
 
             setEditOpen(false);
@@ -133,34 +133,22 @@ const SearchArticle = () => {
 
         try {
             setSaveLoading(true);
-            let imagePath = editDraft.imagePath;
 
-            if (editDraft.imageFile) {
-                imagePath = await uploadImage(editDraft.imageFile);
-            }
+            // The EditModal component now handles the API call directly
+            // We just need to refresh the data after the save
 
-            const updated = await updateArticleByDate(selectedDate, {
-                imagePath,
-                localizations: Object.entries(editDraft.localizations).map(
-                    ([languageCode, value]: [string, any]) => ({
-                        languageCode,
-                        title: value.title,
-                        description: value.description,
-                    })
-                ),
-            });
-
-            setArticleMap((prev) => ({
-                ...prev!,
-                [selectedDate]: updated,
-            }));
+            // Refresh the data
+            const isoDate = `${year}-${String((month as number) + 1).padStart(2, "0")}-01`;
+            const data = await getArticleByDate(isoDate);
+            setArticleMap(data);
 
             setEditOpen(false);
             setEditDraft(null);
             setSelectedDate(null);
 
-            Swal.fire("შენახულია!", "პოსტი წარმატებით განახლდა", "success");
-        } catch {
+            Swal.fire("შენახულია!", "სურათი წარმატებით განახლდა", "success");
+        } catch (error) {
+            console.error("Error refreshing data:", error);
             Swal.fire("შეცდომა", "განახლება ვერ მოხერხდა", "error");
         } finally {
             setSaveLoading(false);
@@ -217,7 +205,8 @@ const SearchArticle = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
-                            <TableCell>სათაური (KA)</TableCell>
+                            <TableCell>სურათი (KA)</TableCell>
+                            <TableCell>სურათი (EN)</TableCell>
                             <TableCell>თარიღი</TableCell>
                             <TableCell align="right">ქმედებები</TableCell>
                         </TableRow>
@@ -245,7 +234,28 @@ const SearchArticle = () => {
                                 <TableRow key={date}>
                                     <TableCell>{value?.id ?? "—"}</TableCell>
                                     <TableCell>
-                                        {value?.localizations?.ka?.title ?? <em>No article</em>}
+                                        {value ? (
+                                            <ImageZoom 
+                                                src={import.meta.env.VITE_API_BASE_URL + value.localizations["ka"].imagePath}
+                                                alt="Georgian image"
+                                                width={80}
+                                                height={60}
+                                            />
+                                        ) : (
+                                            <em>No image</em>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {value ? (
+                                            <ImageZoom 
+                                                src={import.meta.env.VITE_API_BASE_URL + value.localizations["ka"].imagePath}
+                                                alt="English image"
+                                                width={80}
+                                                height={60}
+                                            />
+                                        ) : (
+                                            <em>No image</em>
+                                        )}
                                     </TableCell>
                                     <TableCell>{date}</TableCell>
                                     <TableCell align="right">
@@ -263,7 +273,7 @@ const SearchArticle = () => {
                                                 </IconButton>
                                                 <IconButton
                                                     color="error"
-                                                    onClick={() => handleDelete(date)}
+                                                    onClick={() => handleDelete(value.id)}
                                                     disabled={deleteLoading === date}
                                                 >
                                                     {deleteLoading === date ? (

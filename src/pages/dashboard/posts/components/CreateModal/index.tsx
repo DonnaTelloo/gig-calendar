@@ -1,11 +1,12 @@
-import { Box, Button, Divider, TextField, Typography, FormControl, InputLabel, MenuItem, Select, CircularProgress } from "@mui/material";
+import { Box, Button, Divider, Typography, FormControl, InputLabel, MenuItem, Select, CircularProgress } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState, useEffect } from "react";
-import useCreatePost from "../../hooks/usePost";
+import useImage from "../../hooks/useImage";
 import { getYearsApi } from "../../../../../features/calendar/api/calendar.api";
 import "../EditModal/style.css";
 import Swal from "sweetalert2";
+import ImageDropzone from "../../../../../components/common/ImageDropzone";
 
 type CreateModalProps = {
     open: boolean;
@@ -25,13 +26,10 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
     const [month, setMonth] = useState<number | "">("");
     const [day, setDay] = useState<number | "">("");
 
-    const [titleKa, setTitleKa] = useState("");
-    const [descriptionKa, setDescriptionKa] = useState("");
-    const [titleEn, setTitleEn] = useState("");
-    const [descriptionEn, setDescriptionEn] = useState("");
-    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [kaImage, setKaImage] = useState<File | null>(null);
+    const [enImage, setEnImage] = useState<File | null>(null);
 
-    const { createPost, loading } = useCreatePost();
+    const { createImage, loading } = useImage();
 
     // Load available years
     useEffect(() => {
@@ -53,11 +51,8 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
         setYear("");
         setMonth("");
         setDay("");
-        setTitleKa("");
-        setDescriptionKa("");
-        setTitleEn("");
-        setDescriptionEn("");
-        setImageFile(null);
+        setKaImage(null);
+        setEnImage(null);
     };
 
     const handleClose = () => {
@@ -66,7 +61,7 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
     };
 
     const handleSave = async () => {
-        if (!year || month === "" || !day || !titleKa || !descriptionKa || !titleEn || !descriptionEn || !imageFile) {
+        if (!year || month === "" || !day || !kaImage || !enImage) {
             Swal.fire({
                 title: 'შეცდომა',
                 text: 'გთხოვთ შეავსოთ ყველა სავალდებულო ველი',
@@ -76,24 +71,23 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
         }
 
         try {
-            await createPost({
-                year: year as number,
-                month: month as number,
-                day: day as number,
-                titleKa,
-                descriptionKa,
-                titleEn,
-                descriptionEn,
-                image: imageFile,
-            });
+            // Create date with UTC time set to noon to avoid timezone issues
+            const date = new Date(Date.UTC(
+                year as number,
+                month as number,
+                day as number,
+                12, 0, 0
+            ));
+
+            await createImage(date, kaImage, enImage);
 
             resetForm();
             onSuccess();
         } catch (error) {
-            console.error("Error creating post:", error);
+            console.error("Error creating image post:", error);
             Swal.fire({
                 title: 'შეცდომა',
-                text: 'პოსტის შექმნა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან.',
+                text: 'სურათის შექმნა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან.',
                 icon: 'error',
             });
         }
@@ -156,70 +150,25 @@ const CreateModal = ({ open, onClose, onSuccess, selectedDate }: CreateModalProp
 
                     <Divider />
 
-                    {/* Image Upload */}
-                    {imageFile && (
-                        <img
-                            src={URL.createObjectURL(imageFile)}
-                            alt="preview"
-                            style={{ maxWidth: 300, borderRadius: 8 }}
+                    {/* Georgian Image Upload */}
+                    <Typography variant="h6">ქართული სურათი (KA)</Typography>
+                    <Box sx={{ my: 2 }}>
+                        <ImageDropzone
+                            onImageChange={(file) => setKaImage(file)}
+                            label="ატვირთეთ ქართული სურათი"
                         />
-                    )}
-
-                    <Button component="label" variant="outlined">
-                        სურათის ატვირთვა
-                        <input
-                            hidden
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                                if (e.target.files) {
-                                    setImageFile(e.target.files[0]);
-                                }
-                            }}
-                        />
-                    </Button>
+                    </Box>
 
                     <Divider />
 
-                    {/* Georgian Content */}
-                    <TextField
-                        label="სათაური (KA)"
-                        value={titleKa}
-                        onChange={(e) => setTitleKa(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
-
-                    <TextField
-                        label="აღწერა (KA)"
-                        value={descriptionKa}
-                        onChange={(e) => setDescriptionKa(e.target.value)}
-                        fullWidth
-                        multiline
-                        rows={3}
-                        margin="normal"
-                    />
-
-                    <Divider />
-
-                    {/* English Content */}
-                    <TextField
-                        label="Title (EN)"
-                        value={titleEn}
-                        onChange={(e) => setTitleEn(e.target.value)}
-                        fullWidth
-                        margin="normal"
-                    />
-
-                    <TextField
-                        label="Description (EN)"
-                        value={descriptionEn}
-                        onChange={(e) => setDescriptionEn(e.target.value)}
-                        fullWidth
-                        multiline
-                        rows={3}
-                        margin="normal"
-                    />
+                    {/* English Image Upload */}
+                    <Typography variant="h6">ინგლისური სურათი (EN)</Typography>
+                    <Box sx={{ my: 2 }}>
+                        <ImageDropzone
+                            onImageChange={(file) => setEnImage(file)}
+                            label="Upload English image"
+                        />
+                    </Box>
 
                     <Box display="flex" gap={2} className="modal-actions">
                         <Button 
