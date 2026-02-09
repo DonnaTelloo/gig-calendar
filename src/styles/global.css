@@ -277,7 +277,7 @@ button {
         min-height: calc(100% - 7vh);
         height: max-content!important;
         padding:
-                calc(env(safe-area-inset-top) + 16px)
+                0
                 10%
                 calc(env(safe-area-inset-bottom) + 130px)!important;
     }
