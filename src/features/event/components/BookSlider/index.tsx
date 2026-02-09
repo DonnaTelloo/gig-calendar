@@ -305,7 +305,7 @@ export const BookSlider = () => {
 
                     {/* FLIP PAGE */}
                     {flipSlide && (
-                        <article className={`page flip ${direction} animate`} style={{background: 'red'}}>
+                        <article className={`page flip ${direction} animate`} style={{background: window.getComputedStyle(document.body).backgroundColor}}>
                             {/*<PageHeader*/}
                             {/*    date={flipSlide.date}*/}
                             {/*    onShare={() => setIsShareOpen(true)}*/}
