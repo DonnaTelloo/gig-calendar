@@ -83,9 +83,9 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
                             alt=""
                         />
                     </span>
-                    {calendarOpen
+                    <span>{calendarOpen
                         ? t("calendar.close")
-                        : t("calendar.explore")}
+                        : t("calendar.explore")}</span>
                 </button>
 
                 {/* DESKTOP LANGUAGE SWITCH */}

@@ -272,6 +272,10 @@ button {
         height: calc(100% - 15%);
     }
 
+    .header-actions span:last-child {
+        display: none;
+    }
+
     .page {
         /*padding: 0 10%;*/
         min-height: calc(100% - 7vh);
