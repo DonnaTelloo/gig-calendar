@@ -218,9 +218,9 @@ export const BookSlider = () => {
             console.error("Failed to preload image:", error);
         }
 
-        setIsFlipping(true);
-        setDirection(dir);
         setFlipSlide(snapshot);
+        setDirection(dir);
+        setIsFlipping(true);
 
         setTimeout(async () => {
             setFlipSlide(null);
