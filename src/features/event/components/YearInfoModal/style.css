@@ -19,6 +19,9 @@
     position: relative;
     text-align: center;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Close button */
