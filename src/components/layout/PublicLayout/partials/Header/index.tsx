@@ -10,8 +10,8 @@ import USFlag from "../../../../../../public/assets/us-flag.svg";
 import MenuIcon from "../../../../../../public/assets/menu.svg";
 import LogoKA from "../../../../../../public/assets/logo-ka.png";
 import LogoEN from "../../../../../../public/assets/logo-en.png";
-import LogoBejuaKA from "../../../../../../public/assets/d-bejuashvili-logo.png";
 import LogoBejuaEN from "../../../../../../public/assets/d-bejuashvili-logo-en.png";
+import LogoBejuaKA from "../../../../../../public/assets/d-bejuashvili-logo.png";
 
 /* ------------------- HEADER ------------------- */
 

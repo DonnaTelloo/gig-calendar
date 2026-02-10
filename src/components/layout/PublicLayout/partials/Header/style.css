@@ -19,12 +19,17 @@
 .logo a {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
 .logo img {
     height: 3vh;
     /*width: auto;*/
+}
+
+.logo img:first-child {
+    height: 5vh;
 }
 
 /* ------------------- ACTIONS ------------------- */

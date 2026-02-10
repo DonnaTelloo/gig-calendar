@@ -27,5 +27,6 @@
   ],
   "notAvailable": "Not available",
   "noEventFound": "No events",
-  "noEventFoundDesc": "No historical data for this date."
+  "noEventFoundDesc": "No historical data for this date.",
+  "yearInfoNotFoundDesc": "This year does not contain any data"
 }

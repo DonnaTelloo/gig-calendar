@@ -257,6 +257,8 @@ export const BookSlider = () => {
     }
     const isFound = data[direction].image !== "/assets/nothing-found.svg";
 
+    console.log(data[direction])
+
     return (
         <>
             <ShareModal

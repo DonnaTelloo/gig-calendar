@@ -27,5 +27,6 @@
   ],
   "notAvailable": "ხელმიუწვდომელია",
   "noEventFound": "მონაცემები არ არის",
-  "noEventFoundDesc": "ამ თარიღისთვის ისტორია არ მოიძებნა"
+  "noEventFoundDesc": "ამ თარიღისთვის ისტორია არ მოიძებნა",
+  "yearInfoNotFoundDesc": "ინფორმაცია არ მოიძებნა"
 }

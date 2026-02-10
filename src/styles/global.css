@@ -212,6 +212,11 @@ button {
 /* =========================
    TABLET / MOBILE
 ========================= */
+@media (max-width: 1415px) {
+    .book-slider {
+        width: 95%;
+    }
+}
 
 @media (max-width: 1024px) {
 
