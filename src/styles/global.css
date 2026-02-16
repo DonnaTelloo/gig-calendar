@@ -309,7 +309,7 @@ button {
     .page {
         /*padding: 0 10%;*/
         min-height: calc(100% - 12vh);
-        overflow: hidden;
+        /*overflow: hidden;*/
         /*height: max-content!important;*/
         /*padding:*/
         /*        0*/
