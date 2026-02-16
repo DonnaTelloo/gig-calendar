@@ -5,6 +5,7 @@ import CalendarModal from "../../../features/calendar/components/CalendarModal";
 import Calendar from "../../../features/calendar/components/Calendar";
 import { useCalendarContext } from "../../../context";
 import PageLoader from "../../common/PageLoader";
+import Footer from "./partials/Footer/Footer.tsx";
 
 export default function PublicLayout() {
     const [calendarOpen, setCalendarOpen] = useState(false);
@@ -85,6 +86,7 @@ export default function PublicLayout() {
                         )}
 
                 </div>
+                <Footer />
             </div>
         </>
     );

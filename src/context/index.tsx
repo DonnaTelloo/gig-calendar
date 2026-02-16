@@ -89,29 +89,29 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({
     // Update background color based on year and month
     const updateBackgroundColor = (year: number, month: number) => {
         if (year === 2026) {
-            const quarter = Math.floor(month / 3) + 1;
-            let backgroundColor;
+            // Shift month so December becomes start of cycle
+            const shiftedMonth = (month + 1) % 12;
+            const quarter = Math.floor(shiftedMonth / 3) + 1;
+
+            let backgroundColor = '';
 
             switch (quarter) {
                 case 1:
-                    backgroundColor = '#D9EDF1'; // Light blue for Q1
+                    backgroundColor = '#D9EDF1';
                     break;
                 case 2:
-                    backgroundColor = '#F9E5EF'; // Light green for Q2
+                    backgroundColor = '#F9E5EF';
                     break;
                 case 3:
-                    backgroundColor = '#F1F6D5'; // Light orange for Q3
+                    backgroundColor = '#F1F6D5';
                     break;
                 case 4:
-                    backgroundColor = '#D6CFE7'; // Light purple for Q4
+                    backgroundColor = '#D6CFE7';
                     break;
-                default:
-                    backgroundColor = '';
             }
 
             document.body.style.backgroundColor = backgroundColor;
         } else {
-            // Reset background color for other years
             document.body.style.backgroundColor = '';
         }
     };
