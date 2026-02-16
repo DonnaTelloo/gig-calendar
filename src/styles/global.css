@@ -140,6 +140,7 @@ button {
 }
 
 .footer {
+    box-sizing: content-box;
     background: white;
     height: 5vh;
     display: flex;
@@ -298,7 +299,7 @@ button {
         justify-content: center;
         /*background: red;*/
         /*height: calc(100% - 15%);*/
-        height: 88vh;
+        height: calc(100vh - 12vh);
     }
 
     .header-actions span:last-child {
@@ -307,7 +308,7 @@ button {
 
     .page {
         /*padding: 0 10%;*/
-        min-height: calc(100% - 7vh);
+        min-height: calc(100% - 12vh);
         overflow: hidden;
         /*height: max-content!important;*/
         /*padding:*/
@@ -317,7 +318,7 @@ button {
     }
 
     .page img {
-        height: calc(100% - 7vh);
+        height: calc(100% - 12vh);
     }
 
     .page p {
