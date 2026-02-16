@@ -259,7 +259,7 @@ button {
     }
 
     .gig-container {
-        padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+        padding-bottom: calc(16vh + env(safe-area-inset-bottom)) !important;
     }
 
     .timeline-panel {
@@ -311,10 +311,10 @@ button {
         min-height: calc(100% - 12vh);
         overflow: hidden;
         /*height: max-content!important;*/
-        padding:
-                0
-                10%
-                calc(env(safe-area-inset-bottom) + 130px)!important;
+        /*padding:*/
+        /*        0*/
+        /*        10%*/
+        /*        calc(env(safe-area-inset-bottom) + 130px)!important;*/
     }
 
     .page img {
