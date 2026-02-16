@@ -309,12 +309,12 @@ button {
     .page {
         /*padding: 0 10%;*/
         min-height: calc(100% - 12vh);
-        /*overflow: hidden;*/
+        overflow: hidden;
         /*height: max-content!important;*/
-        /*padding:*/
-        /*        0*/
-        /*        10%*/
-        /*        calc(env(safe-area-inset-bottom) + 130px)!important;*/
+        padding:
+                0
+                10%
+                calc(env(safe-area-inset-bottom) + 130px)!important;
     }
 
     .page img {
