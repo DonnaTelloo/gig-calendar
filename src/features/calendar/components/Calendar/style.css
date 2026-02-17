@@ -1,7 +1,8 @@
 .calendar {
-    height: calc(100vh - 7vh);
+    height: auto;
     flex: 1;
     background: #FFF;
+    padding-bottom: 10px;
 }
 
 /*.calendar-header {*/

@@ -155,7 +155,11 @@
 
 .page-content {
     will-change: filter;
-    min-height: calc(100% - 75px);
+    height: 100%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+
+    /*background: red;*/
 
     display: flex;
     flex-direction: column;
@@ -211,7 +215,7 @@
 
 .page img {
     width: auto;
-    height: 93vh;
+    height: 100%;
     /*margin: 0 auto 24px;*/
     display: block;
 
@@ -270,12 +274,12 @@
     .book-slider {
         width: 100%;
         touch-action: pan-y;
-        padding: 1%;
+        /*padding: 1%;*/
     }
 
     /* Add space above image on mobile */
     .page-content {
-        padding-top: 20px;
+        /*padding-top: 20px;*/
         justify-content: flex-start;
     }
 

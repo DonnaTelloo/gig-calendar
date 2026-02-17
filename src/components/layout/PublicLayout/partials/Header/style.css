@@ -120,7 +120,7 @@
 
 .mobile-menu {
     position: absolute;
-    top: 100%;
+    top: 0;
     right: 5vh;
     background: white;
     /* border-radius: 12px; */
