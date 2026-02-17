@@ -146,7 +146,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+    /*padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;*/
 }
 
 .footer .copyright {
