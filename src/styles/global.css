@@ -239,6 +239,12 @@ button {
 
 @media (max-width: 1024px) {
 
+    .footer {
+        align-items: center;
+        justify-content: center;
+        height: 3vh;
+    }
+
     .header {
         padding-right: 4%!important;
         padding-left: 4% !important;
@@ -250,7 +256,7 @@ button {
 
     .content {
         grid-template-columns: 1fr;
-        min-height: calc(100% - 12vh);
+        min-height: calc(100% - 10vh);
         /*padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;*/
     }
 
@@ -312,7 +318,7 @@ button {
 
     .page {
         /*padding: 0 10%;*/
-        min-height: calc(100% - 12vh);
+        min-height: calc(100% - 10vh);
         overflow: hidden;
         /*height: max-content!important;*/
         /*padding:*/
@@ -322,7 +328,7 @@ button {
     }
 
     .page img {
-        height: calc(100% - 12vh);
+        height: calc(100% - 10vh);
     }
 
     .page p {
