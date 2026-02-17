@@ -1,6 +1,6 @@
 const Footer = () => {
     return <div className="footer">
-        <span className='copyright'>ყველა უფლება დაცულია</span>
+        <span className='copyright'>© {new Date().getFullYear()} ყველა უფლება დაცულია</span>
     </div>;
 }
 

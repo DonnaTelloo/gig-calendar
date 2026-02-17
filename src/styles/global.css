@@ -153,6 +153,7 @@ button {
     text-align: center;
     font-feature-settings: 'case' on;
     color: gray;
+    font-size: 12px;
 }
 
 .MuiModal-root, .swal2-container {
