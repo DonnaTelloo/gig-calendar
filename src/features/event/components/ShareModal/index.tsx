@@ -130,12 +130,20 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
 
     // Share to Facebook
     const shareToFacebook = () => {
-        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent((title || 'Historical Event') + ': ' + (description || 'Check out this historical event'))}&hashtag=%23HistoricalEvent`;
-        window.open(shareUrl, '_blank', 'width=600,height=400');
+        try {
+            const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent((title || 'Historical Event') + ': ' + (description || 'Check out this historical event'))}&hashtag=%23HistoricalEvent`;
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        } catch (error) {
+            console.error('Failed to open Facebook share dialog:', error);
+            setCopyNotification('Failed to open Facebook. Try copying the link instead.');
+        }
     };
 
     // Share to Instagram
     const shareToInstagram = async () => {
+        // Instagram doesn't have a direct web sharing API like Facebook
+        // So we'll use a combination of approaches
+
         // Try Web Share API first (mobile)
         if (navigator.share) {
             try {
@@ -155,6 +163,11 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
             const formattedText = `${title || 'Historical Event'}\n\n${description || 'Check out this historical event'}\n\n${url}`;
             await navigator.clipboard.writeText(formattedText);
             setCopyNotification('Content copied. Open Instagram and paste it to share.');
+
+            // Try to open Instagram app or website
+            setTimeout(() => {
+                window.open('https://www.instagram.com/', '_blank');
+            }, 1000);
         } catch {
             setCopyNotification('Sharing not supported on this browser.');
         }
@@ -170,8 +183,13 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
 
     // Share to LinkedIn
     const shareToLinkedIn = () => {
-        const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title || 'Historical Event')}&summary=${encodeURIComponent(description || 'Check out this historical event')}&source=GigCalendar`;
-        window.open(shareUrl, '_blank', 'width=600,height=400');
+        try {
+            const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title || 'Historical Event')}&summary=${encodeURIComponent(description || 'Check out this historical event')}&source=GigCalendar`;
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        } catch (error) {
+            console.error('Failed to open LinkedIn share dialog:', error);
+            setCopyNotification('Failed to open LinkedIn. Try copying the link instead.');
+        }
     };
 
     return (
@@ -190,8 +208,8 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                 <p>The fact you share will be the best way to promote it</p>
 
                 <div className="share-input">
-                    <input value={url} readOnly />
-                    <button onClick={copyToClipboard}>📋</button>
+                    <input value={url} readOnly onClick={() => copyToClipboard()} />
+                    <button onClick={copyToClipboard} title="Copy to clipboard">📋</button>
                 </div>
                 {copyNotification && (
                     <div className="copy-notification">
@@ -199,36 +217,29 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                     </div>
                 )}
 
-                {/*<div className="share-buttons">*/}
-                {/*    <button */}
-                {/*        className="social-share-button facebook-button"*/}
-                {/*        onClick={shareToFacebook}*/}
-                {/*    >*/}
-                {/*        <FacebookIcon style={{ marginRight: '8px' }} />*/}
-                {/*        Share on Facebook*/}
-                {/*    </button>*/}
-                {/*    <button */}
-                {/*        className="social-share-button instagram-button"*/}
-                {/*        onClick={shareToInstagram}*/}
-                {/*    >*/}
-                {/*        <InstagramIcon style={{ marginRight: '8px' }} />*/}
-                {/*        Share on Instagram*/}
-                {/*    </button>*/}
-                {/*    <button */}
-                {/*        className="social-share-button whatsapp-button"*/}
-                {/*        onClick={shareToWhatsApp}*/}
-                {/*    >*/}
-                {/*        <WhatsAppIcon style={{ marginRight: '8px' }} />*/}
-                {/*        Share on WhatsApp*/}
-                {/*    </button>*/}
-                {/*    <button */}
-                {/*        className="social-share-button linkedin-button"*/}
-                {/*        onClick={shareToLinkedIn}*/}
-                {/*    >*/}
-                {/*        <LinkedInIcon style={{ marginRight: '8px' }} />*/}
-                {/*        Share on LinkedIn*/}
-                {/*    </button>*/}
-                {/*</div>*/}
+                <div className="share-buttons">
+                    <button 
+                        className="social-share-button facebook-button"
+                        onClick={shareToFacebook}
+                    >
+                        <FacebookIcon style={{ marginRight: '8px' }} />
+                        Share on Facebook
+                    </button>
+                    <button 
+                        className="social-share-button instagram-button"
+                        onClick={shareToInstagram}
+                    >
+                        <InstagramIcon style={{ marginRight: '8px' }} />
+                        Share on Instagram
+                    </button>
+                    <button 
+                        className="social-share-button linkedin-button"
+                        onClick={shareToLinkedIn}
+                    >
+                        <LinkedInIcon style={{ marginRight: '8px' }} />
+                        Share on LinkedIn
+                    </button>
+                </div>
             </div>
         </div>
     );

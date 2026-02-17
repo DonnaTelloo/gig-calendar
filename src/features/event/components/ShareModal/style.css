@@ -80,6 +80,7 @@
     color: #9b9b9b;
     outline: none;
     width: 90%;
+    cursor: pointer;
 }
 
 /* Copy button */
@@ -125,6 +126,7 @@
     justify-content: center;
     color: white;
     width: calc(50% - 6px);
+    margin-bottom: 10px;
 }
 
 .social-share-button:hover {

@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import "./index.css";
 import ShareIcon from "../../../../../public/assets/share.svg";
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import useEvent from "../../hooks/useEvent";
 import { ShareModal } from "../ShareModal";
 import { useTranslation } from "react-i18next";
 import { useCalendarContext } from "../../../../context";
 import PageHeader from "./micro-components/article-header.component.tsx";
 import {Helmet} from 'react-helmet'
+import FullscreenImage from "../../../../components/common/FullscreenImage";
 
 enum Direction {
     LEFT = "prev",
@@ -298,7 +300,24 @@ export const BookSlider = () => {
                                 </div>
                         ) : (
                             <div className="page-content">
-                                <img src={import.meta.env.VITE_API_BASE_URL + data[direction].image} />
+                                <div style={{ position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                                    <img src={import.meta.env.VITE_API_BASE_URL + data[direction].image} />
+                                    <div className="image-controls">
+                                        <button 
+                                            className="image-control-button" 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setIsShareOpen(true);
+                                            }}
+                                        >
+                                            <img src={ShareIcon} alt="Share" />
+                                        </button>
+                                        <FullscreenImage 
+                                            src={import.meta.env.VITE_API_BASE_URL + data[direction].image}
+                                            alt={data[direction].title || "Image"}
+                                        />
+                                    </div>
+                                </div>
                                 {/*<h2>{data[direction].title}</h2>*/}
                                 {/*<p>{data[direction].text}</p>*/}
                             </div>
@@ -335,11 +354,24 @@ export const BookSlider = () => {
                                             {/*<p style={{textAlign: 'center'}}>{flipSlide.text ?? t("noEventFoundDesc")}</p>*/}
                                         </>
                                     ) : (
-                                        <>
+                                        <div style={{ position: 'relative', height: '100%', width: '100%', display: 'flex', justifyContent: 'center' }}>
                                             <img src={import.meta.env.VITE_API_BASE_URL + flipSlide.image} />
-                                            {/*<h2>{flipSlide.title}</h2>*/}
-                                            {/*<p>{flipSlide.text}</p>*/}
-                                        </>
+                                            <div className="image-controls">
+                                                <button 
+                                                    className="image-control-button" 
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setIsShareOpen(true);
+                                                    }}
+                                                >
+                                                    <img src={ShareIcon} alt="Share" />
+                                                </button>
+                                                <FullscreenImage 
+                                                    src={import.meta.env.VITE_API_BASE_URL + flipSlide.image}
+                                                    alt={flipSlide.title || "Image"}
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                         </article>
