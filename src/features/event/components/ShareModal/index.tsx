@@ -131,7 +131,7 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
     // Share to Facebook
     const shareToFacebook = () => {
         try {
-            const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent((title || 'Historical Event') + ': ' + (description || 'Check out this historical event'))}&hashtag=%23HistoricalEvent`;
+            const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
             window.open(shareUrl, '_blank', 'width=600,height=400');
         } catch (error) {
             console.error('Failed to open Facebook share dialog:', error);
@@ -223,21 +223,18 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                         onClick={shareToFacebook}
                     >
                         <FacebookIcon style={{ marginRight: '8px' }} />
-                        Share on Facebook
                     </button>
                     <button 
                         className="social-share-button instagram-button"
                         onClick={shareToInstagram}
                     >
                         <InstagramIcon style={{ marginRight: '8px' }} />
-                        Share on Instagram
                     </button>
                     <button 
                         className="social-share-button linkedin-button"
                         onClick={shareToLinkedIn}
                     >
                         <LinkedInIcon style={{ marginRight: '8px' }} />
-                        Share on LinkedIn
                     </button>
                 </div>
             </div>

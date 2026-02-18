@@ -269,7 +269,8 @@ button {
     }
 
     .share-modal {
-        width: 80%!important;
+        width: 95%!important;
+        padding: 48px 20px;
     }
 
     .content {

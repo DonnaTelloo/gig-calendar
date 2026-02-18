@@ -18,7 +18,7 @@
     position: relative;
     text-align: center;
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
-    max-height: 50vh;
+    /*max-height: 50vh;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -108,7 +108,7 @@
     margin-top: 24px;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 5px;
     justify-content: center;
 }
 
@@ -117,7 +117,7 @@
     border: none;
     border-radius: 12px;
     padding: 12px 20px;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -125,7 +125,7 @@
     align-items: center;
     justify-content: center;
     color: white;
-    width: calc(50% - 6px);
+    width: calc(100% / 3 - 5px);
     margin-bottom: 10px;
 }
 
