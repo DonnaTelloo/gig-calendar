@@ -347,7 +347,7 @@ button {
     }
 
     .page img {
-        height: calc(100% - 10vh);
+        height: 100%;
     }
 
     .page p {
