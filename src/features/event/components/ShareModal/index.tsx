@@ -130,6 +130,7 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
 
     // Share to Facebook
     const shareToFacebook = () => {
+        console.log(url);
         try {
             const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
             window.open(shareUrl, '_blank', 'width=600,height=400');
