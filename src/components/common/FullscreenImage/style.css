@@ -17,7 +17,7 @@
 
 .fullscreen-close-button {
   position: absolute !important;
-  top: calc(30px + env(safe-area-inset-top)) !important;
+  top: calc(60px + env(safe-area-inset-top)) !important;
   right: 20px;
   background-color: rgba(255, 255, 255, 0.2) !important;
   z-index: 10;
