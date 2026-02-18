@@ -261,7 +261,6 @@ button {
     .footer {
         align-items: center;
         justify-content: center;
-        height: 3vh;
     }
 
     .header {
@@ -275,7 +274,7 @@ button {
 
     .content {
         grid-template-columns: 1fr;
-        min-height: calc(100% - 10vh);
+        min-height: calc(100% - 12vh);
         /*padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;*/
     }
 
@@ -337,7 +336,7 @@ button {
 
     .page {
         /*padding: 0 10%;*/
-        min-height: calc(100% - 10vh);
+        min-height: calc(100% - 12vh);
         overflow: hidden;
         /*height: max-content!important;*/
         /*padding:*/
