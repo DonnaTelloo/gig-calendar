@@ -357,6 +357,10 @@ button {
     .share-modal {
         width: 90%;
     }
+
+    .fullscreen-close-button {
+        top: calc(60px + env(safe-area-inset-top)) !important;
+    }
 }
 
 /* =========================
