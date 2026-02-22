@@ -45,7 +45,7 @@ export default function Calendar() {
         <div className="calendar">
             <div className="year-introduction">
                 <button className="year-intro-button" onClick={handleYearInfoClick}>
-                    {state.year} | {t("projectAbout", "პროექტის შესახებ")}
+                    {state.year} | {t("projectAbout")}
                 </button>
             </div>
             {state.years?.map(year => (

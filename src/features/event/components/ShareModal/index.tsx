@@ -200,10 +200,7 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                 onClick={(e) => e.stopPropagation()}
             >
                 <button className="close-btn" onClick={onClose}>×</button>
-
-                <div className="logo">
-                    <Logo />
-                </div>
+                
 
                 <h3>Share a historical fact</h3>
                 <p>The fact you share will be the best way to promote it</p>

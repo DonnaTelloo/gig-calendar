@@ -2,6 +2,8 @@
   "share": "Share",
   "next": "Next",
   "previous": "Previous",
+  "projectAbout": "About project",
+  "yearIntro": "Introduction of year",
   "calendar": {
     "title": "Calendar",
     "today": "Today",

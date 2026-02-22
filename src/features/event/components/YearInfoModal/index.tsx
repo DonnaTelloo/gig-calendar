@@ -1,5 +1,6 @@
 import './style.css';
 import { useState, useEffect } from 'react';
+import {useTranslation} from "react-i18next";
 
 type YearInfoModalProps = {
     open: boolean;
@@ -10,6 +11,8 @@ type YearInfoModalProps = {
 
 export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalProps) => {
     const [dontShowAgain, setDontShowAgain] = useState(false);
+
+    const { t } = useTranslation();
 
     // Check localStorage on component mount
     useEffect(() => {
@@ -35,7 +38,7 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
             <div className="yearinfo-modal">
                 <button className="close-btn" onClick={onClose}>×</button>
 
-                <h3>{year} წლის მიმოხილვა</h3>
+                <h3>{year} {t("yearIntro")}</h3>
 
                 <div 
                     className="yearinfo-content"
