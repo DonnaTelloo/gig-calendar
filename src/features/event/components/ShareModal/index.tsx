@@ -222,12 +222,12 @@ export const ShareModal = ({ open, url, onClose, title, description, image }: Sh
                     >
                         <FacebookIcon style={{ marginRight: '8px' }} />
                     </button>
-                    <button 
-                        className="social-share-button instagram-button"
-                        onClick={shareToInstagram}
-                    >
-                        <InstagramIcon style={{ marginRight: '8px' }} />
-                    </button>
+                    {/*<button */}
+                    {/*    className="social-share-button instagram-button"*/}
+                    {/*    onClick={shareToInstagram}*/}
+                    {/*>*/}
+                    {/*    <InstagramIcon style={{ marginRight: '8px' }} />*/}
+                    {/*</button>*/}
                     <button 
                         className="social-share-button linkedin-button"
                         onClick={shareToLinkedIn}
