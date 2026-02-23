@@ -165,12 +165,12 @@ export default function PostsPage() {
             const localizations = [
                 {
                     languageCode: "ka",
-                    description: descriptionKa,
+                    description: titleKa + "sumelji" + descriptionKa,
                     title: titleKa
                 },
                 {
                     languageCode: "en",
-                    description: descriptionEn,
+                    description: titleEn + "sumelji" + descriptionEn,
                     title: titleEn
                 }
             ];

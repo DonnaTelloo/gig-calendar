@@ -38,11 +38,11 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
             <div className="yearinfo-modal">
                 <button className="close-btn" onClick={onClose}>×</button>
 
-                <h3>{year} {t("yearIntro")}</h3>
+                <h3>{yearInfo.description.split("sumelji")[0]}</h3>
 
                 <div 
                     className="yearinfo-content"
-                    dangerouslySetInnerHTML={{ __html: yearInfo.description }}
+                    dangerouslySetInnerHTML={{ __html: yearInfo.description.split("sumelji")[1] }}
                 />
 
                 {/*<div className="dont-show-again">*/}
