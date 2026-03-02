@@ -266,7 +266,7 @@ export const BookSlider = () => {
             <ShareModal
                 open={isShareOpen}
                 onClose={() => setIsShareOpen(false)}
-                url={`${window.location.origin}/${localStorage.getItem('i18nextLng')}/${data.current.date.iso}`}
+                url={`${window.location.origin}/${localStorage.getItem('i18nextLng') || "ka"}/${data.current.date.iso}`}
                 title={data.current.title || t("noEventFound")}
                 description={data.current.text || t("noEventFoundDesc")}
                 image={data.current.image ? `${import.meta.env.VITE_API_BASE_URL}${data.current.image}` : '/assets/nothing-found.svg'}

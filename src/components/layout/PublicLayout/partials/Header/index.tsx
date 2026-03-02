@@ -12,6 +12,7 @@ import LogoKA from "../../../../../../public/assets/logo-ka.png";
 import LogoEN from "../../../../../../public/assets/logo-en.png";
 import LogoBejuaEN from "../../../../../../public/assets/d-bejuashvili-logo-en.png";
 import LogoBejuaKA from "../../../../../../public/assets/d-bejuashvili-logo.png";
+import {useCalendarContext} from "../../../../../context";
 
 /* ------------------- HEADER ------------------- */
 
@@ -23,6 +24,7 @@ type HeaderProps = {
 
 export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: HeaderProps) {
     const { i18n, t } = useTranslation();
+    const { state } = useCalendarContext();
     const currentLang = i18n.language;
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,6 +54,12 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
     const changeLanguage = (lng: "en" | "ka") => {
         i18n.changeLanguage(lng);
         setMenuOpen(false);
+    };
+
+    const handleYearInfoClick = () => {
+        // Dispatch a custom event that the Home component will listen for
+        const event = new CustomEvent('openYearInfoModal');
+        window.dispatchEvent(event);
     };
 
     return (
@@ -134,7 +142,7 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
                             }`}
                             onClick={() => changeLanguage("ka")}
                         >
-                            <img src={GeorgiaFlag} alt="KA" />
+                            <img src={GeorgiaFlag} alt="KA"/>
                             <span>ქართული</span>
                         </button>
 
@@ -145,7 +153,18 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
                             onClick={() => changeLanguage("en")}
                         >
                             <span>English</span>
-                            <img src={USFlag} alt="EN" />
+                            <img src={USFlag} alt="EN"/>
+                        </button>
+
+                    </div>
+                    <div className="year-introduction" style={{
+                        marginTop: "0.5em",
+                    }}>
+                        <button style={{
+                            borderRadius: "12px",
+                            padding: '2%'
+                        }} className="year-intro-button" onClick={handleYearInfoClick}>
+                            {state.year} | {t("projectAbout")}
                         </button>
                     </div>
                 </div>

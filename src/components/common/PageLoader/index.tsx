@@ -17,9 +17,9 @@ const PageLoader = () => {
                 gap: "2em"
             }}>
                 <img src={BejuaKA} alt=""/>
-                <img src={LogoKA} style={{
-                    width: '15vh'
-                }} alt=""/>
+                {/*<img src={LogoKA} style={{*/}
+                {/*    width: '15vh'*/}
+                {/*}} alt=""/>*/}
             </div>
         ) : (
             <div style={{
@@ -30,9 +30,9 @@ const PageLoader = () => {
                 gap: "2em"
             }}>
                 <img src={BejuaEN} alt=""/>
-                <img src={LogoEN} style={{
-                    width: '15vh'
-                }} alt=""/>
+                {/*<img src={LogoEN} style={{*/}
+                {/*    width: '15vh'*/}
+                {/*}} alt=""/>*/}
             </div>
         )}
     </div>)
