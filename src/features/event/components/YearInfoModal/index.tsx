@@ -12,8 +12,6 @@ type YearInfoModalProps = {
 export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalProps) => {
     const [dontShowAgain, setDontShowAgain] = useState(false);
 
-    const { t } = useTranslation();
-
     // Check localStorage on component mount
     useEffect(() => {
         const savedPreference = localStorage.getItem('dontShowYearInfoModal');

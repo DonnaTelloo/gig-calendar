@@ -13,7 +13,7 @@
 .yearinfo-modal {
     width: 100%;
     background: #ded2bd;
-    /* padding: 60px 70px 70px; */
+    padding: 60px 70px 70px;
     box-shadow: 0px 20px 20px rgb(0 0 0 / 3%);
     height: 93vh;
     position: relative;
@@ -22,8 +22,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 /* Close button */
@@ -110,10 +108,9 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .yearinfo-modal {
-        /*padding: 40px 32px;*/
+        padding: 40px 32px;
         /*height: auto;*/
         overflow-y: auto;
-        /*padding-top: 210px;*/
     }
 }
 
@@ -133,7 +130,7 @@
 
     .yearinfo-modal {
         height: auto;
-        /*min-height: 100vh;*/
-        /*padding: 20px 16px;*/
+        min-height: 100vh;
+        padding: 20px 16px;
     }
 }
