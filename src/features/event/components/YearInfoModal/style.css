@@ -113,7 +113,7 @@
         /*padding: 40px 32px;*/
         /*height: auto;*/
         overflow-y: auto;
-        padding-top: 210px;
+        /*padding-top: 210px;*/
     }
 }
 
@@ -132,7 +132,7 @@
     }
 
     .yearinfo-modal {
-        /*height: auto;*/
+        height: auto;
         /*min-height: 100vh;*/
         /*padding: 20px 16px;*/
     }
