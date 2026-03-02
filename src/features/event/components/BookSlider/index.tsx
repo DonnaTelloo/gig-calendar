@@ -151,16 +151,19 @@ export const BookSlider = () => {
         // Hide all scrollbars during flipping
         if (isFlipping) {
             document.body.style.overflow = "hidden";
+            document.getElementsByClassName("timeline-center")[0].style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden"; // Also hide scrollbars on html element
         } else {
             document.body.style.overflowX = "auto";
             document.body.style.overflowY = "auto";
+            document.getElementsByClassName("timeline-center")[0].style.overflow = "auto";
             document.documentElement.style.overflowX = "auto";
             document.documentElement.style.overflowY = "auto";
         }
 
         return () => {
             document.body.style.overflow = "hidden";
+            document.getElementsByClassName("timeline-center")[0].style.overflow = "auto";
             document.documentElement.style.overflow = "auto";
         };
     }, [isFlipping]);
