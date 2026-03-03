@@ -21,7 +21,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 /* Close button */
@@ -117,20 +117,21 @@
 @media (max-width: 800px) {
     .yearinfo-overlay {
         top: 7vh;
-        overflow: hidden;
-        touch-action: none;
+        overflow-y: auto;
     }
 }
 
 @media (max-width: 640px) {
     .yearinfo-overlay {
-        top: 7vh;
-        align-items: stretch;
+        top: 0;
+        align-items: flex-start;
+        padding-top: 7vh;
     }
 
     .yearinfo-modal {
         height: auto;
-        min-height: 100vh;
+        min-height: calc(93vh);
         padding: 20px 16px;
+        margin-bottom: 2vh;
     }
 }
