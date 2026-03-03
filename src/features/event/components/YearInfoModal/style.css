@@ -5,7 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    z-index: 99999!important;
+    z-index: 999999!important;
 }
 
 /* Modal */
