@@ -6,16 +6,15 @@
     justify-content: center;
     align-items: flex-start;
     z-index: 100;
-    top: 7vh;
 }
 
 /* Modal */
 .yearinfo-modal {
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     background: #ded2bd;
-    padding: 60px 70px 70px;
+    padding: 80px 70px 70px;
     box-shadow: 0px 20px 20px rgb(0 0 0 / 3%);
-    height: 93vh;
     position: relative;
     text-align: center;
     overflow-y: auto;
@@ -50,6 +49,7 @@
     font-size: 26px;
     font-weight: 600;
     color: #3a3a3a;
+    margin-top: 20px;
     margin-bottom: 28px;
     width: 70%;
     margin-left: auto;
@@ -108,30 +108,25 @@
 /* Responsive */
 @media (max-width: 1024px) {
     .yearinfo-modal {
-        padding: 40px 32px;
-        /*height: auto;*/
+        padding: 80px 32px 40px;
         overflow-y: auto;
     }
 }
 
 @media (max-width: 800px) {
     .yearinfo-overlay {
-        top: 7vh;
         overflow-y: auto;
     }
 }
 
 @media (max-width: 640px) {
     .yearinfo-overlay {
-        top: 0;
         align-items: flex-start;
-        padding-top: 7vh;
     }
 
     .yearinfo-modal {
-        height: auto;
-        min-height: calc(93vh);
-        padding: 20px 16px;
-        margin-bottom: 2vh;
+        width: 100vw;
+        height: 100vh;
+        padding: 80px 16px 20px;
     }
 }

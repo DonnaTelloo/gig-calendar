@@ -57,10 +57,14 @@ export default function Header({ onOpenCalendar, calendarOpen, onMenuOpen }: Hea
     };
 
     const handleYearInfoClick = () => {
-        setMenuOpen(false);
         // Dispatch a custom event that the Home component will listen for
         const event = new CustomEvent('openYearInfoModal');
         window.dispatchEvent(event);
+
+        // Close menu after a small delay to ensure event is processed
+        setTimeout(() => {
+            setMenuOpen(false);
+        }, 10);
     };
 
     return (
