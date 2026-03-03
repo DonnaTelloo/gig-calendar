@@ -23,6 +23,21 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
         }
     }, [onClose]);
 
+    // Prevent body scrolling when modal is open
+    useEffect(() => {
+        if (open) {
+            // Store original overflow style
+            const originalOverflow = document.body.style.overflow;
+            // Disable scrolling
+            document.body.style.overflow = 'hidden';
+
+            // Cleanup function to restore scrolling when modal closes
+            return () => {
+                document.body.style.overflow = originalOverflow;
+            };
+        }
+    }, [open]);
+
     // Handle checkbox change
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const checked = e.target.checked;
