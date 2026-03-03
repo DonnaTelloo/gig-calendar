@@ -1,5 +1,6 @@
 import './style.css';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import {useTranslation} from "react-i18next";
 
 type YearInfoModalProps = {
@@ -31,7 +32,7 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
 
     if (!open) return null;
 
-    return (
+    return createPortal(
         <div className="yearinfo-overlay">
             <div className="yearinfo-modal">
                 <button className="close-btn" onClick={onClose}>×</button>
@@ -53,6 +54,7 @@ export const YearInfoModal = ({ open, yearInfo, year, onClose }: YearInfoModalPr
                 {/*    <label htmlFor="dont-show-again">აღარ მაჩვენო</label>*/}
                 {/*</div>*/}
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
