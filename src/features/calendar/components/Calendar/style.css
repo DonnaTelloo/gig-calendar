@@ -33,12 +33,13 @@
 
 .year-introduction button {
     width: 100%;
-    background: #B89761;
+    background: #F4F0E4;
     border: none;
     padding: 5%;
     font-weight: bold;
-    color: white;
+    color: #9a9a9a;
     cursor: pointer;
+    font-feature-settings: 'case' on;
 }
 
 .calendar-back {
